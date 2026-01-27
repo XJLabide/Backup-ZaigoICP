@@ -13,7 +13,8 @@
  *
  * Idempotency:
  * - Computes SHA256 hash of raw request body as event ID
- * - Uses onConflictDoNothing for idempotent insert
+ * - INSERT acts as the gate: only process if insert succeeds
+ * - Uses status field to track processing state
  * - Duplicate events return 200 without re-processing
  *
  * Response codes:
@@ -38,9 +39,12 @@ export const runtime = 'nodejs';
  * Computes a deterministic event ID from the raw request body bytes.
  *
  * Uses SHA256 hash to ensure:
- * - Identical payloads produce identical IDs
- * - No dependency on JSON key ordering
+ * - Byte-for-byte identical payloads produce identical IDs
  * - Collision-resistant uniqueness
+ *
+ * Note: Different JSON serialization, key ordering, or whitespace will
+ * produce different hashes. This is intentional - we deduplicate exact
+ * retries of identical request bodies.
  *
  * @param rawBodyBuffer - The raw request body as ArrayBuffer
  * @returns SHA256 hash as hex string
@@ -54,6 +58,21 @@ function computeEventId(rawBodyBuffer: ArrayBuffer): string {
  */
 function isValidPayloadObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Determines if an error is non-retriable (should not trigger Unipile retry).
+ *
+ * Non-retriable errors include:
+ * - User not found (webhook arrived for deleted/nonexistent user)
+ * - Missing required fields (malformed payload)
+ */
+function isNonRetriableError(error: string | undefined): boolean {
+  if (!error) return false;
+  return (
+    error.includes('User not found') ||
+    error.includes('Missing required field') // Matches both singular and plural
+  );
 }
 
 /**
@@ -135,16 +154,49 @@ export async function POST(request: Request) {
     })
   );
 
-  // 7. Check if already processed using onConflictDoNothing
-  // This is a preliminary check - we only fully mark as processed after handler success
-  const existingEvent = await db
-    .select({ eventId: processedWebhooks.eventId })
-    .from(processedWebhooks)
-    .where(eq(processedWebhooks.eventId, eventId))
-    .limit(1);
+  // 7. Try to acquire processing lock via INSERT
+  // This is the idempotency gate - only the first request wins
+  // Insert with processedAt = null to indicate "in progress"
+  let insertSucceeded = false;
+  try {
+    const insertResult = await db
+      .insert(processedWebhooks)
+      .values({
+        eventId,
+        eventType,
+        processedAt: null, // Will be set after successful processing
+        payload: rawBody,
+      })
+      .onConflictDoNothing()
+      .returning({ eventId: processedWebhooks.eventId });
 
-  if (existingEvent.length > 0) {
-    // Duplicate webhook - already processed
+    insertSucceeded = insertResult.length > 0;
+  } catch (error) {
+    // Database error on insert - return 500 to trigger retry
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(
+      JSON.stringify({
+        event: 'webhook_db_error',
+        eventType,
+        eventId,
+        error: errorMessage,
+        timestamp: new Date().toISOString(),
+      })
+    );
+    return Response.json({ error: 'Database error' }, { status: 500 });
+  }
+
+  // If insert didn't succeed, this is a duplicate
+  if (!insertSucceeded) {
+    // Check if it was already processed or is in progress
+    const existing = await db
+      .select({ processedAt: processedWebhooks.processedAt })
+      .from(processedWebhooks)
+      .where(eq(processedWebhooks.eventId, eventId))
+      .limit(1);
+
+    const isProcessed = existing.length > 0 && existing[0].processedAt !== null;
+
     console.log(
       JSON.stringify({
         event: 'webhook_duplicate',
@@ -152,6 +204,7 @@ export async function POST(request: Request) {
         eventId,
         accountId,
         userId,
+        wasProcessed: isProcessed,
         timestamp: new Date().toISOString(),
       })
     );
@@ -162,11 +215,7 @@ export async function POST(request: Request) {
   const result = await dispatchWebhookEvent(payload);
 
   if (!result.success) {
-    // Determine if error is retriable
-    // "User not found" and "Missing required fields" are non-retriable
-    const isNonRetriable =
-      result.error?.includes('User not found') ||
-      result.error?.includes('Missing required field');
+    const nonRetriable = isNonRetriableError(result.error);
 
     console.error(
       JSON.stringify({
@@ -176,51 +225,56 @@ export async function POST(request: Request) {
         accountId,
         userId,
         error: result.error,
-        retriable: !isNonRetriable,
+        retriable: !nonRetriable,
         timestamp: new Date().toISOString(),
       })
     );
 
-    if (isNonRetriable) {
+    if (nonRetriable) {
       // For non-retriable errors, mark as processed to prevent retry storms
-      // and return 200 (logged above for debugging)
       try {
-        await db.insert(processedWebhooks).values({
-          eventId,
-          eventType,
-          processedAt: new Date(),
-          payload: rawBody,
-        }).onConflictDoNothing();
+        await db
+          .update(processedWebhooks)
+          .set({ processedAt: new Date() })
+          .where(eq(processedWebhooks.eventId, eventId));
       } catch {
-        // Ignore insert errors for non-retriable cases
+        // Ignore update errors for non-retriable cases
       }
-      return Response.json({ received: true, error: result.error });
+      return Response.json({ received: true, error: 'Event processing failed' });
     }
 
-    // Return 500 to trigger Unipile retry on retriable failures (DB errors)
-    return Response.json({ error: result.error }, { status: 500 });
+    // For retriable errors, delete the record so retries can re-insert
+    try {
+      await db
+        .delete(processedWebhooks)
+        .where(eq(processedWebhooks.eventId, eventId));
+    } catch {
+      // Ignore delete errors - worst case is it gets treated as duplicate
+    }
+
+    // Return 500 to trigger Unipile retry
+    return Response.json({ error: 'Internal error' }, { status: 500 });
   }
 
   // 9. Mark as processed after successful handling
   try {
-    await db.insert(processedWebhooks).values({
-      eventId,
-      eventType,
-      processedAt: new Date(),
-      payload: rawBody,
-    }).onConflictDoNothing();
+    await db
+      .update(processedWebhooks)
+      .set({ processedAt: new Date() })
+      .where(eq(processedWebhooks.eventId, eventId));
   } catch (error) {
-    // Log but don't fail - event was processed successfully
+    // DB failure after successful processing - return 500 so retry can complete dedup
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(
       JSON.stringify({
-        event: 'webhook_idempotency_insert_error',
+        event: 'webhook_idempotency_update_error',
         eventType,
         eventId,
         error: errorMessage,
         timestamp: new Date().toISOString(),
       })
     );
+    return Response.json({ error: 'Database error' }, { status: 500 });
   }
 
   // 10. Log successful processing

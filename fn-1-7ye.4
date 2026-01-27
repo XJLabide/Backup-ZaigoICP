@@ -1,0 +1,11 @@
+{
+  "type": "impl_review",
+  "id": "branch",
+  "mode": "codex",
+  "base": "a2a74f01c88a3e36065d713319a5fd521552b3d2",
+  "verdict": "NEEDS_WORK",
+  "session_id": "019c011e-6e5f-7490-8316-8fdb646aaad7",
+  "timestamp": "2026-01-27T20:28:03.239776Z",
+  "review": "- **Severity**: Major  \n  **File:Line**: `apps/web/app/api/webhooks/unipile/route.ts:141`  \n  **Problem**: Duplicate detection is a non-atomic \u201cselect-then-process\u201d check. Concurrent identical deliveries can both pass the select, both process, and only then insert, causing double-processing.  \n  **Suggestion**: Make the idempotency gate atomic: insert first with `onConflictDoNothing` and only process if insert succeeded, or use a transaction with a \u201cprocessing\u201d state and `SELECT ... FOR UPDATE`.\n\n- **Severity**: Major  \n  **File:Line**: `apps/web/app/api/webhooks/unipile/route.ts:170`  \n  **Problem**: Non-retriable detection misses the actual error string from `handleAccountConnected` (`\"Missing required fields: ...\"`) because the check only looks for `\"Missing required field\"` (singular). This will misclassify validation errors as retriable and can cause retry storms.  \n  **Suggestion**: Match both variants or use a structured error code (e.g., `{ code: 'VALIDATION_ERROR' }`) instead of string matching.\n\n<verdict>NEEDS_WORK</verdict>\n",
+  "iteration": 2
+}

@@ -247,7 +247,7 @@ export const webhookEvents = pgTable(
 export const processedWebhooks = pgTable('processed_webhooks', {
   eventId: text('event_id').primaryKey(), // SHA256 hash of raw webhook body
   eventType: text('event_type').notNull(),
-  processedAt: timestamp('processed_at').defaultNow().notNull(),
+  processedAt: timestamp('processed_at'), // Nullable: null = in progress, set = completed
   payload: text('payload'), // JSON stringified for debugging
 });
 

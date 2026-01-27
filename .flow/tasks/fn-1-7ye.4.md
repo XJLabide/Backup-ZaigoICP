@@ -27,19 +27,21 @@ Unipile provides `account_id` and `name` (our userId) in webhook payloads. The `
 Raw body hashing ensures idempotency even if Unipile doesn't provide a unique event ID field.
 
 ## Acceptance
-- [ ] `POST /api/webhooks/unipile` accepts webhook payloads
-- [ ] Returns 401 for invalid/missing signature
-- [ ] Returns 200 for valid webhooks (even unknown event types)
-- [ ] Event ID computed as SHA256 hash of raw request body
-- [ ] `account.connected` event updates user with unipileAccountId and linkedInConnectedAt
-- [ ] `account.disconnected` event clears unipileAccountId and linkedInConnectedAt
-- [ ] Duplicate webhooks (same raw body) are idempotent (no error, no double-processing)
-- [ ] Unknown event types logged and acknowledged with 200
-- [ ] Structured logs for all received events with eventType, accountId, userId
+- [x] `POST /api/webhooks/unipile` accepts webhook payloads
+- [x] Returns 401 for invalid/missing signature
+- [x] Returns 200 for valid webhooks (even unknown event types)
+- [x] Event ID computed as SHA256 hash of raw request body
+- [x] `account.connected` event updates user with unipileAccountId and linkedInConnectedAt
+- [x] `account.disconnected` event clears unipileAccountId and linkedInConnectedAt
+- [x] Duplicate webhooks (same raw body) are idempotent (no error, no double-processing)
+- [x] Unknown event types logged and acknowledged with 200
+- [x] Structured logs for all received events with eventType, accountId, userId
 
 ## Done summary
+
 Implemented webhook endpoint at POST /api/webhooks/unipile with idempotent handlers. The endpoint verifies X-Unipile-Signature headers, computes SHA256 event IDs from raw request bodies, stores processed events in the processedWebhooks table for deduplication, and dispatches to handlers for account.connected and account.disconnected events.
+
 ## Evidence
-- Commits:
+- Commits: (to be added after commit)
 - Tests: npx tsc --noEmit
 - PRs:

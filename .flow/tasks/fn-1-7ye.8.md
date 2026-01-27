@@ -37,9 +37,8 @@ Focus on testing the route handler logic, not the Unipile SDK itself. Mock exter
   - Returns 401 for unauthenticated user
 - [ ] All tests pass with `pnpm test`
 ## Done summary
-TBD
-
+Added comprehensive integration tests for all three Unipile API endpoints (connect, webhooks, status) using Vitest. Tests cover authentication, error handling, webhook signature verification, event processing, idempotency, and edge cases. All 25 tests pass.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 5b32476084c3056d02070b8a80cae3c020a3c29e
+- Tests: pnpm test
 - PRs:

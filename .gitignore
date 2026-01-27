@@ -33,3 +33,6 @@ coverage/
 
 # Drizzle
 drizzle/*.sql.sql.json
+
+scripts/ralph
+/scripts

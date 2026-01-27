@@ -30,9 +30,8 @@ Unipile SDK may return expiry info; log it for debugging but do not hard-code as
 - [ ] Structured log emitted on success with userId (include expiresAt if SDK returns it)
 
 ## Done summary
-TBD
-
+Created POST /api/auth/unipile/connect endpoint that generates Unipile hosted auth links for LinkedIn OAuth. Returns 401 for unauthenticated requests, 500 with error message on failure, and includes structured logging with userId and expiresOn.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 42051e0, c207add8b0c0d360253150f4fda4d2d64fe672bd
+- Tests: npx tsc --noEmit
 - PRs:

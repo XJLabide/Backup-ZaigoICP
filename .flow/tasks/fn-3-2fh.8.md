@@ -32,9 +32,8 @@ Create endpoint to bulk-assign multiple leads to a campaign.
 - [ ] Returns count of leads assigned
 - [ ] Integration test covers partial ownership case
 ## Done summary
-TBD
-
+Implemented POST /api/campaigns/[id]/assign endpoint for bulk lead assignment with validation, atomic updates, and event emission for newly assigned leads only.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: b7b7ac2504012a3895ef7d5c330685eda0430f9a
+- Tests: pnpm test -- __tests__/api/campaigns/[id]/assign/route.test.ts
 - PRs:

@@ -33,9 +33,8 @@ Reference: Drizzle update pattern in `docs/database-schema.md:401-410`
 - [ ] Increments campaign.totalLeads
 - [ ] Integration test covers reassignment case
 ## Done summary
-TBD
-
+Implemented PATCH /api/leads/[id]/assign endpoint for single lead assignment to campaigns. Includes ownership verification, status update to 'qualified', campaign totalLeads counter management for both assignment and reassignment, and lead/qualified Inngest event emission with pending action check to avoid duplicates.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: c4e132a5c65704bc15db1fd81d7bb2349513dea0
+- Tests: pnpm test -- __tests__/api/leads/[id]/assign/route.test.ts (11 tests passed)
 - PRs:

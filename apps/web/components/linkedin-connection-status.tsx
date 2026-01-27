@@ -14,7 +14,7 @@
  * - error: An error occurred (shows error message)
  */
 
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 // =============================================================================
 // Types
@@ -23,11 +23,12 @@ import { useCallback } from 'react';
 /**
  * Discriminated union for connection status states.
  * Using a state machine pattern prevents impossible states.
+ * Note: connectedAt uses string (ISO 8601) for serialization compatibility.
  */
 export type ConnectionStatus =
   | { state: 'idle' }
   | { state: 'connecting' }
-  | { state: 'connected'; connectedAt: Date }
+  | { state: 'connected'; connectedAt: string }
   | { state: 'disconnected' }
   | { state: 'error'; message: string };
 
@@ -132,10 +133,20 @@ function getStatusConfig(status: ConnectionStatus): StatusConfig {
 // =============================================================================
 
 /**
- * Formats a date for display in the connection status.
+ * Formats an ISO date string for display in the connection status.
  * Shows relative time for recent connections, date for older ones.
+ * Returns null during SSR to prevent hydration mismatch.
  */
-function formatConnectedAt(date: Date): string {
+function formatConnectedAt(isoDateString: string, isMounted: boolean): string | null {
+  if (!isMounted) {
+    return null;
+  }
+
+  const date = new Date(isoDateString);
+  if (isNaN(date.getTime())) {
+    return null;
+  }
+
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffMins = Math.floor(diffMs / (1000 * 60));
@@ -179,7 +190,7 @@ function formatConnectedAt(date: Date): string {
  * @example
  * // Connected state showing timestamp
  * <LinkedInConnectionStatus
- *   status={{ state: 'connected', connectedAt: new Date() }}
+ *   status={{ state: 'connected', connectedAt: new Date().toISOString() }}
  * />
  *
  * @example
@@ -194,6 +205,11 @@ export function LinkedInConnectionStatus({
   className,
 }: LinkedInConnectionStatusProps) {
   const config = getStatusConfig(status);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleConnectClick = useCallback(() => {
     if (onConnect) {
@@ -201,16 +217,17 @@ export function LinkedInConnectionStatus({
     }
   }, [onConnect]);
 
-  // Determine if connect button should be shown
+  // Determine if connect button should be shown (explicit boolean)
   const showConnectButton =
-    (status.state === 'disconnected' || status.state === 'error') && onConnect;
+    (status.state === 'disconnected' || status.state === 'error') &&
+    onConnect !== undefined;
 
   // Build indicator style with animation for connecting state
   const indicatorStyle: React.CSSProperties = {
     ...indicatorStyles,
     backgroundColor: config.indicatorColor,
     ...(status.state === 'connecting' && {
-      animation: 'pulse 1.5s ease-in-out infinite',
+      animation: 'linkedinConnectionPulse 1.5s ease-in-out infinite',
     }),
   };
 
@@ -219,7 +236,7 @@ export function LinkedInConnectionStatus({
       {/* Keyframe animation for connecting state */}
       {status.state === 'connecting' && (
         <style>{`
-          @keyframes pulse {
+          @keyframes linkedinConnectionPulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
           }
@@ -242,8 +259,11 @@ export function LinkedInConnectionStatus({
         <span>
           {config.label}
           {status.state === 'connected' && (
-            <span style={{ fontWeight: 400, marginLeft: '4px' }}>
-              {formatConnectedAt(status.connectedAt)}
+            <span
+              style={{ fontWeight: 400, marginLeft: '4px' }}
+              suppressHydrationWarning
+            >
+              {formatConnectedAt(status.connectedAt, isMounted) ?? ''}
             </span>
           )}
           {status.state === 'error' && (

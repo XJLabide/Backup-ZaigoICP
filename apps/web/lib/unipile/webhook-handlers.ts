@@ -125,7 +125,7 @@ export async function handleAccountDisconnected(
   }
 
   try {
-    const result = await db
+    await db
       .update(users)
       .set({
         unipileAccountId: null,
@@ -133,8 +133,7 @@ export async function handleAccountDisconnected(
         lastSyncError: 'Account disconnected',
         updatedAt: new Date(),
       })
-      .where(eq(users.unipileAccountId, accountId))
-      .returning({ id: users.id });
+      .where(eq(users.unipileAccountId, accountId));
 
     // Note: result.length === 0 is not an error for disconnect
     // The account may have already been cleared or never existed

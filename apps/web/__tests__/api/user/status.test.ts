@@ -51,11 +51,11 @@ function setupDbSelect(result: Array<{ unipileAccountId: string | null; linkedIn
         limit: vi.fn().mockResolvedValue(result),
       }),
     }),
-  } as ReturnType<typeof mockDb.select>);
+  } as unknown as ReturnType<typeof mockDb.select>);
 }
 
 /**
- * Helper to create mock auth response
+ * Helper to create mock auth response with all required Clerk properties
  */
 function createMockAuthResponse(userId: string | null) {
   return {
@@ -68,11 +68,15 @@ function createMockAuthResponse(userId: string | null) {
     orgSlug: null,
     orgPermissions: null,
     factorVerificationAge: null,
+    sessionStatus: userId ? 'active' : null,
+    tokenType: 'api_key',
+    isAuthenticated: !!userId,
     getToken: vi.fn(),
     has: vi.fn(),
     debug: vi.fn(),
     protect: vi.fn(),
-    redirectToSignIn: vi.fn(),
+    redirectToSignIn: vi.fn() as never,
+    redirectToSignUp: vi.fn() as never,
   };
 }
 
@@ -84,7 +88,7 @@ describe('GET /api/user/status', () => {
   describe('Authenticated requests', () => {
     it('returns connected status when user has unipileAccountId', async () => {
       // Setup: authenticated user with LinkedIn connected
-      mockAuth.mockResolvedValue(createMockAuthResponse('user_123'));
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
       const connectedAt = new Date('2024-01-15T10:30:00Z');
       setupDbSelect([{
@@ -108,7 +112,7 @@ describe('GET /api/user/status', () => {
 
     it('returns disconnected status when user has no unipileAccountId', async () => {
       // Setup: authenticated user without LinkedIn connected
-      mockAuth.mockResolvedValue(createMockAuthResponse('user_123'));
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
       setupDbSelect([{
         unipileAccountId: null,
@@ -130,7 +134,7 @@ describe('GET /api/user/status', () => {
 
     it('returns disconnected status when user record does not exist', async () => {
       // Setup: authenticated user but no DB record (yet)
-      mockAuth.mockResolvedValue(createMockAuthResponse('user_123'));
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
       setupDbSelect([]); // No user record found
 
@@ -149,7 +153,7 @@ describe('GET /api/user/status', () => {
     it('handles connected status with null connectedAt timestamp', async () => {
       // Edge case: unipileAccountId exists but connectedAt is null
       // This shouldn't normally happen but we handle it gracefully
-      mockAuth.mockResolvedValue(createMockAuthResponse('user_123'));
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
       setupDbSelect([{
         unipileAccountId: 'unipile_acc_456',
@@ -172,7 +176,7 @@ describe('GET /api/user/status', () => {
   describe('Unauthenticated requests', () => {
     it('returns 401 for unauthenticated user', async () => {
       // Setup: no authenticated user
-      mockAuth.mockResolvedValue(createMockAuthResponse(null));
+      mockAuth.mockResolvedValue(createMockAuthResponse(null) as never);
 
       // Execute
       const response = await GET();
@@ -190,7 +194,7 @@ describe('GET /api/user/status', () => {
   describe('Database errors', () => {
     it('returns 500 for database errors', async () => {
       // Setup: authenticated user but database fails
-      mockAuth.mockResolvedValue(createMockAuthResponse('user_123'));
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
       mockDb.select.mockReturnValue({
         from: vi.fn().mockReturnValue({
@@ -198,7 +202,7 @@ describe('GET /api/user/status', () => {
             limit: vi.fn().mockRejectedValue(new Error('Connection refused')),
           }),
         }),
-      } as ReturnType<typeof mockDb.select>);
+      } as unknown as ReturnType<typeof mockDb.select>);
 
       // Execute
       const response = await GET();
@@ -212,7 +216,7 @@ describe('GET /api/user/status', () => {
 
     it('handles non-Error database exceptions', async () => {
       // Setup: authenticated user but database throws non-Error
-      mockAuth.mockResolvedValue(createMockAuthResponse('user_123'));
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
       mockDb.select.mockReturnValue({
         from: vi.fn().mockReturnValue({
@@ -220,7 +224,7 @@ describe('GET /api/user/status', () => {
             limit: vi.fn().mockRejectedValue('String error'),
           }),
         }),
-      } as ReturnType<typeof mockDb.select>);
+      } as unknown as ReturnType<typeof mockDb.select>);
 
       // Execute
       const response = await GET();

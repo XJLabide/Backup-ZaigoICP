@@ -105,7 +105,7 @@ function setupDbInsertSuccess() {
         returning: vi.fn().mockResolvedValue([{ eventId: 'mock-hash-abc123' }]),
       }),
     }),
-  } as ReturnType<typeof mockDb.insert>);
+  } as unknown as ReturnType<typeof mockDb.insert>);
 }
 
 /**
@@ -118,7 +118,7 @@ function setupDbInsertDuplicate() {
         returning: vi.fn().mockResolvedValue([]),
       }),
     }),
-  } as ReturnType<typeof mockDb.insert>);
+  } as unknown as ReturnType<typeof mockDb.insert>);
 }
 
 /**
@@ -131,7 +131,7 @@ function setupDbSelectExisting(processedAt: Date | null, createdAt: Date = new D
         limit: vi.fn().mockResolvedValue([{ processedAt, createdAt }]),
       }),
     }),
-  } as ReturnType<typeof mockDb.select>);
+  } as unknown as ReturnType<typeof mockDb.select>);
 }
 
 /**
@@ -142,7 +142,7 @@ function setupDbUpdateSuccess() {
     set: vi.fn().mockReturnValue({
       where: vi.fn().mockResolvedValue(undefined),
     }),
-  } as ReturnType<typeof mockDb.update>);
+  } as unknown as ReturnType<typeof mockDb.update>);
 }
 
 describe('POST /api/webhooks/unipile', () => {
@@ -420,7 +420,7 @@ describe('POST /api/webhooks/unipile', () => {
       });
       mockDb.delete.mockReturnValue({
         where: vi.fn().mockResolvedValue(undefined),
-      } as ReturnType<typeof mockDb.delete>);
+      } as unknown as ReturnType<typeof mockDb.delete>);
 
       const request = createMockRequest({
         event: 'account.connected',
@@ -468,7 +468,7 @@ describe('POST /api/webhooks/unipile', () => {
             returning: vi.fn().mockRejectedValue(new Error('Connection refused')),
           }),
         }),
-      } as ReturnType<typeof mockDb.insert>);
+      } as unknown as ReturnType<typeof mockDb.insert>);
 
       const request = createMockRequest({
         event: 'account.connected',

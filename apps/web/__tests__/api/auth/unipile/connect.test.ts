@@ -26,6 +26,32 @@ import { POST } from '@/app/api/auth/unipile/connect/route';
 const mockAuth = vi.mocked(auth);
 const mockGenerateAuthLink = vi.mocked(generateAuthLink);
 
+/**
+ * Helper to create mock auth response with all required Clerk properties
+ */
+function createMockAuthResponse(userId: string | null) {
+  return {
+    userId,
+    sessionId: userId ? 'session_123' : null,
+    sessionClaims: null,
+    actor: null,
+    orgId: null,
+    orgRole: null,
+    orgSlug: null,
+    orgPermissions: null,
+    factorVerificationAge: null,
+    sessionStatus: userId ? 'active' : null,
+    tokenType: 'api_key',
+    isAuthenticated: !!userId,
+    getToken: vi.fn(),
+    has: vi.fn(),
+    debug: vi.fn(),
+    protect: vi.fn(),
+    redirectToSignIn: vi.fn() as never,
+    redirectToSignUp: vi.fn() as never,
+  };
+}
+
 describe('POST /api/auth/unipile/connect', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -33,22 +59,7 @@ describe('POST /api/auth/unipile/connect', () => {
 
   it('returns URL for authenticated user', async () => {
     // Setup: authenticated user
-    mockAuth.mockResolvedValue({
-      userId: 'user_123',
-      sessionId: 'session_123',
-      sessionClaims: null,
-      actor: null,
-      orgId: null,
-      orgRole: null,
-      orgSlug: null,
-      orgPermissions: null,
-      factorVerificationAge: null,
-      getToken: vi.fn(),
-      has: vi.fn(),
-      debug: vi.fn(),
-      protect: vi.fn(),
-      redirectToSignIn: vi.fn(),
-    });
+    mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
     const expectedUrl = 'https://auth.unipile.com/link/abc123';
     const expectedExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
@@ -69,22 +80,7 @@ describe('POST /api/auth/unipile/connect', () => {
 
   it('returns 401 for unauthenticated user', async () => {
     // Setup: no authenticated user
-    mockAuth.mockResolvedValue({
-      userId: null,
-      sessionId: null,
-      sessionClaims: null,
-      actor: null,
-      orgId: null,
-      orgRole: null,
-      orgSlug: null,
-      orgPermissions: null,
-      factorVerificationAge: null,
-      getToken: vi.fn(),
-      has: vi.fn(),
-      debug: vi.fn(),
-      protect: vi.fn(),
-      redirectToSignIn: vi.fn(),
-    });
+    mockAuth.mockResolvedValue(createMockAuthResponse(null) as never);
 
     // Execute
     const response = await POST();
@@ -98,22 +94,7 @@ describe('POST /api/auth/unipile/connect', () => {
 
   it('returns 500 when Unipile fails', async () => {
     // Setup: authenticated user but Unipile fails
-    mockAuth.mockResolvedValue({
-      userId: 'user_123',
-      sessionId: 'session_123',
-      sessionClaims: null,
-      actor: null,
-      orgId: null,
-      orgRole: null,
-      orgSlug: null,
-      orgPermissions: null,
-      factorVerificationAge: null,
-      getToken: vi.fn(),
-      has: vi.fn(),
-      debug: vi.fn(),
-      protect: vi.fn(),
-      redirectToSignIn: vi.fn(),
-    });
+    mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
     const errorMessage = 'Unipile API connection failed';
     mockGenerateAuthLink.mockRejectedValue(new Error(errorMessage));
@@ -129,22 +110,7 @@ describe('POST /api/auth/unipile/connect', () => {
 
   it('handles non-Error exceptions from Unipile', async () => {
     // Setup: authenticated user but Unipile throws non-Error
-    mockAuth.mockResolvedValue({
-      userId: 'user_123',
-      sessionId: 'session_123',
-      sessionClaims: null,
-      actor: null,
-      orgId: null,
-      orgRole: null,
-      orgSlug: null,
-      orgPermissions: null,
-      factorVerificationAge: null,
-      getToken: vi.fn(),
-      has: vi.fn(),
-      debug: vi.fn(),
-      protect: vi.fn(),
-      redirectToSignIn: vi.fn(),
-    });
+    mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
 
     mockGenerateAuthLink.mockRejectedValue('String error');
 

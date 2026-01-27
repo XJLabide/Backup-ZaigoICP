@@ -125,9 +125,10 @@ export function OnboardingClient({
   const [error, setError] = useState<string | null>(null);
 
   // Build initial status from server-provided data
+  // Use initialConnected as authoritative; fallback timestamp if missing (legacy rows)
   const getInitialStatus = (): ConnectionStatus => {
-    if (initialConnected && initialConnectedAt) {
-      return { state: 'connected', connectedAt: initialConnectedAt };
+    if (initialConnected) {
+      return { state: 'connected', connectedAt: initialConnectedAt ?? new Date().toISOString() };
     }
     return { state: 'disconnected' };
   };

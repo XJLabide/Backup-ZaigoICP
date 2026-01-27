@@ -30,9 +30,8 @@ Reference: Drizzle query patterns in `docs/database-schema.md:385-395`
 - [ ] Only returns campaigns owned by authenticated user
 - [ ] Integration test covers pagination
 ## Done summary
-TBD
-
+Implemented GET /api/campaigns endpoint with pagination support (page/limit query params), filtering by authenticated user, ordering by createdAt desc, and returning total count for pagination UI. Added 14 integration tests covering happy paths, pagination edge cases, authentication, and error handling.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 93b38c9ac16233b62485432d147abfc47bfd6a1e
+- Tests: pnpm test -- route.test.ts
 - PRs:

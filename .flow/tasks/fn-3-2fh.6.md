@@ -31,9 +31,8 @@ Reference: Next.js 15 dynamic route params are Promises - use `await params`
 - [ ] DELETE returns 204 on success
 - [ ] Integration tests cover owner validation
 ## Done summary
-TBD
-
+Added PATCH and DELETE endpoints for /api/campaigns/[id] with Zod validation, owner verification, and comprehensive integration tests covering authentication, authorization, validation errors, and database error handling.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 30ac2207f45624591c1090b9784e22fbb137b36e
+- Tests: pnpm test -- __tests__/api/campaigns/[id]
 - PRs:

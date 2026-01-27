@@ -27,9 +27,8 @@ pnpm add ai @ai-sdk/anthropic inngest --filter @repo/web
 - [ ] `pnpm install` runs without errors
 - [ ] TypeScript compiles without errors
 ## Done summary
-TBD
-
+Installed AI SDK (ai@^6.0.57, @ai-sdk/anthropic@^3.0.28) and Inngest (inngest@^3.49.3) dependencies. Also scaffolded missing pnpm workspace config, root package.json, @repo/shared package, and tsconfig.json for apps/web.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 6df4a2c887d3f6dde2eb9c2b1d1382dc438f11fe
+- Tests: pnpm install (verified no errors), TypeScript import test for ai, @ai-sdk/anthropic, inngest (verified compiles)
 - PRs:

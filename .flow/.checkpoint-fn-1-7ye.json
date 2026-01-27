@@ -1,0 +1,193 @@
+{
+  "created_at": "2026-01-27T19:25:02.400474Z",
+  "epic": {
+    "data": {
+      "branch_name": "fn-1-7ye",
+      "created_at": "2026-01-27T19:19:43.366568Z",
+      "depends_on_epics": [],
+      "id": "fn-1-7ye",
+      "next_task": 1,
+      "plan_review_status": "unknown",
+      "plan_reviewed_at": null,
+      "spec_path": ".flow/specs/fn-1-7ye.md",
+      "status": "open",
+      "title": "LinkedIn Connection (Unipile)",
+      "updated_at": "2026-01-27T19:20:52.354047Z"
+    },
+    "spec": "# LinkedIn Connection (Unipile)\n\n## Overview\n\nEnable users to connect their LinkedIn account via Unipile OAuth. After connection, the system can access LinkedIn APIs for profile viewers, messaging, and connection requests.\n\n**Prerequisites:** Epic 1 (Foundation) must be completed first - provides monorepo structure, Neon DB + Drizzle schema, Clerk auth, and basic layout.\n\n## Scope\n\n### In Scope\n- Unipile SDK client wrapper with environment configuration\n- Auth link generation API (`POST /api/auth/unipile/connect`)\n- Webhook endpoint (`POST /api/webhooks/unipile`) with signature verification\n- Onboarding page with \"Connect LinkedIn\" button\n- Connection status component showing connected/disconnected state\n- Idempotent webhook handlers for `account.connected` and `account.disconnected`\n- Error handling and structured logging\n\n### Out of Scope\n- Profile viewer fetching (Epic 3)\n- Lead management (Epic 3)\n- Campaign creation (Epic 4)\n- Message sending (Epic 5)\n\n## Architecture\n\n```mermaid\nsequenceDiagram\n    participant U as User\n    participant UI as Onboarding Page\n    participant API as /api/auth/unipile/connect\n    participant Unipile as Unipile Hosted Auth\n    participant WH as /api/webhooks/unipile\n    participant DB as Neon Database\n\n    U->>UI: Click \"Connect LinkedIn\"\n    UI->>API: POST (with Clerk session)\n    API->>Unipile: createHostedAuthLink(userId)\n    Unipile-->>API: {url: authUrl}\n    API-->>UI: {url: authUrl}\n    UI->>U: Redirect to authUrl\n    U->>Unipile: Complete LinkedIn OAuth\n    Unipile->>WH: POST account.connected {account_id, name: userId}\n    WH->>DB: UPDATE users SET unipileAccountId, linkedInConnectedAt\n    Unipile->>U: Redirect to success_redirect_url\n    U->>UI: Poll /api/user/status\n    UI-->>U: Show \"Connected\" state\n```\n\n## Data Model Changes\n\nExisting `users` table from `docs/database-schema.md` already includes:\n```typescript\nunipileAccountId: text('unipile_account_id').unique(),\nlinkedInProfileUrl: text('linkedin_profile_url'),\nlinkedInConnectedAt: timestamp('linkedin_connected_at'),\n```\n\nNew table for webhook idempotency:\n```typescript\nexport const processedWebhooks = pgTable('processed_webhooks', {\n  eventId: text('event_id').primaryKey(), // Unipile event hash\n  eventType: text('event_type').notNull(),\n  processedAt: timestamp('processed_at').defaultNow().notNull(),\n  payload: text('payload'), // JSON stringified for debugging\n});\n```\n\n## Environment Variables\n\nAdd to `.env.example`:\n```bash\nUNIPILE_DSN=https://api1.unipile.com:13111\nUNIPILE_ACCESS_TOKEN=your_access_token_here\nUNIPILE_WEBHOOK_SECRET=your_webhook_secret_here\nNEXT_PUBLIC_APP_URL=http://localhost:3000\n```\n\n## Key Files\n\n```\napps/web/\n\u251c\u2500\u2500 app/\n\u2502   \u251c\u2500\u2500 (dashboard)/\n\u2502   \u2502   \u2514\u2500\u2500 onboarding/\n\u2502   \u2502       \u2514\u2500\u2500 page.tsx           # Onboarding UI\n\u2502   \u2514\u2500\u2500 api/\n\u2502       \u251c\u2500\u2500 auth/\n\u2502       \u2502   \u2514\u2500\u2500 unipile/\n\u2502       \u2502       \u2514\u2500\u2500 connect/route.ts  # Auth link generation\n\u2502       \u251c\u2500\u2500 webhooks/\n\u2502       \u2502   \u2514\u2500\u2500 unipile/route.ts      # Webhook handler\n\u2502       \u2514\u2500\u2500 user/\n\u2502           \u2514\u2500\u2500 status/route.ts       # Connection status polling\n\u251c\u2500\u2500 components/\n\u2502   \u2514\u2500\u2500 linkedin-connection-status.tsx\n\u2514\u2500\u2500 lib/\n    \u2514\u2500\u2500 unipile/\n        \u251c\u2500\u2500 client.ts              # Unipile SDK wrapper\n        \u251c\u2500\u2500 auth.ts                # Auth link generation\n        \u2514\u2500\u2500 webhook-handlers.ts    # Event handlers\n```\n\n## Quick Commands\n\n```bash\n# Run dev server\npnpm dev\n\n# Test auth link generation (requires valid session)\ncurl -X POST http://localhost:3000/api/auth/unipile/connect \\\n  -H \"Cookie: __session=<clerk_session>\"\n\n# Simulate webhook locally (use ngrok for real testing)\ncurl -X POST http://localhost:3000/api/webhooks/unipile \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Unipile-Signature: <signature>\" \\\n  -d '{\"event\":\"account.connected\",\"account_id\":\"test123\",\"name\":\"user_clerk_id\"}'\n\n# Generate migration after schema change\npnpm drizzle-kit generate\n\n# Apply migration\npnpm drizzle-kit migrate\n```\n\n## Risks & Mitigations\n\n| Risk | Impact | Mitigation |\n|------|--------|------------|\n| Unipile service unavailable | Users cannot connect | Graceful error UI, retry option |\n| Webhook delivery delayed/lost | User sees \"connecting\" indefinitely | 60s polling timeout, manual refresh |\n| Auth link expires (30 min) | User returns to broken link | Clear error message, generate new link |\n| Duplicate webhooks | Data inconsistency | Idempotent handlers with DB unique constraint |\n| Webhook before redirect complete | Race condition | UI polls for status, not just redirect |\n\n## Security Considerations\n\n1. **Webhook signature verification** - MUST verify `X-Unipile-Signature` header using HMAC-SHA256\n2. **Server-only secrets** - `UNIPILE_ACCESS_TOKEN` and `UNIPILE_WEBHOOK_SECRET` never exposed to client\n3. **Clerk auth required** - `/api/auth/unipile/connect` requires valid Clerk session\n4. **CSRF protection** - POST endpoints with session validation\n5. **No sensitive data in URLs** - Auth link URLs not logged in full\n\n## Observability\n\n### Structured Logs\n- `auth_link_generated` - userId, timestamp, expiresAt\n- `webhook_received` - eventType, accountId, userId, signature_valid\n- `user_connected` - userId, unipileAccountId, timestamp\n- `user_disconnected` - userId, reason, timestamp\n- `webhook_error` - eventType, error, userId (if available)\n\n### Metrics (future)\n- Auth link generation count/latency\n- Webhook events by type\n- Connection success/failure rate\n- Time from click to connected\n\n## Testing Strategy\n\n### Unit Tests\n- Unipile client wrapper methods\n- Webhook signature verification\n- Event handler idempotency\n- Zod schema validation\n\n### Integration Tests\n- `POST /api/auth/unipile/connect` returns URL for authenticated user\n- `POST /api/auth/unipile/connect` returns 401 for unauthenticated user\n- `POST /api/webhooks/unipile` handles account.connected\n- `POST /api/webhooks/unipile` handles account.disconnected\n- Duplicate webhook is idempotent\n\n### E2E Tests (Playwright)\n- User visits onboarding, sees \"Connect LinkedIn\" button\n- Click redirects to external URL (mock)\n- Simulate webhook, verify UI shows \"Connected\"\n- Disconnect event flips UI to \"Disconnected\"\n\n### Manual QA\n- [ ] Local dev with ngrok for real webhook testing\n- [ ] UI states: initial, loading, connected, disconnected, error\n- [ ] Webhook replay does not corrupt data\n- [ ] No secrets in browser console/network tab\n\n## Acceptance Criteria\n\n- [ ] User can click \"Connect LinkedIn\" and be redirected to Unipile OAuth\n- [ ] After OAuth completion, webhook updates user record with `unipileAccountId`\n- [ ] Onboarding page shows \"Connected\" state after webhook processed\n- [ ] Webhook handler is idempotent (duplicate events don't break data)\n- [ ] Webhook signature is verified before processing\n- [ ] Disconnection event clears `unipileAccountId` and updates UI\n- [ ] All API endpoints require Clerk auth (except webhook which uses signature)\n- [ ] Environment variables documented in `.env.example`\n- [ ] Structured logs for auth link generation and webhook events\n\n## References\n\n- [Unipile Hosted Auth](https://developer.unipile.com/docs/hosted-auth)\n- [Unipile Account Lifecycle](https://developer.unipile.com/docs/account-lifecycle)\n- [Unipile Webhooks](https://developer.unipile.com/docs/webhooks-2)\n- [unipile-node-sdk](https://github.com/unipile/unipile-node-sdk)\n- `/docs/unipile-integration.md` - Local implementation guide\n- `/docs/database-schema.md` - Schema with User table\n- `/docs/epics.md` - Epic 2 task breakdown\n"
+  },
+  "epic_id": "fn-1-7ye",
+  "schema_version": 2,
+  "tasks": [
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.225468Z",
+        "depends_on": [],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.1",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.1.md",
+        "status": "todo",
+        "title": "Setup Unipile client and environment config",
+        "updated_at": "2026-01-27T19:22:38.173334Z"
+      },
+      "id": "fn-1-7ye.1",
+      "runtime": null,
+      "spec": "# fn-1-7ye.1 Setup Unipile client and environment config\n\n## Description\nSet up Unipile SDK client wrapper and environment configuration. This is the foundational task that enables all LinkedIn integration.\n\n**Size:** S\n**Files:**\n- `apps/web/lib/unipile/client.ts`\n- `apps/web/lib/db/schema.ts` (add processedWebhooks table)\n- `.env.example`\n\n## Approach\n\n- Install `unipile-node-sdk` package\n- Follow pattern from `/docs/unipile-integration.md:24-48` for client initialization\n- Use Zod for environment variable validation at startup\n- Add `processedWebhooks` table for webhook idempotency\n\n## Key Context\n\nThe Unipile SDK uses two credentials:\n- `UNIPILE_DSN` - The API endpoint URL\n- `UNIPILE_ACCESS_TOKEN` - API authentication token\n\nBoth MUST be server-side only (no `NEXT_PUBLIC_` prefix).\n## Acceptance\n- [ ] `unipile-node-sdk` installed in apps/web/package.json\n- [ ] `apps/web/lib/unipile/client.ts` exports configured UnipileClient\n- [ ] Environment variables validated at module load with Zod\n- [ ] `.env.example` contains UNIPILE_DSN, UNIPILE_ACCESS_TOKEN, UNIPILE_WEBHOOK_SECRET\n- [ ] `processedWebhooks` table added to schema.ts with eventId as primary key\n- [ ] Migration generated and applied\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.339726Z",
+        "depends_on": [
+          "fn-1-7ye.1"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.2",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.2.md",
+        "status": "todo",
+        "title": "Create auth link generation API endpoint",
+        "updated_at": "2026-01-27T19:22:53.794307Z"
+      },
+      "id": "fn-1-7ye.2",
+      "runtime": null,
+      "spec": "# fn-1-7ye.2 Create auth link generation API endpoint\n\n## Description\nCreate the API endpoint that generates Unipile OAuth authorization links. When called, it creates a hosted auth link tied to the current user.\n\n**Size:** S\n**Files:**\n- `apps/web/app/api/auth/unipile/connect/route.ts`\n- `apps/web/lib/unipile/auth.ts`\n\n## Approach\n\n- Follow pattern from `/docs/unipile-integration.md:80-97`\n- Use `auth()` from `@clerk/nextjs/server` for session validation\n- Pass Clerk `userId` in the `name` field for webhook correlation\n- Set `success_redirect_url` and `failure_redirect_url` using `NEXT_PUBLIC_APP_URL`\n- Return JSON with the auth URL\n\n## Key Context\n\nThe `name` field in `createHostedAuthLink` is critical - it's how we correlate webhooks back to users. Unipile returns this value in webhook payloads.\n## Acceptance\n- [ ] `POST /api/auth/unipile/connect` returns `{ url: string }` for authenticated users\n- [ ] Returns 401 for unauthenticated requests\n- [ ] Returns 500 with error message if Unipile client fails\n- [ ] Clerk userId passed in `name` field of auth link request\n- [ ] Auth link expires in 30 minutes\n- [ ] Structured log emitted on success with userId and expiresAt\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.448783Z",
+        "depends_on": [
+          "fn-1-7ye.1"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.3",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.3.md",
+        "status": "todo",
+        "title": "Implement webhook signature verification",
+        "updated_at": "2026-01-27T19:23:05.465516Z"
+      },
+      "id": "fn-1-7ye.3",
+      "runtime": null,
+      "spec": "# fn-1-7ye.3 Implement webhook signature verification\n\n## Description\nImplement webhook signature verification to ensure incoming webhooks are authentic. This is a security-critical component.\n\n**Size:** S\n**Files:**\n- `apps/web/lib/unipile/webhook-verify.ts`\n\n## Approach\n\n- Unipile uses custom header authentication (not HMAC)\n- When creating webhook in Unipile dashboard, set header: `X-Unipile-Signature: <secret>`\n- Verify this header matches `UNIPILE_WEBHOOK_SECRET` env var\n- Use `crypto.timingSafeEqual()` to prevent timing attacks\n- Return `{ valid: boolean, error?: string }`\n\n## Key Context\n\nUnlike Stripe/GitHub which use HMAC-SHA256, Unipile uses a simpler custom header approach. The secret is set when configuring the webhook in their dashboard. Still use timing-safe comparison to be security-conscious.\n## Acceptance\n- [ ] `verifyWebhookSignature(signature: string | null): { valid: boolean; error?: string }` exported\n- [ ] Uses `crypto.timingSafeEqual` for comparison\n- [ ] Returns `{ valid: false, error: \"Missing signature\" }` when header absent\n- [ ] Returns `{ valid: false, error: \"Invalid signature\" }` when mismatch\n- [ ] Returns `{ valid: true }` when signature matches secret\n- [ ] Handles different buffer lengths without throwing\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.562065Z",
+        "depends_on": [
+          "fn-1-7ye.3"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.4",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.4.md",
+        "status": "todo",
+        "title": "Create webhook endpoint with idempotent handlers",
+        "updated_at": "2026-01-27T19:23:22.582651Z"
+      },
+      "id": "fn-1-7ye.4",
+      "runtime": null,
+      "spec": "# fn-1-7ye.4 Create webhook endpoint with idempotent handlers\n\n## Description\nCreate the webhook endpoint that receives Unipile account events and updates user records. Must be idempotent to handle webhook replays.\n\n**Size:** M\n**Files:**\n- `apps/web/app/api/webhooks/unipile/route.ts`\n- `apps/web/lib/unipile/webhook-handlers.ts`\n\n## Approach\n\n- Follow pattern from `/docs/unipile-integration.md:117-157`\n- Verify signature first, return 401 if invalid\n- Generate event ID from payload hash for idempotency\n- Insert into `processedWebhooks` table before processing (unique constraint catches duplicates)\n- Handle events:\n  - `account.connected`: Set `unipileAccountId` and `linkedInConnectedAt` on user\n  - `account.disconnected`: Clear `unipileAccountId`, set `linkedInConnectedAt` to null\n- Return 200 even for unknown event types (log and ignore)\n- Return 500 on DB failures to trigger Unipile retry\n\n## Key Context\n\nUnipile provides `account_id` and `name` (our userId) in webhook payloads. The `name` field correlates to what we passed in `createHostedAuthLink`. Always return 200 for processed events to prevent infinite retries.\n## Acceptance\n- [ ] `POST /api/webhooks/unipile` accepts webhook payloads\n- [ ] Returns 401 for invalid/missing signature\n- [ ] Returns 200 for valid webhooks (even unknown event types)\n- [ ] `account.connected` event updates user with unipileAccountId and linkedInConnectedAt\n- [ ] `account.disconnected` event clears unipileAccountId and linkedInConnectedAt\n- [ ] Duplicate webhooks (same event ID) are idempotent (no error, no double-processing)\n- [ ] Unknown event types logged and acknowledged with 200\n- [ ] Structured logs for all received events with eventType, accountId, userId\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.670337Z",
+        "depends_on": [
+          "fn-1-7ye.1"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.5",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.5.md",
+        "status": "todo",
+        "title": "Create user connection status API endpoint",
+        "updated_at": "2026-01-27T19:23:39.511215Z"
+      },
+      "id": "fn-1-7ye.5",
+      "runtime": null,
+      "spec": "# fn-1-7ye.5 Create user connection status API endpoint\n\n## Description\nCreate an API endpoint for the UI to poll connection status. Used by the onboarding success page to detect when the webhook has been processed.\n\n**Size:** S\n**Files:**\n- `apps/web/app/api/user/status/route.ts`\n\n## Approach\n\n- GET endpoint, requires Clerk auth\n- Query user record from database\n- Return connection status derived from `unipileAccountId` presence\n- Include `linkedInConnectedAt` timestamp if connected\n\n## Key Context\n\nThis endpoint is polled every 2 seconds by the success page after OAuth redirect. Keep response small and fast.\n## Acceptance\n- [ ] `GET /api/user/status` returns connection status for authenticated user\n- [ ] Returns 401 for unauthenticated requests\n- [ ] Response includes `{ linkedInConnected: boolean, connectedAt: string | null }`\n- [ ] `linkedInConnected` is true when `unipileAccountId` is not null\n- [ ] Response cached with `Cache-Control: no-store` (always fresh)\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.774404Z",
+        "depends_on": [
+          "fn-1-7ye.5"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.6",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.6.md",
+        "status": "todo",
+        "title": "Build LinkedIn connection status component",
+        "updated_at": "2026-01-27T19:23:51.219384Z"
+      },
+      "id": "fn-1-7ye.6",
+      "runtime": null,
+      "spec": "# fn-1-7ye.6 Build LinkedIn connection status component\n\n## Description\nBuild a reusable React component that displays LinkedIn connection status. Used on the onboarding page and potentially the dashboard.\n\n**Size:** S\n**Files:**\n- `apps/web/components/linkedin-connection-status.tsx`\n\n## Approach\n\n- Client component with state machine: `idle | connecting | connected | disconnected | error`\n- Use status badge pattern from shadcn/ui\n- Green indicator for connected, gray for disconnected, yellow for connecting\n- Show \"Connected\" with timestamp, or \"Not connected\" with connect prompt\n- Accept `onConnect` callback prop for triggering connection flow\n\n## Key Context\n\nUse a state machine (discriminated union) rather than multiple boolean flags to prevent impossible states. Follow the badge pattern from research: Circle icon + label + appropriate color.\n## Acceptance\n- [ ] Component exported from `apps/web/components/linkedin-connection-status.tsx`\n- [ ] Displays appropriate state: idle, connecting, connected, disconnected, error\n- [ ] Connected state shows green indicator and \"Connected\" with timestamp\n- [ ] Disconnected state shows gray indicator and \"Not connected\"\n- [ ] Connecting state shows yellow indicator with loading animation\n- [ ] Error state shows red indicator with error message\n- [ ] Accepts `status` prop with type-safe state machine\n- [ ] Accepts optional `onConnect` callback for triggering connection\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:07.888855Z",
+        "depends_on": [
+          "fn-1-7ye.2",
+          "fn-1-7ye.4",
+          "fn-1-7ye.6"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.7",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.7.md",
+        "status": "todo",
+        "title": "Create onboarding page with Connect LinkedIn flow",
+        "updated_at": "2026-01-27T19:24:04.772843Z"
+      },
+      "id": "fn-1-7ye.7",
+      "runtime": null,
+      "spec": "# fn-1-7ye.7 Create onboarding page with Connect LinkedIn flow\n\n## Description\nCreate the onboarding page where users connect their LinkedIn account. This is the main user-facing deliverable of the epic.\n\n**Size:** M\n**Files:**\n- `apps/web/app/(dashboard)/onboarding/page.tsx`\n- `apps/web/app/(dashboard)/onboarding/success/page.tsx`\n- `apps/web/app/(dashboard)/onboarding/error/page.tsx`\n\n## Approach\n\n- Main page shows connection status component and \"Connect LinkedIn\" button\n- Button click: POST to `/api/auth/unipile/connect`, redirect to returned URL\n- Success page: poll `/api/user/status` every 2 seconds for up to 60 seconds\n- When connected detected, show success state with \"Continue\" button\n- Error page: show friendly error message with \"Try again\" button\n- All pages require Clerk auth (dashboard route group)\n\n## Key Context\n\nThe OAuth flow redirects user away from our app. When they return to success page, the webhook may not have been processed yet. Polling handles this race condition. 60 second timeout handles stuck states.\n## Acceptance\n- [ ] `/onboarding` page shows LinkedIn connection status\n- [ ] \"Connect LinkedIn\" button calls API and redirects to Unipile\n- [ ] `/onboarding/success` page polls for connection status\n- [ ] Success page shows \"Connected\" when webhook processed\n- [ ] Success page times out after 60 seconds with friendly message\n- [ ] `/onboarding/error` page shows error with retry option\n- [ ] All pages protected by Clerk auth\n- [ ] Loading states shown during API calls\n- [ ] Error states handled gracefully\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    },
+    {
+      "data": {
+        "assignee": null,
+        "claim_note": "",
+        "claimed_at": null,
+        "created_at": "2026-01-27T19:21:08.000596Z",
+        "depends_on": [
+          "fn-1-7ye.2",
+          "fn-1-7ye.4",
+          "fn-1-7ye.5"
+        ],
+        "epic": "fn-1-7ye",
+        "id": "fn-1-7ye.8",
+        "priority": null,
+        "spec_path": ".flow/tasks/fn-1-7ye.8.md",
+        "status": "todo",
+        "title": "Write integration tests for Unipile endpoints",
+        "updated_at": "2026-01-27T19:24:18.905439Z"
+      },
+      "id": "fn-1-7ye.8",
+      "runtime": null,
+      "spec": "# fn-1-7ye.8 Write integration tests for Unipile endpoints\n\n## Description\nWrite integration tests for the Unipile API endpoints. Focus on API route behavior, not Unipile SDK internals.\n\n**Size:** M\n**Files:**\n- `apps/web/__tests__/api/auth/unipile/connect.test.ts`\n- `apps/web/__tests__/api/webhooks/unipile.test.ts`\n- `apps/web/__tests__/api/user/status.test.ts`\n\n## Approach\n\n- Use Vitest for test runner (standard for Next.js)\n- Mock Unipile SDK responses\n- Mock Clerk auth for authenticated/unauthenticated scenarios\n- Test happy paths and error paths\n- Test webhook idempotency by sending duplicate events\n\n## Key Context\n\nFocus on testing the route handler logic, not the Unipile SDK itself. Mock external dependencies. Include edge cases: missing auth, invalid payload, duplicate webhook.\n## Acceptance\n- [ ] Tests for `POST /api/auth/unipile/connect`:\n  - Returns URL for authenticated user\n  - Returns 401 for unauthenticated user\n  - Returns 500 when Unipile fails\n- [ ] Tests for `POST /api/webhooks/unipile`:\n  - Returns 401 for invalid signature\n  - Handles account.connected event\n  - Handles account.disconnected event\n  - Ignores unknown event types with 200\n  - Duplicate webhook is idempotent\n- [ ] Tests for `GET /api/user/status`:\n  - Returns connected status when user has unipileAccountId\n  - Returns disconnected status when user has no unipileAccountId\n  - Returns 401 for unauthenticated user\n- [ ] All tests pass with `pnpm test`\n## Done summary\nTBD\n\n## Evidence\n- Commits:\n- Tests:\n- PRs:\n"
+    }
+  ]
+}

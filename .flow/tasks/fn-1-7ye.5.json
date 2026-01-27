@@ -1,0 +1,16 @@
+{
+  "assignee": null,
+  "claim_note": "",
+  "claimed_at": null,
+  "created_at": "2026-01-27T19:21:07.670337Z",
+  "depends_on": [
+    "fn-1-7ye.1"
+  ],
+  "epic": "fn-1-7ye",
+  "id": "fn-1-7ye.5",
+  "priority": null,
+  "spec_path": ".flow/tasks/fn-1-7ye.5.md",
+  "status": "todo",
+  "title": "Create user connection status API endpoint",
+  "updated_at": "2026-01-27T19:23:39.511215Z"
+}

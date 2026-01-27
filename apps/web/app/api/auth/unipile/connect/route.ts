@@ -34,25 +34,24 @@ export async function POST() {
         event: 'auth_link_generated',
         userId,
         timestamp: new Date().toISOString(),
-        ...(result.expiresAt && { expiresAt: result.expiresAt }),
+        expiresOn: result.expiresOn,
       })
     );
 
     return Response.json({ url: result.url });
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
     // Log error for debugging
     console.error(
       JSON.stringify({
         event: 'auth_link_generation_failed',
         userId,
         timestamp: new Date().toISOString(),
-        error: error instanceof Error ? error.message : String(error),
+        error: errorMessage,
       })
     );
 
-    return Response.json(
-      { error: 'Failed to generate auth link' },
-      { status: 500 }
-    );
+    return Response.json({ error: errorMessage }, { status: 500 });
   }
 }

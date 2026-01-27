@@ -12,6 +12,10 @@ node_modules/
 out/
 dist/
 build/
+*.tsbuildinfo
+
+# npm lockfiles (repo uses pnpm)
+apps/**/package-lock.json
 
 # IDE
 .idea/

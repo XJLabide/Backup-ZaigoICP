@@ -7,8 +7,11 @@
  * header matches our `UNIPILE_WEBHOOK_SECRET` environment variable.
  *
  * Uses timing-safe comparison to prevent timing attacks.
+ *
+ * @module server-only - This module uses Node.js crypto APIs
  */
 
+import 'server-only';
 import { timingSafeEqual } from 'crypto';
 
 /**
@@ -42,8 +45,8 @@ export function verifyWebhookSignature(signature: string | null): WebhookVerifyR
   // Get the expected secret from environment
   const secret = process.env.UNIPILE_WEBHOOK_SECRET;
   if (!secret) {
-    // Log this as an error condition - misconfiguration
-    console.error('UNIPILE_WEBHOOK_SECRET environment variable is not set');
+    // Server misconfiguration - return invalid without per-request logging
+    // to avoid log spam on public webhook endpoints
     return { valid: false, error: 'Invalid signature' };
   }
 
@@ -52,12 +55,8 @@ export function verifyWebhookSignature(signature: string | null): WebhookVerifyR
   const secretBuffer = Buffer.from(secret, 'utf-8');
 
   // timingSafeEqual requires buffers of equal length
-  // If lengths differ, signature is invalid, but we still need to
-  // perform a timing-safe comparison to avoid leaking length info
+  // If lengths differ, signature is invalid
   if (signatureBuffer.length !== secretBuffer.length) {
-    // Compare against the secret itself to maintain constant time
-    // This prevents timing attacks that could reveal the secret length
-    timingSafeEqual(secretBuffer, secretBuffer);
     return { valid: false, error: 'Invalid signature' };
   }
 

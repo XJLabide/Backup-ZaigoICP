@@ -5,7 +5,7 @@
   "base": "a2a74f01c88a3e36065d713319a5fd521552b3d2",
   "verdict": "NEEDS_WORK",
   "session_id": "019c011e-6e5f-7490-8316-8fdb646aaad7",
-  "timestamp": "2026-01-27T20:29:52.752531Z",
-  "review": "- **Severity**: Major  \n  **File:Line**: `apps/web/app/api/webhooks/unipile/route.ts:157`  \n  **Problem**: Idempotency \u201clock\u201d rows with `processedAt = null` can become permanent blockers. If the worker crashes after the insert, or if the delete on retriable failure fails, subsequent deliveries are treated as duplicates and never reprocessed. This causes silent event loss.  \n  **Suggestion**: Add recovery for stuck \u201cin-progress\u201d rows: include `createdAt`/`updatedAt` on `processed_webhooks` and, when `processedAt` is null and older than a timeout, delete or take over. Alternatively, use a transaction with `SELECT \u2026 FOR UPDATE` and a retryable status field.\n\n<verdict>NEEDS_WORK</verdict>\n",
+  "timestamp": "2026-01-27T20:32:56.070382Z",
+  "review": "- **Severity**: Major  \n  **File:Line**: `apps/web/lib/db/schema.ts:247`  \n  **Problem**: `processed_webhooks.created_at` is now required by the code path (used for stale-lock recovery), but there\u2019s no migration in the repo to add the column. If the DB isn\u2019t updated, the SELECT in the webhook path will error (\u201ccolumn does not exist\u201d), causing 500s and failed processing.  \n  **Suggestion**: Add and apply a migration to add `created_at` to `processed_webhooks`, or document/ensure `drizzle-kit push` runs before deploy.\n\n- **Severity**: Minor  \n  **File:Line**: `.flow/tasks/fn-1-7ye.4.md:15`  \n  **Problem**: Task doc still claims raw-body hashing is independent of JSON key ordering, which is no longer true (hash is byte-for-byte).  \n  **Suggestion**: Update the wording to \u201cbyte-for-byte identical payloads.\u201d\n\n<verdict>NEEDS_WORK</verdict>\n",
   "iteration": 2
 }

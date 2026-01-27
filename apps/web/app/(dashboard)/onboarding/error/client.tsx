@@ -139,11 +139,13 @@ export function ErrorClient() {
           <LinkedInConnectionStatus status={status} />
         </div>
 
-        <a href="/onboarding" style={{ textDecoration: 'none' }}>
-          <button type="button" style={buttonStyles}>
-            Try Again
-          </button>
-        </a>
+        <button
+          type="button"
+          style={buttonStyles}
+          onClick={() => { window.location.href = '/onboarding'; }}
+        >
+          Try Again
+        </button>
 
         <div style={helpTextStyles}>
           <div style={helpTitleStyles}>Troubleshooting tips:</div>

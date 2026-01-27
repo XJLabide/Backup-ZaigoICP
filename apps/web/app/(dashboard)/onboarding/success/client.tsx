@@ -141,11 +141,13 @@ export function SuccessClient() {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ state: 'connecting' });
   const pollCountRef = useRef(0);
   const startTimeRef = useRef(Date.now());
+  const isActiveRef = useRef(true);
 
   /**
    * Polls the user status API to check if the webhook has been processed.
+   * Returns 'connected', 'continue', or 'expired' based on the result.
    */
-  const checkStatus = useCallback(async () => {
+  const checkStatus = useCallback(async (): Promise<'connected' | 'continue' | 'expired'> => {
     try {
       const response = await fetch('/api/user/status', {
         method: 'GET',
@@ -154,27 +156,36 @@ export function SuccessClient() {
         },
       });
 
+      // Handle 401 (session expired) - redirect to sign-in
+      if (response.status === 401) {
+        console.error('Session expired during polling');
+        return 'expired';
+      }
+
       if (!response.ok) {
-        // Don't fail on API errors during polling - keep trying
+        // Don't fail on other API errors during polling - keep trying
         console.error('Status check failed:', response.status);
-        return false;
+        return 'continue';
       }
 
       const data = await response.json();
 
       if (data.linkedInConnected) {
-        setConnectionStatus({
-          state: 'connected',
-          connectedAt: data.connectedAt || new Date().toISOString(),
-        });
-        setPageState('connected');
-        return true;
+        // Guard against state updates after unmount
+        if (isActiveRef.current) {
+          setConnectionStatus({
+            state: 'connected',
+            connectedAt: data.connectedAt || new Date().toISOString(),
+          });
+          setPageState('connected');
+        }
+        return 'connected';
       }
 
-      return false;
+      return 'continue';
     } catch (error) {
       console.error('Status check error:', error);
-      return false;
+      return 'continue';
     }
   }, []);
 
@@ -184,33 +195,44 @@ export function SuccessClient() {
    */
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    let isActive = true;
+    isActiveRef.current = true;
 
     const poll = async () => {
-      if (!isActive) return;
+      if (!isActiveRef.current) return;
 
       const elapsed = Date.now() - startTimeRef.current;
 
       // Check for timeout
       if (elapsed >= TIMEOUT_MS) {
-        setPageState('timeout');
-        setConnectionStatus({ state: 'disconnected' });
+        if (isActiveRef.current) {
+          setPageState('timeout');
+          setConnectionStatus({ state: 'disconnected' });
+        }
         return;
       }
 
       pollCountRef.current += 1;
-      const isConnected = await checkStatus();
+      const result = await checkStatus();
 
-      if (!isConnected && isActive) {
+      if (!isActiveRef.current) return;
+
+      if (result === 'expired') {
+        // Session expired, redirect to sign-in
+        window.location.href = '/sign-in';
+        return;
+      }
+
+      if (result === 'continue') {
         timeoutId = setTimeout(poll, POLL_INTERVAL_MS);
       }
+      // 'connected' case: state already updated in checkStatus
     };
 
     // Start polling immediately
     poll();
 
     return () => {
-      isActive = false;
+      isActiveRef.current = false;
       clearTimeout(timeoutId);
     };
   }, [checkStatus]);
@@ -245,11 +267,13 @@ export function SuccessClient() {
             Refresh Page
           </button>
 
-          <a href="/onboarding" style={{ textDecoration: 'none' }}>
-            <button type="button" style={secondaryButtonStyles}>
-              Try Again
-            </button>
-          </a>
+          <button
+            type="button"
+            style={secondaryButtonStyles}
+            onClick={() => { window.location.href = '/onboarding'; }}
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );
@@ -284,11 +308,13 @@ export function SuccessClient() {
             <LinkedInConnectionStatus status={connectionStatus} />
           </div>
 
-          <a href="/dashboard" style={{ textDecoration: 'none' }}>
-            <button type="button" style={buttonStyles}>
-              Continue to Dashboard
-            </button>
-          </a>
+          <button
+            type="button"
+            style={buttonStyles}
+            onClick={() => { window.location.href = '/dashboard'; }}
+          >
+            Continue to Dashboard
+          </button>
         </div>
       </div>
     );

@@ -153,8 +153,10 @@ export function OnboardingClient({
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to generate auth link');
+        // Log detailed error server-side, show generic message to user
+        const data = await response.json().catch(() => ({}));
+        console.error('Auth link generation failed:', data.error);
+        throw new Error('Unable to start LinkedIn connection. Please try again.');
       }
 
       const data = await response.json();
@@ -200,11 +202,13 @@ export function OnboardingClient({
             <div style={statusContainerStyles}>
               <LinkedInConnectionStatus status={status} />
             </div>
-            <a href="/dashboard" style={{ textDecoration: 'none' }}>
-              <button type="button" style={continueButtonStyles}>
-                Continue to Dashboard
-              </button>
-            </a>
+            <button
+              type="button"
+              style={continueButtonStyles}
+              onClick={() => { window.location.href = '/dashboard'; }}
+            >
+              Continue to Dashboard
+            </button>
           </div>
         </div>
       </div>

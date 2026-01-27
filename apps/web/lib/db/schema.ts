@@ -49,6 +49,13 @@ export const users = pgTable('users', {
   email: text('email').notNull(),
   name: text('name'),
   calendarLink: text('calendar_link'),
+  unipileAccountId: text('unipile_account_id').unique(),
+  linkedInProfileUrl: text('linkedin_profile_url'),
+  linkedInConnectedAt: timestamp('linkedin_connected_at'),
+  dailyLimit: integer('daily_limit').default(25),
+  timezone: text('timezone').default('America/Los_Angeles'),
+  lastSyncAt: timestamp('last_sync_at'),
+  lastSyncError: text('last_sync_error'),
 
   // Unipile LinkedIn connection
   unipileAccountId: text('unipile_account_id').unique(),
@@ -83,6 +90,9 @@ export const campaigns = pgTable('campaigns', {
   tone: toneEnum('tone').notNull().default('professional'),
   cta: ctaEnum('cta').notNull().default('reply'),
   calendarLink: text('calendar_link'),
+  qualificationRules: text('qualification_rules'),
+  autoApprove: boolean('auto_approve').default(false),
+  isActive: boolean('is_active').default(true),
 
   // Qualification rules (JSON as text)
   qualificationRules: text('qualification_rules'),
@@ -116,6 +126,8 @@ export const leads = pgTable(
     campaignId: text('campaign_id').references(() => campaigns.id, {
       onDelete: 'set null',
     }),
+    linkedInId: text('linkedin_id').notNull(),
+    profileUrl: text('profile_url').notNull(),
 
     // LinkedIn identity
     linkedInId: text('linkedin_id').notNull(),
@@ -129,6 +141,23 @@ export const leads = pgTable(
     company: text('company'),
     location: text('location'),
     profileImageUrl: text('profile_image_url'),
+    about: text('about'),
+    recentPost: text('recent_post'),
+    mutualConnections: integer('mutual_connections'),
+    source: leadSourceEnum('source').notNull().default('profile_viewer'),
+    status: leadStatusEnum('status').notNull().default('new'),
+    viewedAt: timestamp('viewed_at'),
+    enrichedAt: timestamp('enriched_at'),
+    connectionAcceptedAt: timestamp('connection_accepted_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex('leads_user_linkedin_unique').on(table.userId, table.linkedInId),
+    index('leads_user_id_idx').on(table.userId),
+    index('leads_status_idx').on(table.status),
+    index('leads_campaign_id_idx').on(table.campaignId),
+  ]
 
     // Enrichment data
     about: text('about'),
@@ -176,6 +205,11 @@ export const actions = pgTable(
     campaignId: text('campaign_id')
       .notNull()
       .references(() => campaigns.id, { onDelete: 'cascade' }),
+    type: text('type').notNull().default('connection_request'),
+    message: text('message').notNull(),
+    qualityScore: integer('quality_score'),
+    usedSignals: text('used_signals'),
+    generatedAt: timestamp('generated_at'),
 
     // Action details
     type: text('type').notNull().default('connection_request'),
@@ -191,6 +225,18 @@ export const actions = pgTable(
     approvedAt: timestamp('approved_at'),
     rejectedAt: timestamp('rejected_at'),
     sentAt: timestamp('sent_at'),
+    unipileRequestId: text('unipile_request_id'),
+    error: text('error'),
+    retryCount: integer('retry_count').default(0),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => [
+    index('actions_user_id_idx').on(table.userId),
+    index('actions_status_idx').on(table.status),
+    index('actions_lead_id_idx').on(table.leadId),
+    index('actions_sent_at_idx').on(table.sentAt),
+  ]
 
     // Unipile tracking
     unipileRequestId: text('unipile_request_id'),
@@ -221,6 +267,19 @@ export const webhookEvents = pgTable(
       .$defaultFn(() => crypto.randomUUID()),
     userId: text('user_id').references(() => users.id, { onDelete: 'set null' }),
     unipileAccountId: text('unipile_account_id'),
+    source: text('source').notNull(),
+    eventType: text('event_type').notNull(),
+    payload: text('payload').notNull(),
+    processedAt: timestamp('processed_at'),
+    error: text('error'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => [
+    index('webhook_events_account_id_idx').on(table.unipileAccountId),
+    index('webhook_events_created_at_idx').on(table.createdAt),
+  ]
+);
+
 
     // Event details
     source: text('source').notNull(),

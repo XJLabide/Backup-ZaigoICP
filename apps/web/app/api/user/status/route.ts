@@ -26,7 +26,6 @@ interface UserStatusResponse {
  *
  * @returns JSON with { linkedInConnected: boolean, connectedAt: string | null }
  * @returns 401 for unauthenticated requests
- * @returns 404 if user record not found in database
  * @returns 500 for database errors
  */
 export async function GET() {

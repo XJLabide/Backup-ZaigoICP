@@ -24,9 +24,8 @@ This endpoint is polled every 2 seconds by the success page after OAuth redirect
 - [ ] `linkedInConnected` is true when `unipileAccountId` is not null
 - [ ] Response cached with `Cache-Control: no-store` (always fresh)
 ## Done summary
-TBD
-
+Implemented GET /api/user/status endpoint that returns LinkedIn connection status for authenticated users. The endpoint queries the user's unipileAccountId to determine connection state and includes linkedInConnectedAt timestamp when connected, with Cache-Control: no-store for fresh polling responses.
 ## Evidence
-- Commits:
+- Commits: 863937fb2fc8c112c3a6db6f9fc96e98035c2141
 - Tests:
 - PRs:

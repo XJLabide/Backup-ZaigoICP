@@ -38,9 +38,8 @@ Raw body hashing ensures idempotency even if Unipile doesn't provide a unique ev
 - [ ] Structured logs for all received events with eventType, accountId, userId
 
 ## Done summary
-TBD
-
+Implemented webhook endpoint at POST /api/webhooks/unipile with idempotent handlers. The endpoint verifies X-Unipile-Signature headers, computes SHA256 event IDs from raw request bodies, stores processed events in the processedWebhooks table for deduplication, and dispatches to handlers for account.connected and account.disconnected events.
 ## Evidence
 - Commits:
-- Tests:
+- Tests: npx tsc --noEmit
 - PRs:

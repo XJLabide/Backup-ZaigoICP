@@ -34,3 +34,6 @@ export type {
   LeadQualifiedEvent,
   MessageGeneratedEvent,
 } from "./client";
+
+// Inngest functions
+export { generateMessageFunction } from "./functions/generate-message";

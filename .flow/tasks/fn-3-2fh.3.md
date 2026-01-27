@@ -29,9 +29,8 @@ Reference: `apps/web/app/api/health/route.ts` for route pattern
 - [ ] Route accessible at http://localhost:3000/api/inngest
 - [ ] Inngest dev server can connect (`npx inngest-cli@latest dev`)
 ## Done summary
-TBD
-
+Created Inngest serve API route at /api/inngest with GET, POST, PUT handlers. The route imports the Inngest client and prepares an empty functions array for future generate-message function.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 13c1708ba7c9089b82b6854d62037993a0ca9581
+- Tests: pnpm test
 - PRs:

@@ -30,9 +30,8 @@ Reference: https://www.inngest.com/docs/typescript
 - [ ] TypeScript types are correct (no any types)
 - [ ] Exports work via `lib/inngest/index.ts`
 ## Done summary
-TBD
-
+Created typed Inngest client with event schemas for lead/qualified and message/generated events. Client exports via barrel file with full TypeScript type safety.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: b1a99005cfb7f994d1efd3597750523e249bc374
+- Tests: npx tsc --noEmit lib/inngest/client.ts lib/inngest/index.ts
 - PRs:

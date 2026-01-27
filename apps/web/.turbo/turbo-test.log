@@ -5,99 +5,159 @@
 
 [1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/home/natty/linkedin-automation/apps/web[39m
 
+ [32m✓[39m __tests__/lib/unipile/webhook-verify.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/auth.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/client.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 62[2mms[22m[39m
 [90mstderr[2m | __tests__/api/user/status.test.ts[2m > [22m[2mGET /api/user/status[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors
-[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T21:45:38.307Z","error":"Connection refused"}
-
-[90mstdout[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns URL for authenticated user
-[22m[39m{"event":"auth_link_generated","userId":"user_123","timestamp":"2026-01-27T21:45:38.289Z","expiresOn":"2026-01-27T22:15:38.289Z"}
+[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T23:21:09.962Z","error":"Connection refused"}
 
 [90mstderr[2m | __tests__/api/user/status.test.ts[2m > [22m[2mGET /api/user/status[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
-[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T21:45:38.309Z","error":"String error"}
+[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T23:21:09.964Z","error":"String error"}
 
- [32m✓[39m __tests__/api/user/status.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 55[2mms[22m[39m
+[90mstdout[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns URL for authenticated user
+[22m[39m{"event":"auth_link_generated","userId":"user_123","timestamp":"2026-01-27T23:21:09.935Z","expiresOn":"2026-01-27T23:51:09.934Z"}
+
+ [32m✓[39m __tests__/api/user/status.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 67[2mms[22m[39m
 [90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns 500 when Unipile fails
-[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T21:45:38.314Z","error":"Unipile API connection failed"}
+[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T23:21:09.969Z","error":"Unipile API connection failed"}
 
 [90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mhandles non-Error exceptions from Unipile
-[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T21:45:38.315Z","error":"String error"}
+[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T23:21:09.970Z","error":"String error"}
 
- [32m✓[39m __tests__/api/auth/unipile/connect.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m __tests__/api/auth/unipile/connect.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+[90mstderr[2m | __tests__/api/health/route.test.ts[2m > [22m[2mGET /api/health[2m > [22m[2mDatabase failures[2m > [22m[2mreturns error status when database fails
+[22m[39mHealth check failed: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/health/route.test.ts:68:40
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/health/route.test.ts[2m > [22m[2mGET /api/health[2m > [22m[2mDatabase failures[2m > [22m[2mhandles non-Error exceptions
+[22m[39mHealth check failed: String error
+
+[90mstderr[2m | __tests__/api/health/route.test.ts[2m > [22m[2mGET /api/health[2m > [22m[2mDatabase failures[2m > [22m[2mhandles timeout errors
+[22m[39mHealth check failed: Error: Query timeout
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/health/route.test.ts:99:40
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+ [32m✓[39m __tests__/api/health/route.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 18[2mms[22m[39m
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for invalid signature
-[22m[39m{"event":"webhook_signature_invalid","error":"Invalid signature","timestamp":"2026-01-27T21:45:38.328Z"}
+[22m[39m{"event":"webhook_signature_invalid","error":"Invalid signature","timestamp":"2026-01-27T23:21:09.991Z"}
+
+[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mGET /api/me[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors
+[22m[39mError syncing user: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/me/route.test.ts:318:54
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mGET /api/me[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
+[22m[39mError syncing user: String error
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for missing signature
-[22m[39m{"event":"webhook_signature_invalid","error":"Missing signature","timestamp":"2026-01-27T21:45:38.332Z"}
+[22m[39m{"event":"webhook_signature_invalid","error":"Missing signature","timestamp":"2026-01-27T23:21:09.999Z"}
+
+ [32m✓[39m __tests__/api/me/route.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.001Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.333Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
-[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.334Z"}
+[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.001Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
-[22m[39m{"event":"webhook_received","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T21:45:38.335Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T23:21:10.004Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
-[22m[39m{"event":"webhook_processed","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T21:45:38.335Z"}
+[22m[39m{"event":"webhook_processed","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T23:21:10.006Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
-[22m[39m{"event":"webhook_received","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T21:45:38.337Z"}
+[22m[39m{"event":"webhook_received","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T23:21:10.009Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
-[22m[39m{"event":"webhook_processed","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T21:45:38.337Z"}
+[22m[39m{"event":"webhook_processed","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T23:21:10.010Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.338Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.013Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.338Z"}
+[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.014Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.339Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.016Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_duplicate","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","wasProcessed":true,"timestamp":"2026-01-27T21:45:38.339Z"}
+[22m[39m{"event":"webhook_duplicate","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","wasProcessed":true,"timestamp":"2026-01-27T23:21:10.016Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.340Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.019Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
-[22m[39m{"event":"webhook_in_progress","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.340Z"}
+[22m[39m{"event":"webhook_in_progress","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.019Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles invalid JSON gracefully
-[22m[39m{"event":"webhook_parse_error","eventId":"mock-hash-abc123","timestamp":"2026-01-27T21:45:38.340Z"}
+[22m[39m{"event":"webhook_parse_error","eventId":"mock-hash-abc123","timestamp":"2026-01-27T23:21:10.021Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles non-object payload gracefully
-[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"string","timestamp":"2026-01-27T21:45:38.342Z"}
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"string","timestamp":"2026-01-27T23:21:10.024Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles null payload gracefully
-[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"null","timestamp":"2026-01-27T21:45:38.343Z"}
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"null","timestamp":"2026-01-27T23:21:10.027Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles array payload gracefully
-[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"array","timestamp":"2026-01-27T21:45:38.344Z"}
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"array","timestamp":"2026-01-27T23:21:10.030Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.345Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.031Z"}
 
 [90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
-[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"Database connection failed","retriable":true,"timestamp":"2026-01-27T21:45:38.345Z"}
+[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"Database connection failed","retriable":true,"timestamp":"2026-01-27T23:21:10.031Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.346Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.033Z"}
 
 [90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
-[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"User not found: user_123","retriable":false,"timestamp":"2026-01-27T21:45:38.346Z"}
+[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"User not found: user_123","retriable":false,"timestamp":"2026-01-27T23:21:10.033Z"}
 
 [90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.347Z"}
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.034Z"}
 
 [90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
-[22m[39m{"event":"webhook_db_error","eventType":"account.connected","eventId":"mock-hash-abc123","error":"Connection refused","timestamp":"2026-01-27T21:45:38.347Z"}
+[22m[39m{"event":"webhook_db_error","eventType":"account.connected","eventId":"mock-hash-abc123","error":"Connection refused","timestamp":"2026-01-27T23:21:10.034Z"}
 
- [32m✓[39m __tests__/api/webhooks/unipile.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m __tests__/api/webhooks/unipile.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/webhook-handlers.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+[90mstderr[2m | __tests__/components/onboarding/client.test.tsx[2m > [22m[2mOnboardingClient[2m > [22m[2mConnect flow[2m > [22m[2mshows error state when API returns error
+[22m[39mAuth link generation failed: Rate limit exceeded
 
-[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
-[2m      Tests [22m [1m[32m25 passed[39m[22m[90m (25)[39m
-[2m   Start at [22m 05:45:38
-[2m   Duration [22m 334ms[2m (transform 293ms, setup 94ms, import 309ms, tests 129ms, environment 0ms)[22m
+[90mstderr[2m | __tests__/components/onboarding/success-client.test.tsx[2m > [22m[2mSuccessClient[2m > [22m[2mSession expiry handling[2m > [22m[2mhandles 401 response gracefully
+[22m[39mSession expired during polling
+
+ [32m✓[39m __tests__/components/linkedin-connection-status.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 338[2mms[22m[39m
+ [32m✓[39m __tests__/components/onboarding/success-client.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 363[2mms[22m[39m
+ [32m✓[39m __tests__/components/onboarding/client.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 396[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m      Tests [22m [1m[32m110 passed[39m[22m[90m (110)[39m
+[2m   Start at [22m 07:21:09
+[2m   Duration [22m 1.61s[2m (transform 1.71s, setup 1.66s, import 2.34s, tests 1.44s, environment 2.22s)[22m
 

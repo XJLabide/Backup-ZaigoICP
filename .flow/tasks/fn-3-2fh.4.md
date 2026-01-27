@@ -35,9 +35,8 @@ Reference patterns:
 - [ ] Returns created campaign with 201 status
 - [ ] Integration test covers happy path and error cases
 ## Done summary
-TBD
-
+Created POST /api/campaigns endpoint with Zod validation, Clerk authentication, and comprehensive integration tests covering 13 test cases for happy path and error scenarios.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: 662370634cb48280bb8bca0646cb4f60a813f5d8
+- Tests: pnpm vitest run campaigns
 - PRs:

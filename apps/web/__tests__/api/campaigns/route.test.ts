@@ -1,7 +1,16 @@
 /**
- * Integration tests for POST /api/campaigns
+ * Integration tests for GET and POST /api/campaigns
  *
- * Tests campaign creation endpoint behavior:
+ * Tests campaign endpoints behavior:
+ * GET:
+ * - Lists campaigns for authenticated user
+ * - Returns 401 for unauthenticated requests
+ * - Supports pagination (page, limit query params)
+ * - Returns total count for pagination UI
+ * - Orders campaigns by createdAt desc
+ * - Only returns campaigns owned by authenticated user
+ *
+ * POST:
  * - Creates campaign with minimal required fields
  * - Creates campaign with all optional fields
  * - Returns 401 for unauthenticated requests
@@ -16,11 +25,22 @@ vi.mock('@clerk/nextjs/server', () => ({
   auth: vi.fn(),
 }));
 
+// Mock drizzle-orm
+vi.mock('drizzle-orm', () => ({
+  eq: vi.fn((field, value) => ({ field, value, type: 'eq' })),
+  desc: vi.fn((field) => ({ field, type: 'desc' })),
+  sql: vi.fn((strings: TemplateStringsArray) => ({
+    sql: strings.join(''),
+    type: 'sql',
+  })),
+}));
+
 // Mock @/lib/db
 vi.mock('@/lib/db', () => {
   const mockDbModule = {
     db: {
       insert: vi.fn(),
+      select: vi.fn(),
     },
     campaigns: {
       id: 'id',
@@ -31,6 +51,7 @@ vi.mock('@/lib/db', () => {
       calendarLink: 'calendar_link',
       qualificationRules: 'qualification_rules',
       autoApprove: 'auto_approve',
+      createdAt: 'created_at',
     },
   };
   return mockDbModule;
@@ -38,7 +59,7 @@ vi.mock('@/lib/db', () => {
 
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
-import { POST } from '@/app/api/campaigns/route';
+import { GET, POST } from '@/app/api/campaigns/route';
 
 const mockAuth = vi.mocked(auth);
 const mockDb = vi.mocked(db);
@@ -70,13 +91,30 @@ function createMockAuthResponse(userId: string | null) {
 }
 
 /**
- * Helper to create a mock request with JSON body
+ * Helper to create a mock POST request with JSON body
  */
-function createMockRequest(body: unknown): Request {
+function createMockPostRequest(body: unknown): Request {
   return new Request('http://localhost:3000/api/campaigns', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+  });
+}
+
+/**
+ * Helper to create a mock GET request with optional query params
+ */
+function createMockGetRequest(
+  params?: Record<string, string | number>
+): Request {
+  const url = new URL('http://localhost:3000/api/campaigns');
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.set(key, String(value));
+    });
+  }
+  return new Request(url.toString(), {
+    method: 'GET',
   });
 }
 
@@ -100,6 +138,78 @@ function setupDbInsertFailure(error: Error) {
       returning: vi.fn().mockRejectedValue(error),
     }),
   } as unknown as ReturnType<typeof mockDb.insert>);
+}
+
+/**
+ * Helper to set up mock db for select (list) with count
+ */
+function setupDbSelectSuccess(
+  campaignsList: Record<string, unknown>[],
+  totalCount: number
+) {
+  // Track call order to return count first, then campaigns
+  let selectCallCount = 0;
+
+  mockDb.select.mockImplementation(() => {
+    selectCallCount++;
+    const currentCall = selectCallCount;
+
+    return {
+      from: vi.fn().mockReturnValue({
+        where: vi.fn().mockImplementation(() => {
+          // First call is for count
+          if (currentCall === 1) {
+            return Promise.resolve([{ count: totalCount }]);
+          }
+          // Second call is for campaigns (returns chainable)
+          return {
+            orderBy: vi.fn().mockReturnValue({
+              limit: vi.fn().mockReturnValue({
+                offset: vi.fn().mockResolvedValue(campaignsList),
+              }),
+            }),
+          };
+        }),
+      }),
+    } as unknown as ReturnType<typeof mockDb.select>;
+  });
+}
+
+/**
+ * Helper to set up mock db for select failure
+ */
+function setupDbSelectFailure(error: Error) {
+  mockDb.select.mockReturnValue({
+    from: vi.fn().mockReturnValue({
+      where: vi.fn().mockRejectedValue(error),
+    }),
+  } as unknown as ReturnType<typeof mockDb.select>);
+}
+
+/**
+ * Helper to create a mock campaign object
+ */
+function createMockCampaign(
+  overrides: Partial<Record<string, unknown>> = {}
+): Record<string, unknown> {
+  return {
+    id: 'campaign_123',
+    userId: 'user_123',
+    name: 'Test Campaign',
+    tone: 'professional',
+    cta: 'reply',
+    calendarLink: null,
+    qualificationRules: null,
+    autoApprove: false,
+    isActive: true,
+    totalLeads: 0,
+    totalSent: 0,
+    totalAccepted: 0,
+    totalReplied: 0,
+    createdAt: new Date('2024-01-15T12:00:00Z'),
+    updatedAt: new Date('2024-01-15T12:00:00Z'),
+    ...overrides,
+  };
 }
 
 describe('POST /api/campaigns', () => {
@@ -132,7 +242,7 @@ describe('POST /api/campaigns', () => {
       });
 
       // Execute
-      const request = createMockRequest({ name: 'My Campaign' });
+      const request = createMockPostRequest({ name: 'My Campaign' });
       const response = await POST(request);
       const data = await response.json();
 
@@ -171,7 +281,7 @@ describe('POST /api/campaigns', () => {
       });
 
       // Execute
-      const request = createMockRequest({
+      const request = createMockPostRequest({
         name: 'Full Campaign',
         tone: 'friendly',
         cta: 'book_call',
@@ -215,7 +325,7 @@ describe('POST /api/campaigns', () => {
       });
 
       // Execute
-      const request = createMockRequest({
+      const request = createMockPostRequest({
         name: 'Campaign No Link',
         calendarLink: null,
       });
@@ -234,7 +344,7 @@ describe('POST /api/campaigns', () => {
       mockAuth.mockResolvedValue(createMockAuthResponse(null) as never);
 
       // Execute
-      const request = createMockRequest({ name: 'Test Campaign' });
+      const request = createMockPostRequest({ name: 'Test Campaign' });
       const response = await POST(request);
       const data = await response.json();
 
@@ -252,7 +362,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 when name is missing', async () => {
       // Execute
-      const request = createMockRequest({});
+      const request = createMockPostRequest({});
       const response = await POST(request);
       const data = await response.json();
 
@@ -264,7 +374,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 when name is empty string', async () => {
       // Execute
-      const request = createMockRequest({ name: '' });
+      const request = createMockPostRequest({ name: '' });
       const response = await POST(request);
       const data = await response.json();
 
@@ -276,7 +386,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 for invalid tone enum value', async () => {
       // Execute
-      const request = createMockRequest({ name: 'Test', tone: 'aggressive' });
+      const request = createMockPostRequest({ name: 'Test', tone: 'aggressive' });
       const response = await POST(request);
       const data = await response.json();
 
@@ -288,7 +398,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 for invalid cta enum value', async () => {
       // Execute
-      const request = createMockRequest({ name: 'Test', cta: 'buy_now' });
+      const request = createMockPostRequest({ name: 'Test', cta: 'buy_now' });
       const response = await POST(request);
       const data = await response.json();
 
@@ -300,7 +410,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 for invalid calendarLink URL', async () => {
       // Execute
-      const request = createMockRequest({
+      const request = createMockPostRequest({
         name: 'Test',
         calendarLink: 'not-a-url',
       });
@@ -315,7 +425,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 for invalid qualificationRules JSON', async () => {
       // Execute
-      const request = createMockRequest({
+      const request = createMockPostRequest({
         name: 'Test',
         qualificationRules: 'not valid json',
       });
@@ -330,7 +440,7 @@ describe('POST /api/campaigns', () => {
 
     it('returns 400 for invalid autoApprove type', async () => {
       // Execute
-      const request = createMockRequest({
+      const request = createMockPostRequest({
         name: 'Test',
         autoApprove: 'yes',
       });
@@ -351,7 +461,7 @@ describe('POST /api/campaigns', () => {
       setupDbInsertFailure(new Error('Connection refused'));
 
       // Execute
-      const request = createMockRequest({ name: 'Test Campaign' });
+      const request = createMockPostRequest({ name: 'Test Campaign' });
       const response = await POST(request);
       const data = await response.json();
 
@@ -370,13 +480,259 @@ describe('POST /api/campaigns', () => {
       } as unknown as ReturnType<typeof mockDb.insert>);
 
       // Execute
-      const request = createMockRequest({ name: 'Test Campaign' });
+      const request = createMockPostRequest({ name: 'Test Campaign' });
       const response = await POST(request);
       const data = await response.json();
 
       // Assert
       expect(response.status).toBe(500);
       expect(data).toEqual({ error: 'Failed to create campaign' });
+    });
+  });
+});
+
+describe('GET /api/campaigns', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Authenticated requests - Happy path', () => {
+    it('returns campaigns for authenticated user with default pagination', async () => {
+      // Setup
+      const userId = 'user_123';
+      mockAuth.mockResolvedValue(createMockAuthResponse(userId) as never);
+      const campaigns = [
+        createMockCampaign({ id: 'campaign_1', name: 'First Campaign' }),
+        createMockCampaign({ id: 'campaign_2', name: 'Second Campaign' }),
+      ];
+      setupDbSelectSuccess(campaigns, 2);
+
+      // Execute
+      const request = createMockGetRequest();
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.campaigns).toHaveLength(2);
+      expect(data.pagination).toEqual({
+        page: 1,
+        limit: 10,
+        total: 2,
+        totalPages: 1,
+      });
+    });
+
+    it('returns empty array when user has no campaigns', async () => {
+      // Setup
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
+      setupDbSelectSuccess([], 0);
+
+      // Execute
+      const request = createMockGetRequest();
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.campaigns).toHaveLength(0);
+      expect(data.pagination).toEqual({
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 0,
+      });
+    });
+
+    it('returns campaigns with stats from denormalized fields', async () => {
+      // Setup
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
+      const campaigns = [
+        createMockCampaign({
+          id: 'campaign_1',
+          totalLeads: 50,
+          totalSent: 30,
+          totalAccepted: 15,
+          totalReplied: 5,
+        }),
+      ];
+      setupDbSelectSuccess(campaigns, 1);
+
+      // Execute
+      const request = createMockGetRequest();
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.campaigns[0].totalLeads).toBe(50);
+      expect(data.campaigns[0].totalSent).toBe(30);
+      expect(data.campaigns[0].totalAccepted).toBe(15);
+      expect(data.campaigns[0].totalReplied).toBe(5);
+    });
+  });
+
+  describe('Pagination', () => {
+    beforeEach(() => {
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
+    });
+
+    it('respects page query parameter', async () => {
+      // Setup
+      const campaigns = [
+        createMockCampaign({ id: 'campaign_11', name: 'Campaign 11' }),
+      ];
+      setupDbSelectSuccess(campaigns, 25);
+
+      // Execute
+      const request = createMockGetRequest({ page: 2 });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.page).toBe(2);
+      expect(data.pagination.total).toBe(25);
+      expect(data.pagination.totalPages).toBe(3);
+    });
+
+    it('respects limit query parameter', async () => {
+      // Setup
+      const campaigns = [
+        createMockCampaign({ id: 'campaign_1' }),
+        createMockCampaign({ id: 'campaign_2' }),
+        createMockCampaign({ id: 'campaign_3' }),
+        createMockCampaign({ id: 'campaign_4' }),
+        createMockCampaign({ id: 'campaign_5' }),
+      ];
+      setupDbSelectSuccess(campaigns, 25);
+
+      // Execute
+      const request = createMockGetRequest({ limit: 5 });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.limit).toBe(5);
+      expect(data.pagination.totalPages).toBe(5);
+    });
+
+    it('caps limit at maximum of 50', async () => {
+      // Setup
+      setupDbSelectSuccess([], 0);
+
+      // Execute
+      const request = createMockGetRequest({ limit: 100 });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.limit).toBe(50);
+    });
+
+    it('uses default values for invalid page parameter', async () => {
+      // Setup
+      setupDbSelectSuccess([], 0);
+
+      // Execute
+      const request = createMockGetRequest({ page: 'invalid' });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.page).toBe(1);
+    });
+
+    it('uses default values for invalid limit parameter', async () => {
+      // Setup
+      setupDbSelectSuccess([], 0);
+
+      // Execute
+      const request = createMockGetRequest({ limit: 'invalid' });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.limit).toBe(10);
+    });
+
+    it('uses default values for negative page parameter', async () => {
+      // Setup
+      setupDbSelectSuccess([], 0);
+
+      // Execute
+      const request = createMockGetRequest({ page: -5 });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.page).toBe(1);
+    });
+
+    it('uses default values for zero limit parameter', async () => {
+      // Setup
+      setupDbSelectSuccess([], 0);
+
+      // Execute
+      const request = createMockGetRequest({ limit: 0 });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(data.pagination.limit).toBe(10);
+    });
+
+    it('calculates totalPages correctly', async () => {
+      // Setup - 23 campaigns with limit 10 should give 3 pages
+      setupDbSelectSuccess([], 23);
+
+      // Execute
+      const request = createMockGetRequest({ limit: 10 });
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(data.pagination.totalPages).toBe(3);
+    });
+  });
+
+  describe('Unauthenticated requests', () => {
+    it('returns 401 for unauthenticated user', async () => {
+      // Setup: no authenticated user
+      mockAuth.mockResolvedValue(createMockAuthResponse(null) as never);
+
+      // Execute
+      const request = createMockGetRequest();
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(401);
+      expect(data).toEqual({ error: 'Unauthorized' });
+      expect(mockDb.select).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Database errors', () => {
+    it('returns 500 for database query errors', async () => {
+      // Setup
+      mockAuth.mockResolvedValue(createMockAuthResponse('user_123') as never);
+      setupDbSelectFailure(new Error('Connection refused'));
+
+      // Execute
+      const request = createMockGetRequest();
+      const response = await GET(request);
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(500);
+      expect(data).toEqual({ error: 'Failed to list campaigns' });
     });
   });
 });

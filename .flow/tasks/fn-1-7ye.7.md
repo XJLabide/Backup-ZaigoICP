@@ -33,8 +33,7 @@ The OAuth flow redirects user away from our app. When they return to success pag
 - [ ] Error states handled gracefully
 ## Done summary
 Created the onboarding page with LinkedIn connection flow including main page with connection status and Connect button, success page with 2-second polling for webhook confirmation (60s timeout), and error page with retry option. All pages use Clerk auth and handle loading/error states gracefully. Fixed code review issues: generic error messages, accessibility improvements for buttons, state update guards, and 401 handling.
-
 ## Evidence
-- Commits: 45d3ed1, 773c30b, a7411ff
+- Commits: 45d3ed1, 773c30b, a7411ff, 1018d2b
 - Tests: pnpm --filter web exec tsc --noEmit
 - PRs:

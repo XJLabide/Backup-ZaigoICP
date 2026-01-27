@@ -29,9 +29,8 @@ Unlike Stripe/GitHub which use HMAC-SHA256 over the payload, Unipile uses a simp
 - [ ] Handles different buffer lengths without throwing
 
 ## Done summary
-TBD
-
+Implemented webhook signature verification using timing-safe comparison with crypto.timingSafeEqual. Added server-only import to prevent client-side usage. Returns structured result with valid boolean and error message for missing/invalid signatures.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: feb6aba, 0836d19
+- Tests: pnpm exec tsc --noEmit -p apps/web/tsconfig.json
 - PRs:

@@ -12,13 +12,14 @@ Create the webhook endpoint that receives Unipile account events and updates use
 
 - Follow pattern from `/docs/unipile-integration.md:117-157`
 - Verify signature first, return 401 if invalid
-- **Event ID derivation**: Compute SHA256 hash of the raw webhook body (before JSON parsing) to generate a stable, deterministic event ID. This ensures identical payloads produce identical IDs regardless of JSON key ordering.
-- Insert into `processedWebhooks` table before processing (unique constraint catches duplicates)
+- **Event ID derivation**: Compute SHA256 hash of the raw webhook body bytes (before JSON parsing) to generate a stable event ID. Byte-for-byte identical payloads produce identical IDs; different JSON serialization/ordering produces different IDs.
+- Use atomic insert-first idempotency: INSERT with `processedAt = null` to claim the event, then UPDATE to mark complete. Stale locks (older than 5 min) are recovered automatically.
 - Handle events:
   - `account.connected`: Set `unipileAccountId` and `linkedInConnectedAt` on user
   - `account.disconnected`: Clear `unipileAccountId`, set `linkedInConnectedAt` to null
 - Return 200 even for unknown event types (log and ignore)
 - Return 500 on DB failures to trigger Unipile retry
+- Run `pnpm drizzle-kit push` to apply schema changes before deploy
 
 ## Key Context
 

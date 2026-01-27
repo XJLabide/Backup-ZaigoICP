@@ -33,9 +33,8 @@ Reference prompt template: `docs/mvp-overview.md:114-137`
 - [ ] Handles missing lead fields gracefully
 - [ ] Unit test with mocked AI response
 ## Done summary
-TBD
-
+Created AI message generator module using Vercel AI SDK with Claude Sonnet. The generateMessage() function builds prompts from lead profile and campaign settings, returns generated message text with token usage metadata, and gracefully handles missing lead fields. Includes 21 unit tests with mocked AI responses.
 ## Evidence
-- Commits:
-- Tests:
+- Commits: c752ea7e5675ec4b5946cea1a6cbfb369ae31ed1
+- Tests: pnpm test -- message-generator.test.ts
 - PRs:

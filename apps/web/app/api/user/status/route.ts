@@ -33,7 +33,12 @@ export async function GET() {
   // Validate Clerk session
   const { userId } = await auth();
   if (!userId) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    return Response.json({ error: 'Unauthorized' }, {
+      status: 401,
+      headers: {
+        'Cache-Control': 'no-store',
+      },
+    });
   }
 
   try {
@@ -88,6 +93,11 @@ export async function GET() {
       })
     );
 
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    return Response.json({ error: 'Internal server error' }, {
+      status: 500,
+      headers: {
+        'Cache-Control': 'no-store',
+      },
+    });
   }
 }

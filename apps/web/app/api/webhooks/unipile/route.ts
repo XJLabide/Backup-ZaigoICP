@@ -25,7 +25,7 @@
 
 import { createHash } from 'crypto';
 import { db, processedWebhooks } from '@/lib/db';
-import { eq } from 'drizzle-orm';
+import { eq, and, isNull, lt } from 'drizzle-orm';
 import { verifyWebhookSignature } from '@/lib/unipile/webhook-verify';
 import {
   dispatchWebhookEvent,
@@ -34,6 +34,9 @@ import {
 
 // Force Node.js runtime for crypto and server-only modules
 export const runtime = 'nodejs';
+
+// Stale lock timeout: if an in-progress record is older than this, consider it abandoned
+const STALE_LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 /**
  * Computes a deterministic event ID from the raw request body bytes.
@@ -186,29 +189,98 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Database error' }, { status: 500 });
   }
 
-  // If insert didn't succeed, this is a duplicate
+  // If insert didn't succeed, check if it's a duplicate or a stale lock
   if (!insertSucceeded) {
-    // Check if it was already processed or is in progress
     const existing = await db
-      .select({ processedAt: processedWebhooks.processedAt })
+      .select({
+        processedAt: processedWebhooks.processedAt,
+        createdAt: processedWebhooks.createdAt,
+      })
       .from(processedWebhooks)
       .where(eq(processedWebhooks.eventId, eventId))
       .limit(1);
 
-    const isProcessed = existing.length > 0 && existing[0].processedAt !== null;
+    if (existing.length === 0) {
+      // Race condition: record was deleted between our insert and this check
+      // Return 500 to trigger retry
+      console.log(
+        JSON.stringify({
+          event: 'webhook_race_condition',
+          eventType,
+          eventId,
+          timestamp: new Date().toISOString(),
+        })
+      );
+      return Response.json({ error: 'Internal error' }, { status: 500 });
+    }
 
+    const record = existing[0];
+    const isProcessed = record.processedAt !== null;
+
+    // Check if this is a stale in-progress lock (abandoned by crashed worker)
+    if (!isProcessed && record.createdAt) {
+      const lockAge = Date.now() - new Date(record.createdAt).getTime();
+      if (lockAge > STALE_LOCK_TIMEOUT_MS) {
+        // Stale lock detected - delete it and retry processing
+        console.log(
+          JSON.stringify({
+            event: 'webhook_stale_lock_recovered',
+            eventType,
+            eventId,
+            lockAgeMs: lockAge,
+            timestamp: new Date().toISOString(),
+          })
+        );
+
+        try {
+          // Delete the stale lock
+          await db
+            .delete(processedWebhooks)
+            .where(
+              and(
+                eq(processedWebhooks.eventId, eventId),
+                isNull(processedWebhooks.processedAt),
+                lt(processedWebhooks.createdAt, new Date(Date.now() - STALE_LOCK_TIMEOUT_MS))
+              )
+            );
+
+          // Return 500 to trigger Unipile retry which will now succeed
+          return Response.json({ error: 'Internal error' }, { status: 500 });
+        } catch {
+          // Delete failed - treat as duplicate
+        }
+      }
+    }
+
+    // If already fully processed, it's a true duplicate - return 200
+    if (isProcessed) {
+      console.log(
+        JSON.stringify({
+          event: 'webhook_duplicate',
+          eventType,
+          eventId,
+          accountId,
+          userId,
+          wasProcessed: true,
+          timestamp: new Date().toISOString(),
+        })
+      );
+      return Response.json({ received: true, duplicate: true });
+    }
+
+    // If in-progress but not stale, another worker is processing
+    // Return 500 to allow retry after the other worker finishes
     console.log(
       JSON.stringify({
-        event: 'webhook_duplicate',
+        event: 'webhook_in_progress',
         eventType,
         eventId,
         accountId,
         userId,
-        wasProcessed: isProcessed,
         timestamp: new Date().toISOString(),
       })
     );
-    return Response.json({ received: true, duplicate: true });
+    return Response.json({ error: 'Event in progress' }, { status: 500 });
   }
 
   // 8. Dispatch to appropriate handler

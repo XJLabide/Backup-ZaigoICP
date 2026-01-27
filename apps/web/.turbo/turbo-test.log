@@ -1,0 +1,103 @@
+
+> @repo/web@0.1.0 test /home/natty/linkedin-automation/apps/web
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/home/natty/linkedin-automation/apps/web[39m
+
+[90mstderr[2m | __tests__/api/user/status.test.ts[2m > [22m[2mGET /api/user/status[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors
+[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T21:45:38.307Z","error":"Connection refused"}
+
+[90mstdout[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns URL for authenticated user
+[22m[39m{"event":"auth_link_generated","userId":"user_123","timestamp":"2026-01-27T21:45:38.289Z","expiresOn":"2026-01-27T22:15:38.289Z"}
+
+[90mstderr[2m | __tests__/api/user/status.test.ts[2m > [22m[2mGET /api/user/status[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
+[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T21:45:38.309Z","error":"String error"}
+
+ [32m✓[39m __tests__/api/user/status.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 55[2mms[22m[39m
+[90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns 500 when Unipile fails
+[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T21:45:38.314Z","error":"Unipile API connection failed"}
+
+[90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mhandles non-Error exceptions from Unipile
+[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T21:45:38.315Z","error":"String error"}
+
+ [32m✓[39m __tests__/api/auth/unipile/connect.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for invalid signature
+[22m[39m{"event":"webhook_signature_invalid","error":"Invalid signature","timestamp":"2026-01-27T21:45:38.328Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for missing signature
+[22m[39m{"event":"webhook_signature_invalid","error":"Missing signature","timestamp":"2026-01-27T21:45:38.332Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.333Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
+[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.334Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
+[22m[39m{"event":"webhook_received","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T21:45:38.335Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
+[22m[39m{"event":"webhook_processed","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T21:45:38.335Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
+[22m[39m{"event":"webhook_received","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T21:45:38.337Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
+[22m[39m{"event":"webhook_processed","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T21:45:38.337Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.338Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.338Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.339Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_duplicate","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","wasProcessed":true,"timestamp":"2026-01-27T21:45:38.339Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.340Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
+[22m[39m{"event":"webhook_in_progress","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.340Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles invalid JSON gracefully
+[22m[39m{"event":"webhook_parse_error","eventId":"mock-hash-abc123","timestamp":"2026-01-27T21:45:38.340Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles non-object payload gracefully
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"string","timestamp":"2026-01-27T21:45:38.342Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles null payload gracefully
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"null","timestamp":"2026-01-27T21:45:38.343Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles array payload gracefully
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"array","timestamp":"2026-01-27T21:45:38.344Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.345Z"}
+
+[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
+[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"Database connection failed","retriable":true,"timestamp":"2026-01-27T21:45:38.345Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.346Z"}
+
+[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
+[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"User not found: user_123","retriable":false,"timestamp":"2026-01-27T21:45:38.346Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T21:45:38.347Z"}
+
+[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
+[22m[39m{"event":"webhook_db_error","eventType":"account.connected","eventId":"mock-hash-abc123","error":"Connection refused","timestamp":"2026-01-27T21:45:38.347Z"}
+
+ [32m✓[39m __tests__/api/webhooks/unipile.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m25 passed[39m[22m[90m (25)[39m
+[2m   Start at [22m 05:45:38
+[2m   Duration [22m 334ms[2m (transform 293ms, setup 94ms, import 309ms, tests 129ms, environment 0ms)[22m
+

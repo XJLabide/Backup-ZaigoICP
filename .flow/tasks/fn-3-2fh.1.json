@@ -1,0 +1,14 @@
+{
+  "assignee": null,
+  "claim_note": "",
+  "claimed_at": null,
+  "created_at": "2026-01-27T22:59:58.063854Z",
+  "depends_on": [],
+  "epic": "fn-3-2fh",
+  "id": "fn-3-2fh.1",
+  "priority": null,
+  "spec_path": ".flow/tasks/fn-3-2fh.1.md",
+  "status": "todo",
+  "title": "Install AI and Inngest dependencies",
+  "updated_at": "2026-01-27T23:00:42.647205Z"
+}

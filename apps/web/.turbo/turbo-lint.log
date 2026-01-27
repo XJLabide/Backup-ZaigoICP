@@ -1,0 +1,4 @@
+
+> @repo/web@0.1.0 lint /home/natty/linkedin-automation/apps/web
+> eslint . --max-warnings 0
+

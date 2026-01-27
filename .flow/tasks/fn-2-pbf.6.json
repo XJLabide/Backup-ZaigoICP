@@ -1,0 +1,19 @@
+{
+  "assignee": null,
+  "claim_note": "",
+  "claimed_at": null,
+  "created_at": "2026-01-27T22:22:01.238545Z",
+  "depends_on": [
+    "fn-2-pbf.2",
+    "fn-2-pbf.3",
+    "fn-2-pbf.4",
+    "fn-2-pbf.5"
+  ],
+  "epic": "fn-2-pbf",
+  "id": "fn-2-pbf.6",
+  "priority": null,
+  "spec_path": ".flow/tasks/fn-2-pbf.6.md",
+  "status": "todo",
+  "title": "Add CI integration and test documentation",
+  "updated_at": "2026-01-27T22:25:09.725032Z"
+}

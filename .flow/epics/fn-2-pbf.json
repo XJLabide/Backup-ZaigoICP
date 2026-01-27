@@ -1,0 +1,13 @@
+{
+  "branch_name": "fn-2-pbf",
+  "created_at": "2026-01-27T22:19:47.898396Z",
+  "depends_on_epics": [],
+  "id": "fn-2-pbf",
+  "next_task": 1,
+  "plan_review_status": "unknown",
+  "plan_reviewed_at": null,
+  "spec_path": ".flow/specs/fn-2-pbf.md",
+  "status": "open",
+  "title": "Comprehensive Test Coverage for Epic 1 & 2",
+  "updated_at": "2026-01-27T22:21:23.421977Z"
+}

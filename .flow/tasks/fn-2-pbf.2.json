@@ -1,0 +1,16 @@
+{
+  "assignee": null,
+  "claim_note": "",
+  "claimed_at": null,
+  "created_at": "2026-01-27T22:21:52.673457Z",
+  "depends_on": [
+    "fn-2-pbf.1"
+  ],
+  "epic": "fn-2-pbf",
+  "id": "fn-2-pbf.2",
+  "priority": null,
+  "spec_path": ".flow/tasks/fn-2-pbf.2.md",
+  "status": "todo",
+  "title": "Add unit tests for API routes (health, me)",
+  "updated_at": "2026-01-27T22:24:57.271017Z"
+}

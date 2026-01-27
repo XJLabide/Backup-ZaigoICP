@@ -140,8 +140,13 @@ export function SuccessClient() {
   const [pageState, setPageState] = useState<PageState>('polling');
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ state: 'connecting' });
   const pollCountRef = useRef(0);
-  const startTimeRef = useRef(Date.now());
+  const startTimeRef = useRef<number | null>(null);
   const isActiveRef = useRef(true);
+
+  // Initialize startTime on mount to avoid impure render
+  useEffect(() => {
+    startTimeRef.current = Date.now();
+  }, []);
 
   /**
    * Polls the user status API to check if the webhook has been processed.
@@ -199,6 +204,9 @@ export function SuccessClient() {
 
     const poll = async () => {
       if (!isActiveRef.current) return;
+      if (startTimeRef.current === null) {
+        startTimeRef.current = Date.now();
+      }
 
       const elapsed = Date.now() - startTimeRef.current;
 

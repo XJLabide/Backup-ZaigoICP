@@ -207,6 +207,7 @@ export function LinkedInConnectionStatus({
   const config = getStatusConfig(status);
   const [isMounted, setIsMounted] = useState(false);
 
+  // Standard hydration pattern - this effect runs once on mount to detect client-side
   useEffect(() => {
     setIsMounted(true);
   }, []);

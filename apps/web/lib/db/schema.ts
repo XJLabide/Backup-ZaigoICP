@@ -1,3 +1,9 @@
+/**
+ * Drizzle ORM schema for Neon PostgreSQL.
+ *
+ * This schema defines all database tables for the LinkedIn automation platform.
+ */
+
 import {
   pgTable,
   text,
@@ -38,6 +44,7 @@ export const leadSourceEnum = pgEnum('lead_source', ['profile_viewer']);
 // ============ USERS ============
 
 export const users = pgTable('users', {
+  // Primary key is Clerk user ID
   id: text('id').primaryKey(),
   email: text('email').notNull(),
   name: text('name'),
@@ -49,6 +56,21 @@ export const users = pgTable('users', {
   timezone: text('timezone').default('America/Los_Angeles'),
   lastSyncAt: timestamp('last_sync_at'),
   lastSyncError: text('last_sync_error'),
+
+  // Unipile LinkedIn connection
+  unipileAccountId: text('unipile_account_id').unique(),
+  linkedInProfileUrl: text('linkedin_profile_url'),
+  linkedInConnectedAt: timestamp('linkedin_connected_at'),
+
+  // User settings
+  dailyLimit: integer('daily_limit').default(25),
+  timezone: text('timezone').default('America/Los_Angeles'),
+
+  // Connection health tracking
+  lastSyncAt: timestamp('last_sync_at'),
+  lastSyncError: text('last_sync_error'),
+
+  // Timestamps
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
@@ -62,6 +84,8 @@ export const campaigns = pgTable('campaigns', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+
+  // Campaign settings
   name: text('name').notNull(),
   tone: toneEnum('tone').notNull().default('professional'),
   cta: ctaEnum('cta').notNull().default('reply'),
@@ -69,10 +93,21 @@ export const campaigns = pgTable('campaigns', {
   qualificationRules: text('qualification_rules'),
   autoApprove: boolean('auto_approve').default(false),
   isActive: boolean('is_active').default(true),
+
+  // Qualification rules (JSON as text)
+  qualificationRules: text('qualification_rules'),
+
+  // Behavior
+  autoApprove: boolean('auto_approve').default(false),
+  isActive: boolean('is_active').default(true),
+
+  // Denormalized stats
   totalLeads: integer('total_leads').default(0),
   totalSent: integer('total_sent').default(0),
   totalAccepted: integer('total_accepted').default(0),
   totalReplied: integer('total_replied').default(0),
+
+  // Timestamps
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
@@ -93,6 +128,12 @@ export const leads = pgTable(
     }),
     linkedInId: text('linkedin_id').notNull(),
     profileUrl: text('profile_url').notNull(),
+
+    // LinkedIn identity
+    linkedInId: text('linkedin_id').notNull(),
+    profileUrl: text('profile_url').notNull(),
+
+    // Profile data (basic)
     firstName: text('first_name'),
     lastName: text('last_name'),
     fullName: text('full_name').notNull(),
@@ -117,6 +158,34 @@ export const leads = pgTable(
     index('leads_status_idx').on(table.status),
     index('leads_campaign_id_idx').on(table.campaignId),
   ]
+
+    // Enrichment data
+    about: text('about'),
+    recentPost: text('recent_post'),
+    mutualConnections: integer('mutual_connections'),
+
+    // Status tracking
+    source: leadSourceEnum('source').notNull().default('profile_viewer'),
+    status: leadStatusEnum('status').notNull().default('new'),
+
+    // Important timestamps
+    viewedAt: timestamp('viewed_at'),
+    enrichedAt: timestamp('enriched_at'),
+    connectionAcceptedAt: timestamp('connection_accepted_at'),
+
+    // Timestamps
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    userLinkedInUnique: uniqueIndex('leads_user_linkedin_unique').on(
+      table.userId,
+      table.linkedInId
+    ),
+    userIdIdx: index('leads_user_id_idx').on(table.userId),
+    statusIdx: index('leads_status_idx').on(table.status),
+    campaignIdIdx: index('leads_campaign_id_idx').on(table.campaignId),
+  })
 );
 
 // ============ ACTIONS ============
@@ -141,6 +210,17 @@ export const actions = pgTable(
     qualityScore: integer('quality_score'),
     usedSignals: text('used_signals'),
     generatedAt: timestamp('generated_at'),
+
+    // Action details
+    type: text('type').notNull().default('connection_request'),
+    message: text('message').notNull(),
+
+    // AI generation metadata
+    qualityScore: integer('quality_score'),
+    usedSignals: text('used_signals'),
+    generatedAt: timestamp('generated_at'),
+
+    // Status tracking
     status: actionStatusEnum('status').notNull().default('pending'),
     approvedAt: timestamp('approved_at'),
     rejectedAt: timestamp('rejected_at'),
@@ -157,6 +237,24 @@ export const actions = pgTable(
     index('actions_lead_id_idx').on(table.leadId),
     index('actions_sent_at_idx').on(table.sentAt),
   ]
+
+    // Unipile tracking
+    unipileRequestId: text('unipile_request_id'),
+
+    // Error handling
+    error: text('error'),
+    retryCount: integer('retry_count').default(0),
+
+    // Timestamps
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    userIdIdx: index('actions_user_id_idx').on(table.userId),
+    statusIdx: index('actions_status_idx').on(table.status),
+    leadIdIdx: index('actions_lead_id_idx').on(table.leadId),
+    sentAtIdx: index('actions_sent_at_idx').on(table.sentAt),
+  })
 );
 
 // ============ WEBHOOK EVENTS ============
@@ -181,6 +279,37 @@ export const webhookEvents = pgTable(
     index('webhook_events_created_at_idx').on(table.createdAt),
   ]
 );
+
+
+    // Event details
+    source: text('source').notNull(),
+    eventType: text('event_type').notNull(),
+    payload: text('payload').notNull(),
+
+    // Processing
+    processedAt: timestamp('processed_at'),
+    error: text('error'),
+
+    // Timestamp
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  (table) => ({
+    accountIdIdx: index('webhook_events_account_id_idx').on(
+      table.unipileAccountId
+    ),
+    createdAtIdx: index('webhook_events_created_at_idx').on(table.createdAt),
+  })
+);
+
+// ============ PROCESSED WEBHOOKS (Idempotency) ============
+
+export const processedWebhooks = pgTable('processed_webhooks', {
+  eventId: text('event_id').primaryKey(), // SHA256 hash of raw webhook body
+  eventType: text('event_type').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(), // When claim was made
+  processedAt: timestamp('processed_at'), // Nullable: null = in progress, set = completed
+  payload: text('payload'), // JSON stringified for debugging
+});
 
 // ============ RELATIONS ============
 

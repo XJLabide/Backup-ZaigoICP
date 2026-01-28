@@ -40,4 +40,5 @@ export { generateMessageFunction } from "./functions/generate-message";
 export {
   syncProfileViewersFunction,
   manualSyncProfileViewers,
+  type UserSyncResult,
 } from "./functions/sync-profile-viewers";

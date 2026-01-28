@@ -1,8 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { Header } from '@/components/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DashboardActions } from '@/components/dashboard-actions';
 import { getStatsForUser } from '@/lib/db/queries/stats';
 
 export default async function DashboardPage() {
@@ -12,62 +10,52 @@ export default async function DashboardPage() {
     redirect('/sign-in');
   }
 
-  // Fetch stats directly from database query function
   const stats = await getStatsForUser(userId);
 
   return (
     <div>
-      <Header title="Dashboard" />
-      <div className="p-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm font-medium">New Leads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.leadsToday}</div>
-              <p className="text-xs text-gray-500">Profile viewers today</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm font-medium">Pending Messages</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.pendingActions}</div>
-              <p className="text-xs text-gray-500">Awaiting approval</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm font-medium">Sent Today</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.sentToday}</div>
-              <p className="text-xs text-gray-500">of 25 daily limit</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm font-medium">Response Rate</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.acceptanceRate}%</div>
-              <p className="text-xs text-gray-500">Last 30 days</p>
-            </CardContent>
-          </Card>
-        </div>
+      <h1 className="text-2xl font-bold text-neutral-900 mb-6">Dashboard</h1>
 
-        <div className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>LinkedIn Account</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <DashboardActions />
-            </CardContent>
-          </Card>
-        </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-neutral-600">New Leads</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-neutral-900">{stats.leadsToday}</div>
+            <p className="text-xs text-neutral-500">Profile viewers today</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-neutral-600">Pending Messages</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-neutral-900">{stats.pendingActions}</div>
+            <p className="text-xs text-neutral-500">Awaiting approval</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-neutral-600">Sent Today</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-neutral-900">{stats.sentToday}</div>
+            <p className="text-xs text-neutral-500">of 25 daily limit</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-neutral-600">Response Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-neutral-900">{stats.acceptanceRate}%</div>
+            <p className="text-xs text-neutral-500">Last 30 days</p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Sidebar } from '@/components/sidebar';
-import { MobileNav } from '@/components/mobile-nav';
+import { DashboardLayout } from '@/components/dashboard';
 
-export default function DashboardLayout({
+export default function DashboardLayoutPage({
   children,
 }: {
   children: React.ReactNode;
@@ -16,13 +15,5 @@ export default function DashboardLayout({
     });
   }, []);
 
-  return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <MobileNav />
-      <main className="flex-1 overflow-auto bg-gray-100">
-        {children}
-      </main>
-    </div>
-  );
+  return <DashboardLayout>{children}</DashboardLayout>;
 }

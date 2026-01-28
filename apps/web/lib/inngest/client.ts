@@ -38,11 +38,24 @@ export interface MessageGeneratedEvent {
 }
 
 /**
+ * Event payload for manual profile viewer sync trigger
+ */
+export interface SyncProfileViewersEvent {
+  data: {
+    /** The ID of the user triggering the sync */
+    userId: string;
+    /** The user's Unipile account ID for API calls */
+    unipileAccountId: string;
+  };
+}
+
+/**
  * All event types for the application
  */
 export type Events = {
   "lead/qualified": LeadQualifiedEvent;
   "message/generated": MessageGeneratedEvent;
+  "sync/profile-viewers.trigger": SyncProfileViewersEvent;
 };
 
 /**

@@ -33,12 +33,14 @@ export type {
   Events,
   LeadQualifiedEvent,
   MessageGeneratedEvent,
+  SyncProfileViewersEvent,
 } from "./client";
 
 // Inngest functions
 export { generateMessageFunction } from "./functions/generate-message";
 export {
   syncProfileViewersFunction,
+  manualSyncProfileViewersFunction,
   manualSyncProfileViewers,
   type UserSyncResult,
 } from "./functions/sync-profile-viewers";

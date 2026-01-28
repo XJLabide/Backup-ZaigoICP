@@ -328,11 +328,40 @@ async function upsertLeadAtomic(
 }
 
 /**
- * Manually trigger sync for a specific user.
- * Can be called from an API endpoint for manual sync.
- * Note: This does not use step.run since it's called outside Inngest context.
+ * Inngest function for manual profile viewer sync trigger.
+ *
+ * Triggered via event from POST /api/sync/profile-viewers endpoint.
+ * Processes a single user's profile viewers sync request.
+ *
+ * Retries: 3 with exponential backoff for transient failures
  */
-export async function manualSyncProfileViewers(
+export const manualSyncProfileViewersFunction = inngest.createFunction(
+  {
+    id: "manual-sync-profile-viewers",
+    retries: 3,
+  },
+  { event: "sync/profile-viewers.trigger" },
+  async ({ event, step }) => {
+    const { userId, unipileAccountId } = event.data;
+
+    // Use step.run for the sync operation to get durability
+    const result = await step.run("sync-profile-viewers", async () => {
+      return await performManualSync(userId, unipileAccountId);
+    });
+
+    console.info(
+      `[manual-sync-profile-viewers] Completed for user ${userId}: ${result.leadsCreated} created, ${result.leadsSkipped} skipped`
+    );
+
+    return result;
+  }
+);
+
+/**
+ * Performs the actual sync for a single user.
+ * Used by both the manual trigger function and direct API calls.
+ */
+async function performManualSync(
   userId: string,
   unipileAccountId: string
 ): Promise<UserSyncResult> {
@@ -406,4 +435,18 @@ export async function manualSyncProfileViewers(
     upsertErrors,
     error,
   };
+}
+
+/**
+ * Manually trigger sync for a specific user.
+ * Can be called from an API endpoint for manual sync.
+ * Note: This does not use step.run since it's called outside Inngest context.
+ *
+ * @deprecated Use the Inngest event trigger via inngest.send() instead for durability.
+ */
+export async function manualSyncProfileViewers(
+  userId: string,
+  unipileAccountId: string
+): Promise<UserSyncResult> {
+  return performManualSync(userId, unipileAccountId);
 }

@@ -62,9 +62,54 @@ Warm outbound LinkedIn automation platform. Capture profile viewers, qualify lea
 | `pnpm build` | Build for production |
 | `pnpm lint` | Run ESLint |
 | `pnpm type-check` | Run TypeScript checks |
+| `pnpm test` | Run unit/integration tests |
+| `pnpm test:coverage` | Run tests with coverage report |
+| `pnpm test:e2e` | Run Playwright E2E tests |
 | `pnpm db:generate` | Generate Drizzle migrations |
 | `pnpm db:migrate` | Apply migrations to database |
 | `pnpm db:push` | Push schema directly (dev only) |
+
+## Testing
+
+The project uses Vitest for unit/integration tests and Playwright for E2E tests.
+
+### Unit & Integration Tests
+
+```bash
+# Run all tests
+pnpm test
+
+# Run with coverage report
+pnpm test:coverage
+
+# Watch mode for development
+pnpm --filter web test:watch
+```
+
+Test files are located in `apps/web/__tests__/` and follow the pattern `*.test.ts` or `*.test.tsx`.
+
+### E2E Tests
+
+```bash
+# Run headless
+pnpm test:e2e
+
+# Interactive mode
+pnpm test:e2e:ui
+```
+
+E2E tests require the app to be running. They're located in `apps/web/e2e/`.
+
+For authenticated E2E tests, set:
+- `E2E_CLERK_USER_EMAIL` - Test user email
+- `E2E_CLERK_USER_PASSWORD` - Test user password
+
+### CI Pipeline
+
+Tests run automatically on push/PR via GitHub Actions:
+- Unit tests with coverage reporting
+- Linting and type checking
+- E2E tests (on main/staging branches)
 
 ## Project Structure
 

@@ -1,0 +1,19 @@
+
+> @repo/web@0.1.0 lint /home/natty/linkedin-automation/apps/web
+> eslint . --max-warnings 0
+
+
+/home/natty/linkedin-automation/apps/web/__tests__/api/campaigns/[id]/assign/route.test.ts
+  130:10  warning  'createMockLead' is defined but never used  @typescript-eslint/no-unused-vars
+  177:10  warning  'generateUUIDs' is defined but never used   @typescript-eslint/no-unused-vars
+
+/home/natty/linkedin-automation/apps/web/e2e/auth.spec.ts
+  19:13  warning  'response' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/home/natty/linkedin-automation/apps/web/e2e/global.setup.ts
+  10:28  warning  'config' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 4 problems (0 errors, 4 warnings)
+
+ESLint found too many warnings (maximum: 0).
+ ELIFECYCLE  Command failed with exit code 1.

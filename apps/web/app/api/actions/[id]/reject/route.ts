@@ -68,7 +68,11 @@ export async function POST(
         body = JSON.parse(text);
       }
     } catch {
-      // Empty body is valid - reason is optional
+      // Invalid JSON - return 400 error
+      return NextResponse.json(
+        { error: "Invalid JSON in request body" },
+        { status: 400 }
+      );
     }
 
     const parsed = rejectSchema.safeParse(body);
@@ -128,8 +132,9 @@ export async function POST(
       );
     }
 
-    // Update action status to rejected
-    const [updated] = await db
+    // Atomic update: include status='pending' in WHERE clause to prevent race conditions
+    // If another request already changed the status, this will return empty array
+    const updateResult = await db
       .update(actions)
       .set({
         status: "rejected",
@@ -137,10 +142,27 @@ export async function POST(
         error: parsed.data.reason || null,
         updatedAt: new Date(),
       })
-      .where(and(eq(actions.id, id), eq(actions.userId, userId)))
+      .where(
+        and(
+          eq(actions.id, id),
+          eq(actions.userId, userId),
+          eq(actions.status, "pending")
+        )
+      )
       .returning();
 
-    return NextResponse.json({ action: updated });
+    // Check if update was successful (action was still pending)
+    if (updateResult.length === 0) {
+      return NextResponse.json(
+        {
+          error: "Action cannot be rejected",
+          details: "Action status changed concurrently, please refresh and try again",
+        },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json({ action: updateResult[0] });
   } catch (error) {
     console.error("Error rejecting action:", error);
     return NextResponse.json(

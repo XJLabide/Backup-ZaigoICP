@@ -86,27 +86,66 @@ export async function POST(
       );
     }
 
-    // Update action status to approved
-    const [updated] = await db
+    // Atomic update: include status='pending' in WHERE clause to prevent race conditions
+    // If another request already changed the status, this will return empty array
+    const updateResult = await db
       .update(actions)
       .set({
         status: "approved",
         approvedAt: new Date(),
         updatedAt: new Date(),
       })
-      .where(and(eq(actions.id, id), eq(actions.userId, userId)))
+      .where(
+        and(
+          eq(actions.id, id),
+          eq(actions.userId, userId),
+          eq(actions.status, "pending")
+        )
+      )
       .returning();
 
+    // Check if update was successful (action was still pending)
+    if (updateResult.length === 0) {
+      return NextResponse.json(
+        {
+          error: "Action cannot be approved",
+          details: "Action status changed concurrently, please refresh and try again",
+        },
+        { status: 409 }
+      );
+    }
+
+    const updated = updateResult[0];
+
     // Trigger execute-action Inngest event
-    await inngest.send({
-      name: "action/approved",
-      data: {
-        actionId: updated.id,
-        leadId: existingAction.leadId,
-        campaignId: existingAction.campaignId,
-        userId,
-      },
-    });
+    // If this fails, we need to revert the action status
+    try {
+      await inngest.send({
+        name: "action/approved",
+        data: {
+          actionId: updated.id,
+          leadId: existingAction.leadId,
+          campaignId: existingAction.campaignId,
+          userId,
+        },
+      });
+    } catch (inngestError) {
+      // Revert action status on Inngest failure
+      console.error("Inngest send failed, reverting action status:", inngestError);
+      await db
+        .update(actions)
+        .set({
+          status: "pending",
+          approvedAt: null,
+          updatedAt: new Date(),
+        })
+        .where(eq(actions.id, id));
+
+      return NextResponse.json(
+        { error: "Failed to queue action execution, please try again" },
+        { status: 503 }
+      );
+    }
 
     return NextResponse.json({ action: updated });
   } catch (error) {

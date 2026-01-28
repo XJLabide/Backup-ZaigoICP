@@ -164,6 +164,19 @@ function setupDbUpdateSuccess(updatedAction: Record<string, unknown>) {
 }
 
 /**
+ * Helper to set up mock db for update returning empty (race condition)
+ */
+function setupDbUpdateEmpty() {
+  mockDb.update.mockReturnValue({
+    set: vi.fn().mockReturnValue({
+      where: vi.fn().mockReturnValue({
+        returning: vi.fn().mockResolvedValue([]),
+      }),
+    }),
+  } as unknown as ReturnType<typeof mockDb.update>);
+}
+
+/**
  * Helper to set up mock db for update failure
  */
 function setupDbUpdateFailure(error: Error) {
@@ -480,6 +493,54 @@ describe("POST /api/actions/[id]/reject", () => {
       expect(response.status).toBe(400);
       expect(data.error).toBe("Validation failed");
       expect(data.details.reason).toBeDefined();
+    });
+
+    it("returns 400 for invalid JSON in request body", async () => {
+      // Setup
+      mockAuth.mockResolvedValue(createMockAuthResponse("user_123") as never);
+
+      // Execute - invalid JSON
+      const request = new Request(
+        "http://localhost:3000/api/actions/action_123/reject",
+        {
+          method: "POST",
+          body: "{ invalid json }",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const response = await POST(request, {
+        params: Promise.resolve({ id: "action_123" }),
+      });
+      const data = await response.json();
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(data.error).toBe("Invalid JSON in request body");
+    });
+  });
+
+  describe("Concurrency", () => {
+    it("returns 409 when action status changed concurrently", async () => {
+      // Setup
+      mockAuth.mockResolvedValue(createMockAuthResponse("user_123") as never);
+      const action = createMockAction();
+      const campaign = { id: "campaign_789" };
+      setupDbSelectWithCampaignCheck(action, campaign);
+
+      // Update returns empty array (action was already changed)
+      setupDbUpdateEmpty();
+
+      // Execute
+      const request = createMockPostRequest();
+      const response = await POST(request, {
+        params: Promise.resolve({ id: "action_123" }),
+      });
+      const data = await response.json();
+
+      // Assert - Race condition returns 409 Conflict
+      expect(response.status).toBe(409);
+      expect(data.error).toBe("Action cannot be rejected");
+      expect(data.details).toContain("concurrently");
     });
   });
 

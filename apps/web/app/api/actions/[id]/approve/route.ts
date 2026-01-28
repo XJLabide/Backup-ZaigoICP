@@ -27,10 +27,12 @@ import { inngest } from "@/lib/inngest";
  * - 400: Action is not in 'pending' status
  * - 401: Not authenticated
  * - 404: Action not found or not owned by user
+ * - 409: Action status changed concurrently (race condition)
  * - 500: Server error
+ * - 503: Failed to queue action execution (Inngest unavailable)
  */
 export async function POST(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { userId } = await auth();

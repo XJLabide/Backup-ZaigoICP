@@ -13,7 +13,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db, leads, users } from '@/lib/db';
-import { eq, and, gt, asc, SQL } from 'drizzle-orm';
+import { eq, and, lt, or, desc, SQL } from 'drizzle-orm';
 
 import { Header } from '@/components/header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -28,24 +28,39 @@ const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 
 /**
- * Encode a timestamp to base64 cursor
+ * Cursor structure for composite cursor pagination
+ * Uses createdAt + id to handle same-timestamp leads correctly
  */
-function encodeCursor(date: Date): string {
-  return Buffer.from(date.toISOString()).toString('base64');
+interface CursorData {
+  createdAt: string;
+  id: string;
 }
 
 /**
- * Decode a base64 cursor to timestamp
+ * Encode a composite cursor (createdAt + id) to base64
+ * This prevents skipping leads with identical timestamps
+ */
+function encodeCursor(createdAt: Date, id: string): string {
+  const data: CursorData = { createdAt: createdAt.toISOString(), id };
+  return Buffer.from(JSON.stringify(data)).toString('base64');
+}
+
+/**
+ * Decode a base64 composite cursor
  * Returns null if invalid
  */
-function decodeCursor(cursor: string): Date | null {
+function decodeCursor(cursor: string): CursorData | null {
   try {
     const decoded = Buffer.from(cursor, 'base64').toString('utf-8');
-    const date = new Date(decoded);
+    const data = JSON.parse(decoded) as CursorData;
+    if (!data.createdAt || !data.id) {
+      return null;
+    }
+    const date = new Date(data.createdAt);
     if (isNaN(date.getTime())) {
       return null;
     }
-    return date;
+    return data;
   } catch {
     return null;
   }
@@ -103,9 +118,9 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   }
 
   // Decode cursor if provided
-  let cursorDate: Date | null = null;
+  let cursorData: CursorData | null = null;
   if (cursorParam) {
-    cursorDate = decodeCursor(cursorParam);
+    cursorData = decodeCursor(cursorParam);
   }
 
   // Fetch user's lastSyncAt
@@ -120,9 +135,17 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   // Build where conditions
   const conditions: SQL<unknown>[] = [eq(leads.userId, userId)];
 
-  // Add cursor condition
-  if (cursorDate) {
-    conditions.push(gt(leads.createdAt, cursorDate));
+  // Add cursor condition for descending pagination
+  // Uses composite cursor (createdAt + id) to handle same-timestamp leads
+  if (cursorData) {
+    const cursorDate = new Date(cursorData.createdAt);
+    // For descending order: get items where createdAt < cursor OR (createdAt = cursor AND id < cursorId)
+    conditions.push(
+      or(
+        lt(leads.createdAt, cursorDate),
+        and(eq(leads.createdAt, cursorDate), lt(leads.id, cursorData.id))
+      )!
+    );
   }
 
   // Add status filter
@@ -136,6 +159,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   }
 
   // Query leads with limit + 1 to check for more results
+  // Order by createdAt DESC, id DESC to show newest leads first
   const results = await db
     .select({
       id: leads.id,
@@ -152,7 +176,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     })
     .from(leads)
     .where(and(...conditions))
-    .orderBy(asc(leads.createdAt))
+    .orderBy(desc(leads.createdAt), desc(leads.id))
     .limit(limit + 1);
 
   // Check if there are more results
@@ -161,12 +185,12 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   // Remove the extra item if present
   const leadsToDisplay = hasMore ? results.slice(0, limit) : results;
 
-  // Generate next cursor from last item's createdAt
+  // Generate next cursor from last item's createdAt + id (composite cursor)
   let nextCursor: string | null = null;
   if (hasMore && leadsToDisplay.length > 0) {
     const lastLead = leadsToDisplay[leadsToDisplay.length - 1];
     if (lastLead.createdAt) {
-      nextCursor = encodeCursor(lastLead.createdAt);
+      nextCursor = encodeCursor(lastLead.createdAt, lastLead.id);
     }
   }
 

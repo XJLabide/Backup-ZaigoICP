@@ -37,3 +37,7 @@ export type {
 
 // Inngest functions
 export { generateMessageFunction } from "./functions/generate-message";
+export {
+  syncProfileViewersFunction,
+  manualSyncProfileViewers,
+} from "./functions/sync-profile-viewers";

@@ -1,5 +1,9 @@
 import { serve } from "inngest/next";
-import { inngest, generateMessageFunction } from "@/lib/inngest";
+import {
+  inngest,
+  generateMessageFunction,
+  syncProfileViewersFunction,
+} from "@/lib/inngest";
 
 /**
  * Inngest serve API route for the LinkedIn Automation platform.
@@ -16,9 +20,11 @@ import { inngest, generateMessageFunction } from "@/lib/inngest";
 /**
  * Array of Inngest functions to register with the serve handler.
  * - generateMessageFunction: Handles lead/qualified event to generate AI messages
+ * - syncProfileViewersFunction: Hourly cron to sync LinkedIn profile viewers as leads
  */
 const functions: Parameters<typeof serve>[0]["functions"] = [
   generateMessageFunction,
+  syncProfileViewersFunction,
 ];
 
 /**

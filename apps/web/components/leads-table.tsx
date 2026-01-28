@@ -7,7 +7,7 @@
  * Supports client-side sorting by columns.
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -90,6 +90,11 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  // Reset loading state when URL params change (navigation completed)
+  useEffect(() => {
+    setIsLoadingMore(false);
+  }, [searchParams]);
+
   /**
    * Handle column header click for sorting
    */
@@ -153,15 +158,16 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
 
   /**
    * Load more leads using cursor pagination
+   * Loading state is reset by useEffect when searchParams change
    */
-  async function handleLoadMore() {
+  function handleLoadMore() {
     if (!nextCursor || isLoadingMore) return;
 
     setIsLoadingMore(true);
     const params = new URLSearchParams(searchParams.toString());
     params.set('cursor', nextCursor);
     router.push(`/dashboard/leads?${params.toString()}`);
-    setIsLoadingMore(false);
+    // Loading state will be reset by useEffect when navigation completes
   }
 
   return (

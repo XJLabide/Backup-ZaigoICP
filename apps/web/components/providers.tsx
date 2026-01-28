@@ -1,6 +1,7 @@
 'use client';
 
 import { ClerkProvider } from '@clerk/nextjs';
+import { Toaster } from 'sonner';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   // Check if Clerk is configured
@@ -8,8 +9,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   // Skip Clerk if no key (allows build without Clerk configured)
   if (!publishableKey) {
-    return <>{children}</>;
+    return (
+      <>
+        {children}
+        <Toaster position="bottom-right" />
+      </>
+    );
   }
 
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return (
+    <ClerkProvider>
+      {children}
+      <Toaster position="bottom-right" />
+    </ClerkProvider>
+  );
 }

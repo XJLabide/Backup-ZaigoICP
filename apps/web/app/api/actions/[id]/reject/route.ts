@@ -42,10 +42,9 @@ const rejectSchema = z.object({
  *
  * Returns:
  * - action: Updated action object
- * - 400: Action is not in 'pending' status, validation error, or invalid JSON
+ * - 400: Action is not in 'pending' status (or status changed concurrently), validation error, or invalid JSON
  * - 401: Not authenticated
  * - 404: Action not found or not owned by user
- * - 409: Action status changed concurrently (race condition)
  * - 500: Server error
  */
 export async function POST(
@@ -159,7 +158,7 @@ export async function POST(
           error: "Action cannot be rejected",
           details: "Action status changed concurrently, please refresh and try again",
         },
-        { status: 409 }
+        { status: 400 }
       );
     }
 

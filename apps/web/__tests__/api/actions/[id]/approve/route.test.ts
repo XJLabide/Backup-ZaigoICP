@@ -508,7 +508,7 @@ describe("POST /api/actions/[id]/approve", () => {
   });
 
   describe("Concurrency", () => {
-    it("returns 409 when action status changed concurrently", async () => {
+    it("returns 400 when action status changed concurrently", async () => {
       // Setup
       mockAuth.mockResolvedValue(createMockAuthResponse("user_123") as never);
       const action = createMockAction();
@@ -525,8 +525,8 @@ describe("POST /api/actions/[id]/approve", () => {
       });
       const data = await response.json();
 
-      // Assert - Race condition returns 409 Conflict
-      expect(response.status).toBe(409);
+      // Assert - Race condition returns 400 (status no longer pending)
+      expect(response.status).toBe(400);
       expect(data.error).toBe("Action cannot be approved");
       expect(data.details).toContain("concurrently");
     });

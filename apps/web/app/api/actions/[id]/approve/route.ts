@@ -24,10 +24,9 @@ import { inngest } from "@/lib/inngest";
  *
  * Returns:
  * - action: Updated action object
- * - 400: Action is not in 'pending' status
+ * - 400: Action is not in 'pending' status (or status changed concurrently)
  * - 401: Not authenticated
  * - 404: Action not found or not owned by user
- * - 409: Action status changed concurrently (race condition)
  * - 500: Server error
  * - 503: Failed to queue action execution (Inngest unavailable)
  */
@@ -113,7 +112,7 @@ export async function POST(
           error: "Action cannot be approved",
           details: "Action status changed concurrently, please refresh and try again",
         },
-        { status: 409 }
+        { status: 400 }
       );
     }
 

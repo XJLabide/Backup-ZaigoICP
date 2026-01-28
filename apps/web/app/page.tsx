@@ -1,22 +1,36 @@
-import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
+import { Metadata } from 'next';
+import {
+  LandingHeader,
+  HeroSection,
+  CompanySection,
+  AboutSection,
+  WhyBetterSection,
+  FooterSection,
+} from '@/components/landing';
 
-export default async function HomePage() {
-  const { userId } = await auth();
+export const metadata: Metadata = {
+  title: 'Flowline - Ship faster with intelligent automation',
+  description: 'Automate your workflow, eliminate busywork, and focus on what matters. Purpose-built for teams who refuse to compromise.',
+};
 
-  if (userId) {
-    redirect('/dashboard');
-  }
-
+export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold">LinkedIn Automation</h1>
-      <p className="mt-4 text-gray-600">
-        <a href="/sign-in" className="text-blue-600 hover:underline">Sign in</a>
-        {' '}or{' '}
-        <a href="/sign-up" className="text-blue-600 hover:underline">Sign up</a>
-        {' '}to get started.
-      </p>
-    </main>
+    <div className="landing-light min-h-screen bg-white text-neutral-900">
+      {/* Header with auth */}
+      <LandingHeader />
+
+      {/* Subtle noise overlay */}
+      <div className="fixed inset-0 pointer-events-none bg-noise opacity-20" />
+
+      {/* Content - add pt-16 for header spacing */}
+      <main className="relative z-10 pt-16">
+        <HeroSection />
+        <CompanySection />
+        <AboutSection />
+        <WhyBetterSection />
+      </main>
+
+      <FooterSection />
+    </div>
   );
 }

@@ -233,7 +233,6 @@ export async function generateMessage(
   const { text } = await generateText({
     model: anthropic('claude-sonnet-4-20250514'),
     prompt,
-    maxTokens: 200,
     temperature: 0.7,
   });
 

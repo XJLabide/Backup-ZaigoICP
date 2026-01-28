@@ -46,6 +46,7 @@
 }
 
 :root {
+  --font-sans: var(--font-inter), var(--font-roboto), var(--font-open-sans), var(--font-poppins), var(--font-montserrat), system-ui, sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -114,11 +115,163 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Landing page light theme styles */
+.landing-light {
+  --landing-bg-primary: #ffffff;
+  --landing-bg-secondary: #f9fafb;
+  --landing-bg-card: #ffffff;
+  --landing-bg-card-hover: #f3f4f6;
+  --landing-text-primary: #111827;
+  --landing-text-secondary: #4b5563;
+  --landing-text-muted: #9ca3af;
+  --landing-accent-primary: #4f46e5;
+  --landing-accent-secondary: #7c3aed;
+  --landing-border: rgba(0,0,0,0.08);
+  --landing-border-hover: rgba(0,0,0,0.15);
+}
+
+/* Landing page dark theme styles */
+.landing-dark {
+  --landing-bg-primary: #0a0a0f;
+  --landing-bg-secondary: #111116;
+  --landing-bg-card: #16161d;
+  --landing-bg-card-hover: #1c1c24;
+  --landing-text-primary: #fafafa;
+  --landing-text-secondary: #a1a1aa;
+  --landing-text-muted: #71717a;
+  --landing-accent-primary: #6366f1;
+  --landing-accent-secondary: #8b5cf6;
+  --landing-border: rgba(255,255,255,0.08);
+  --landing-border-hover: rgba(255,255,255,0.15);
+}
+
+/* Noise/grain background texture */
+.bg-noise {
+  position: relative;
+}
+
+.bg-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animation utilities with reduced motion support */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+
+  .animate-spotlight {
+    animation: spotlight 2s ease .75s 1 forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+
+/* Stagger animation delays */
+.stagger-1 { animation-delay: 0ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 200ms; }
+.stagger-4 { animation-delay: 300ms; }
+.stagger-5 { animation-delay: 400ms; }
+
+/* Card hover glow effect */
+.card-glow {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* Reduced motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-float,
+  .animate-glow-pulse,
+  .animate-spotlight {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Dot pattern utilities for HeroHighlight */
+.bg-dot-thick-neutral-300 {
+  background-image: radial-gradient(rgb(212 212 212 / 0.8) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-dot-thick-indigo-500 {
+  background-image: radial-gradient(rgb(99 102 241 / 0.8) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans, system-ui, sans-serif);
   }
 }

@@ -79,14 +79,31 @@ export const syncProfileViewersFunction = inngest.createFunction(
 
     for (const user of connectedUsers) {
       // Each user sync is a separate step for durability
-      const userResult = await step.run(
-        `sync-user-${user.id}`,
-        async (): Promise<UserSyncResult> => {
-          return await syncUserProfileViewersWithDb(user.id, user.unipileAccountId);
-        }
-      );
-
-      results.push(userResult);
+      // Wrapped in try/catch to ensure partial failures don't abort the entire batch
+      try {
+        const userResult = await step.run(
+          `sync-user-${user.id}`,
+          async (): Promise<UserSyncResult> => {
+            return await syncUserProfileViewersWithDb(user.id, user.unipileAccountId);
+          }
+        );
+        results.push(userResult);
+      } catch (error) {
+        // Log error but continue processing other users
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        console.error(
+          `[sync-profile-viewers] Step failed for user ${user.id}: ${errorMessage}`
+        );
+        results.push({
+          userId: user.id,
+          viewersFetched: 0,
+          leadsCreated: 0,
+          leadsSkipped: 0,
+          upsertErrors: 0,
+          error: errorMessage,
+        });
+      }
     }
 
     // Step 3: Log summary

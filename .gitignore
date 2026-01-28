@@ -65,6 +65,9 @@ pnpm-debug.log*
 # Testing
 coverage/
 .nyc_output/
+playwright-report/
+test-results/
+.playwright/
 
 # Drizzle
 drizzle/*.sql.sql.json

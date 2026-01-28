@@ -26,7 +26,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-64 flex-col border-r bg-gray-50">
+    <aside className="hidden md:flex h-screen w-64 flex-col border-r bg-gray-50">
       <div className="flex h-16 items-center border-b px-6">
         <h1 className="text-xl font-bold">LinkedIn Auto</h1>
       </div>

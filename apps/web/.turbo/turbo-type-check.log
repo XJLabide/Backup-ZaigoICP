@@ -1,4 +1,4 @@
 
-> @repo/web@0.1.0 type-check /home/natty/linkedin-automation/apps/web
+> @repo/web@0.1.0 type-check /Users/xander/Documents/WORK/PROJECTS/linkedin-automation/apps/web
 > tsc --noEmit
 

@@ -5,8 +5,8 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   test: {
-    // Use jsdom by default (works for both component and API tests)
-    environment: 'jsdom',
+    // Use happy-dom for better ESM compatibility
+    environment: 'happy-dom',
     globals: true,
     include: ['__tests__/**/*.test.ts', '__tests__/**/*.test.tsx'],
     setupFiles: ['./__tests__/setup.ts'],

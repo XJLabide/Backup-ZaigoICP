@@ -23,8 +23,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <Toaster position="bottom-right" />
     </ClerkProvider>
   );
-    return <>{children}</>;
-  }
-
-  return <ClerkProvider>{children}</ClerkProvider>;
 }

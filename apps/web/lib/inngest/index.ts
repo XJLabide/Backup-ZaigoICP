@@ -34,6 +34,7 @@ export type {
   LeadQualifiedEvent,
   MessageGeneratedEvent,
   SyncProfileViewersEvent,
+  ActionApprovedEvent,
 } from "./client";
 
 // Inngest functions

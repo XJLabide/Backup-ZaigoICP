@@ -50,12 +50,29 @@ export interface SyncProfileViewersEvent {
 }
 
 /**
+ * Event payload when an action is approved and ready for execution
+ */
+export interface ActionApprovedEvent {
+  data: {
+    /** The ID of the action to execute */
+    actionId: string;
+    /** The ID of the lead associated with this action */
+    leadId: string;
+    /** The ID of the campaign associated with this action */
+    campaignId: string;
+    /** The ID of the user who owns this action */
+    userId: string;
+  };
+}
+
+/**
  * All event types for the application
  */
 export type Events = {
   "lead/qualified": LeadQualifiedEvent;
   "message/generated": MessageGeneratedEvent;
   "sync/profile-viewers.trigger": SyncProfileViewersEvent;
+  "action/approved": ActionApprovedEvent;
 };
 
 /**

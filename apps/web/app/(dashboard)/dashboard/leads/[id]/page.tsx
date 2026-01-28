@@ -65,7 +65,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
     notFound();
   }
 
-  // Fetch campaign info if assigned
+  // Fetch campaign info if assigned (scoped to user for security)
   let campaign = null;
   if (lead.campaignId) {
     const [campaignData] = await db
@@ -75,16 +75,16 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
         isActive: campaigns.isActive,
       })
       .from(campaigns)
-      .where(eq(campaigns.id, lead.campaignId));
+      .where(and(eq(campaigns.id, lead.campaignId), eq(campaigns.userId, userId)));
     campaign = campaignData || null;
   }
 
-  // Fetch action history for this lead
+  // Fetch action history for this lead (scoped to user for security, limited for performance)
+  const ACTION_HISTORY_LIMIT = 50;
   const leadActions = await db
     .select({
       id: actions.id,
       type: actions.type,
-      message: actions.message,
       qualityScore: actions.qualityScore,
       status: actions.status,
       approvedAt: actions.approvedAt,
@@ -95,10 +95,11 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
       campaignId: actions.campaignId,
     })
     .from(actions)
-    .where(eq(actions.leadId, id))
-    .orderBy(desc(actions.createdAt));
+    .where(and(eq(actions.leadId, lead.id), eq(actions.userId, userId)))
+    .orderBy(desc(actions.createdAt))
+    .limit(ACTION_HISTORY_LIMIT);
 
-  // Get campaign names for actions
+  // Get campaign names for actions (scoped to user for security)
   const actionCampaignIds = [...new Set(leadActions.map((a) => a.campaignId))];
   const actionCampaigns =
     actionCampaignIds.length > 0
@@ -108,7 +109,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
             name: campaigns.name,
           })
           .from(campaigns)
-          .where(inArray(campaigns.id, actionCampaignIds))
+          .where(and(inArray(campaigns.id, actionCampaignIds), eq(campaigns.userId, userId)))
       : [];
 
   const campaignMap = new Map(actionCampaigns.map((c) => [c.id, c.name]));

@@ -57,7 +57,6 @@ interface LeadDetailProps {
   actions: Array<{
     id: string;
     type: string;
-    message: string;
     qualityScore: number | null;
     status: string;
     approvedAt: Date | null;
@@ -128,6 +127,7 @@ function formatDateTime(date: Date | null): string {
  * Get initials from a name
  */
 function getInitials(name: string): string {
+  if (!name) return '??';
   return name
     .split(' ')
     .map((n) => n[0])
@@ -136,7 +136,37 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
+/**
+ * Validate and sanitize a URL to only allow safe protocols (https/http)
+ * Returns null if the URL is invalid or uses an unsafe protocol
+ */
+function getSafeLinkedInUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    // Only allow http/https protocols
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      return null;
+    }
+    // Optionally restrict to linkedin.com domain
+    if (!parsed.hostname.endsWith('linkedin.com')) {
+      return null;
+    }
+    return parsed.href;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Format action type for display (replace all underscores with spaces)
+ */
+function formatActionType(type: string): string {
+  return type.replaceAll('_', ' ');
+}
+
 export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
+  const safeProfileUrl = getSafeLinkedInUrl(lead.profileUrl);
+
   return (
     <div className="space-y-6">
       {/* Profile Card */}
@@ -165,16 +195,23 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
               >
                 {lead.status}
               </span>
-              <a
-                href={lead.profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline" size="sm">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  LinkedIn
+              {safeProfileUrl ? (
+                <Button variant="outline" size="sm" asChild>
+                  <a
+                    href={safeProfileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    LinkedIn
+                  </a>
                 </Button>
-              </a>
+              ) : (
+                <Button variant="outline" size="sm" disabled>
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Invalid URL
+                </Button>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -235,9 +272,24 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
             </div>
           )}
 
-          {/* LinkedIn ID (for reference) */}
-          <div className="mt-4 pt-4 border-t text-xs text-gray-400">
-            LinkedIn ID: {lead.linkedInId}
+          {/* LinkedIn Info (for reference) */}
+          <div className="mt-4 pt-4 border-t text-xs text-gray-400 space-y-1">
+            <p>LinkedIn ID: {lead.linkedInId}</p>
+            <p>
+              Profile URL:{' '}
+              {safeProfileUrl ? (
+                <a
+                  href={safeProfileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  {lead.profileUrl}
+                </a>
+              ) : (
+                <span className="text-red-400">{lead.profileUrl} (invalid)</span>
+              )}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -260,20 +312,20 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
                   )}
                 </div>
               </div>
-              <Link href={`/dashboard/campaigns/${campaign.id}`}>
-                <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/dashboard/campaigns/${campaign.id}`}>
                   View Campaign
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           ) : (
             <div className="text-gray-500">
               <p>This lead is not assigned to any campaign.</p>
-              <Link href="/dashboard/campaigns">
-                <Button variant="outline" size="sm" className="mt-3">
+              <Button variant="outline" size="sm" className="mt-3" asChild>
+                <Link href="/dashboard/campaigns">
                   Assign to Campaign
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           )}
         </CardContent>
@@ -306,7 +358,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
                   {actions.map((action) => (
                     <TableRow key={action.id}>
                       <TableCell className="font-medium capitalize">
-                        {action.type.replace('_', ' ')}
+                        {formatActionType(action.type)}
                       </TableCell>
                       <TableCell>{action.campaignName}</TableCell>
                       <TableCell>

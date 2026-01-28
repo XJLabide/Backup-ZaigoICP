@@ -5,6 +5,7 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/health',
+  '/api/webhooks/(.*)', // Unipile webhooks (signature-verified)
 ]);
 
 export default clerkMiddleware(async (auth, request) => {

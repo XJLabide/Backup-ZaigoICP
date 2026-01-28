@@ -16,9 +16,9 @@ test.describe('Authentication', () => {
 
       // Clerk sign-in component should be present
       // Wait for either the Clerk component or error state
-      const response = await page.waitForResponse(
-        (response) =>
-          response.url().includes('clerk') || response.url().includes('sign-in'),
+      await page.waitForResponse(
+        (resp) =>
+          resp.url().includes('clerk') || resp.url().includes('sign-in'),
         { timeout: 10000 }
       ).catch(() => null);
 

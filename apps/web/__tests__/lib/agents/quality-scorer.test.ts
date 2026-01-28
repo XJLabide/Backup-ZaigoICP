@@ -30,7 +30,6 @@ import {
   MIN_QUALITY_SCORE,
   MAX_CONNECTION_MESSAGE_LENGTH,
   SPAM_PHRASES,
-  type QualityScoreResult,
   type ScoreMessageConfig,
 } from "@/lib/agents/quality-scorer";
 import type { LeadProfile, CampaignSettings } from "@/lib/agents/message-generator";
@@ -44,14 +43,6 @@ const fullLeadProfile: LeadProfile = {
   company: "Acme Corp",
   recentPost: "Excited to share our new product launch!",
   about: "Building scalable systems and mentoring junior developers",
-};
-
-const minimalLeadProfile: LeadProfile = {
-  firstName: "Jane",
-  headline: null,
-  company: null,
-  recentPost: null,
-  about: null,
 };
 
 const professionalCampaign: CampaignSettings = {

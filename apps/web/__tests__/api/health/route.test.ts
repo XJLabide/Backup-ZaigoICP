@@ -34,7 +34,7 @@ describe('GET /api/health', () => {
   describe('Successful health checks', () => {
     it('returns ok status when database is connected', async () => {
       // Setup: database query succeeds
-      mockDb.execute.mockResolvedValue(undefined);
+      mockDb.execute.mockResolvedValue({ rows: [{ result: 1 }] } as never);
 
       // Execute
       const response = await GET();
@@ -50,7 +50,7 @@ describe('GET /api/health', () => {
 
     it('includes timestamp in ISO format', async () => {
       // Setup
-      mockDb.execute.mockResolvedValue(undefined);
+      mockDb.execute.mockResolvedValue({ rows: [{ result: 1 }] } as never);
 
       // Execute
       const response = await GET();

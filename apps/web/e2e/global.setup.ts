@@ -7,7 +7,7 @@
 
 import { chromium, FullConfig } from '@playwright/test';
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   // Verify required environment variables
   const requiredEnvVars = [
     'NEXT_PUBLIC_APP_URL',

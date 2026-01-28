@@ -91,8 +91,9 @@ describe('lib/unipile/client', () => {
       const client = getUnipileClient();
 
       expect(client).toBeDefined();
-      expect(client.dsn).toBe('https://api.unipile.com');
-      expect(client.token).toBe('test-access-token');
+      // Check that the mock client was created with correct params
+      expect((client as unknown as { dsn: string }).dsn).toBe('https://api.unipile.com');
+      expect((client as unknown as { token: string }).token).toBe('test-access-token');
     });
 
     it('reuses cached client on subsequent calls', async () => {

@@ -12,13 +12,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock crypto (used for hashing and timing-safe compare)
-vi.mock('crypto', () => ({
-  createHash: vi.fn(() => ({
-    update: vi.fn().mockReturnThis(),
-    digest: vi.fn().mockReturnValue('mock-hash-abc123'),
-  })),
-  timingSafeEqual: vi.fn((a, b) => a.toString() === b.toString()),
-}));
+vi.mock('crypto', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('crypto')>();
+  const mockedModule = {
+    ...actual,
+    createHash: vi.fn(() => ({
+      update: vi.fn().mockReturnThis(),
+      digest: vi.fn().mockReturnValue('mock-hash-abc123'),
+    })),
+    timingSafeEqual: vi.fn((a: Buffer, b: Buffer) => a.toString() === b.toString()),
+  };
+  return {
+    ...mockedModule,
+    default: mockedModule,
+  };
+});
 
 // Mock @/lib/db - use __mocks__ pattern for hoisting
 vi.mock('@/lib/db', () => {

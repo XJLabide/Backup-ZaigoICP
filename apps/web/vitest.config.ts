@@ -5,7 +5,8 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'node',
+    // Use jsdom by default (works for both component and API tests)
+    environment: 'jsdom',
     globals: true,
     include: ['__tests__/**/*.test.ts', '__tests__/**/*.test.tsx'],
     setupFiles: ['./__tests__/setup.ts'],
@@ -32,18 +33,12 @@ export default defineConfig({
         statements: 60,
       },
     },
-    // Environment settings per test file pattern
-    environmentMatchGlobs: [
-      // Component tests need jsdom
-      ['__tests__/components/**', 'jsdom'],
-      // API route tests use node
-      ['__tests__/api/**', 'node'],
-      ['__tests__/lib/**', 'node'],
-    ],
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './'),
+      // Mock server-only import for tests
+      'server-only': path.resolve(__dirname, './__tests__/__mocks__/server-only.ts'),
     },
   },
 });

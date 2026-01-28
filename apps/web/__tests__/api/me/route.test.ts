@@ -136,7 +136,7 @@ function createMockClerkUser(options: {
  * Helper to set up mock db for existing user
  */
 function setupDbExistingUser(user: { id: string; email: string; name: string | null }) {
-  mockDb.query.users.findFirst.mockResolvedValue(user);
+  (mockDb.query.users.findFirst as ReturnType<typeof vi.fn>).mockResolvedValue(user);
   mockDb.update.mockReturnValue({
     set: vi.fn().mockReturnValue({
       where: vi.fn().mockReturnValue({
@@ -150,7 +150,7 @@ function setupDbExistingUser(user: { id: string; email: string; name: string | n
  * Helper to set up mock db for new user
  */
 function setupDbNewUser() {
-  mockDb.query.users.findFirst.mockResolvedValue(null);
+  (mockDb.query.users.findFirst as ReturnType<typeof vi.fn>).mockResolvedValue(null);
   mockDb.insert.mockReturnValue({
     values: vi.fn().mockReturnValue({
       returning: vi.fn().mockResolvedValue([{
@@ -315,7 +315,7 @@ describe('GET /api/me', () => {
         firstName: 'Test',
         email: 'test@example.com',
       }) as never);
-      mockDb.query.users.findFirst.mockRejectedValue(new Error('Connection refused'));
+      (mockDb.query.users.findFirst as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Connection refused'));
 
       // Execute
       const response = await GET();
@@ -334,7 +334,7 @@ describe('GET /api/me', () => {
         firstName: 'Test',
         email: 'test@example.com',
       }) as never);
-      mockDb.query.users.findFirst.mockRejectedValue('String error');
+      (mockDb.query.users.findFirst as ReturnType<typeof vi.fn>).mockRejectedValue('String error');
 
       // Execute
       const response = await GET();

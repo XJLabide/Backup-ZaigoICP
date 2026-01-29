@@ -4,6 +4,7 @@ import {
   generateMessageFunction,
   syncProfileViewersFunction,
   manualSyncProfileViewersFunction,
+  executeActionFunction,
 } from "@/lib/inngest";
 
 /**
@@ -23,11 +24,13 @@ import {
  * - generateMessageFunction: Handles lead/qualified event to generate AI messages
  * - syncProfileViewersFunction: Hourly cron to sync LinkedIn profile viewers as leads
  * - manualSyncProfileViewersFunction: Manual trigger for profile viewers sync
+ * - executeActionFunction: Handles action/approved event to send LinkedIn connection requests
  */
 const functions: Parameters<typeof serve>[0]["functions"] = [
   generateMessageFunction,
   syncProfileViewersFunction,
   manualSyncProfileViewersFunction,
+  executeActionFunction,
 ];
 
 /**

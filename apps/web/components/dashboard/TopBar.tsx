@@ -1,7 +1,7 @@
 'use client';
 
 import { useClerk } from '@clerk/nextjs';
-import { Users, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,16 +26,12 @@ export function TopBar() {
       <div className="flex items-center justify-end px-6 py-3">
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors">
-            <Users className="w-4 h-4" />
-            <span>Invite</span>
-          </button>
-          <button className="px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors">
+          <button className="px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors cursor-pointer">
             Help
           </button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors cursor-pointer">
                 <LogOut className="w-4 h-4" />
                 <span>Log out</span>
               </button>

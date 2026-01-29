@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db, campaigns } from '@/lib/db';
 import { eq, desc } from 'drizzle-orm';
+import { Mail } from 'lucide-react';
 
 import { Header } from '@/components/header';
 import { Button } from '@/components/ui/button';
@@ -40,7 +41,7 @@ export default async function CampaignsPage() {
         {userCampaigns.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <div className="text-6xl mb-4">📧</div>
+              <Mail className="h-16 w-16 text-neutral-400 mb-4" />
               <h3 className="text-lg font-semibold mb-2">No campaigns yet</h3>
               <p className="text-neutral-600 text-center max-w-md mb-4">
                 Create your first campaign to start sending personalized

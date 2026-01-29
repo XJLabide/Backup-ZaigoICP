@@ -13,6 +13,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db, actions, leads, campaigns } from '@/lib/db';
 import { eq, and, inArray, desc } from 'drizzle-orm';
+import { Inbox, CheckCircle } from 'lucide-react';
 
 import { Header } from '@/components/header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -155,9 +156,11 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
         {messages.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <div className="text-6xl mb-4">
-                {statusFilter === 'approved' ? '✅' : '📬'}
-              </div>
+              {statusFilter === 'approved' ? (
+                <CheckCircle className="h-16 w-16 text-neutral-400 mb-4" />
+              ) : (
+                <Inbox className="h-16 w-16 text-neutral-400 mb-4" />
+              )}
               <h3 className="text-lg font-semibold mb-2">
                 {statusFilter === 'approved'
                   ? 'No approved messages'

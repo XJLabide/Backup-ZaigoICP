@@ -15,6 +15,7 @@ import { redirect } from 'next/navigation';
 import { db, leads, users } from '@/lib/db';
 import { eq, and, lt, or, desc, SQL, sql, ilike } from 'drizzle-orm';
 import { StatCard } from '@/components/dashboard/stat-card';
+import { Users, Search } from 'lucide-react';
 
 import { Header } from '@/components/header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -267,9 +268,11 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
         {leadsToDisplay.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <div className="text-6xl mb-4">
-                {statusFilter || sourceFilter ? '🔍' : '👥'}
-              </div>
+              {statusFilter || sourceFilter ? (
+                <Search className="h-16 w-16 text-neutral-400 mb-4" />
+              ) : (
+                <Users className="h-16 w-16 text-neutral-400 mb-4" />
+              )}
               <h3 className="text-lg font-semibold mb-2">
                 {statusFilter || sourceFilter
                   ? 'No leads match your filters'

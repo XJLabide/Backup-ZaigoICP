@@ -7,6 +7,7 @@
  * Uses URL search params for persistence and sharing.
  */
 
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Select,
@@ -15,18 +16,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 interface LeadsFiltersProps {
   currentStatus?: string;
   currentSource?: string;
+  currentSearch?: string;
 }
 
 export function LeadsFilters({
   currentStatus,
   currentSource,
+  currentSearch,
 }: LeadsFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Search input state for debouncing
+  const [searchValue, setSearchValue] = useState(currentSearch || '');
+
+  // Debounced search - updates URL after 300ms of no typing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchValue !== (currentSearch || '')) {
+        updateFilters('search', searchValue || undefined);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
+
+  // Sync local state when URL changes externally
+  useEffect(() => {
+    setSearchValue(currentSearch || '');
+  }, [currentSearch]);
 
   /**
    * Updates URL search params with new filter values.
@@ -48,6 +71,18 @@ export function LeadsFilters({
 
   return (
     <div className="flex items-center gap-3">
+      {/* Search input */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+        <Input
+          type="search"
+          placeholder="Search leads..."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          className="pl-9 w-[220px]"
+        />
+      </div>
+
       {/* Status filter */}
       <Select
         value={currentStatus || 'all'}

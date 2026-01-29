@@ -13,7 +13,8 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db, leads, users } from '@/lib/db';
-import { eq, and, lt, or, desc, SQL } from 'drizzle-orm';
+import { eq, and, lt, or, desc, SQL, sql, ilike } from 'drizzle-orm';
+import { StatCard } from '@/components/dashboard/stat-card';
 
 import { Header } from '@/components/header';
 import { Card, CardContent } from '@/components/ui/card';
@@ -92,6 +93,7 @@ interface LeadsPageProps {
     source?: string;
     cursor?: string;
     limit?: string;
+    search?: string;
   }>;
 }
 
@@ -107,6 +109,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const sourceFilter = params.source;
   const cursorParam = params.cursor;
   const limitParam = params.limit;
+  const searchQuery = params.search;
 
   // Parse and validate limit
   let limit = DEFAULT_LIMIT;
@@ -132,6 +135,30 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
 
   const lastSyncAt = user?.lastSyncAt ?? null;
 
+  // Query status counts (all leads, no filters applied)
+  const statusCountsResult = await db
+    .select({
+      status: leads.status,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(leads)
+    .where(eq(leads.userId, userId))
+    .groupBy(leads.status);
+
+  // Convert to object for easy access
+  const counts = {
+    total: 0,
+    new: 0,
+    qualified: 0,
+    connected: 0,
+  };
+  statusCountsResult.forEach(row => {
+    counts.total += row.count;
+    if (row.status === 'new') counts.new = row.count;
+    if (row.status === 'qualified') counts.qualified = row.count;
+    if (row.status === 'connected') counts.connected = row.count;
+  });
+
   // Build where conditions
   const conditions: SQL<unknown>[] = [eq(leads.userId, userId)];
 
@@ -156,6 +183,17 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   // Add source filter
   if (sourceFilter && isValidSource(sourceFilter)) {
     conditions.push(eq(leads.source, sourceFilter));
+  }
+
+  // Add search filter
+  if (searchQuery) {
+    conditions.push(
+      or(
+        ilike(leads.fullName, `%${searchQuery}%`),
+        ilike(leads.company, `%${searchQuery}%`),
+        ilike(leads.headline, `%${searchQuery}%`)
+      )!
+    );
   }
 
   // Query leads with limit + 1 to check for more results
@@ -202,25 +240,25 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     <div>
       <Header title="Leads" />
       <div className="p-6">
+        {/* Stats Cards */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+          <StatCard title="Total Leads" value={counts.total} subtitle="" />
+          <StatCard title="New" value={counts.new} subtitle="" />
+          <StatCard title="Qualified" value={counts.qualified} subtitle="" />
+          <StatCard title="Connected" value={counts.connected} subtitle="" />
+        </div>
+
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-gray-600">
+            <p className="text-neutral-600">
               Manage your LinkedIn leads from profile viewers
             </p>
-            <div className="flex gap-4 mt-2 text-sm">
-              <span className="text-gray-500">
-                <span className="font-medium text-gray-900">{totalCount}</span> leads
-                {hasMore && '+'}
-              </span>
-              <span className="text-gray-500">
-                <span className="font-medium text-gray-900">{newCount}</span> new
-              </span>
-            </div>
           </div>
           <div className="flex items-center gap-4">
             <LeadsFilters
               currentStatus={statusFilter}
               currentSource={sourceFilter}
+              currentSearch={searchQuery}
             />
             <SyncStatus lastSyncAt={lastSyncAt} />
           </div>
@@ -237,7 +275,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
                   ? 'No leads match your filters'
                   : 'No leads yet'}
               </h3>
-              <p className="text-gray-600 text-center max-w-md">
+              <p className="text-neutral-600 text-center max-w-md">
                 {statusFilter || sourceFilter
                   ? 'Try adjusting your filters or sync new profile viewers.'
                   : 'Leads will appear here when you sync your LinkedIn profile viewers. Click "Sync Now" to get started.'}

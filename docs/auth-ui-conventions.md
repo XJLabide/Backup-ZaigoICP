@@ -1,10 +1,22 @@
-# Auth UI Design System
+# UI Design System
 
-The authentication UI follows a minimal, high-contrast design philosophy using a black/white color palette with careful spacing and typography. This document provides design guidance for building and maintaining authentication experiences.
+This document defines the design system for the application. We use a **hybrid approach**:
 
-## Design Philosophy
+| Context | Design System | Philosophy |
+|---------|---------------|------------|
+| **Auth Pages** | Black/White Minimal | High contrast, distraction-free |
+| **Dashboard/App** | Black/White Minimal | Professional, consistent with auth |
+| **Landing/Marketing** | Modern SaaS | Engaging, flexible for marketing needs |
 
-The auth UI is intentionally **minimal and airy** with a focus on clarity and usability:
+---
+
+## Part 1: App Design System (Auth + Dashboard)
+
+The application UI (auth pages and dashboard) follows a minimal, high-contrast design philosophy using a black/white color palette with careful spacing and typography.
+
+### Design Philosophy
+
+The app UI is intentionally **minimal and airy** with a focus on clarity and usability:
 
 - **High contrast**: Pure black and white only - no gradients or secondary colors
 - **Minimal decoration**: Essential elements only, no ornamental styling
@@ -12,7 +24,7 @@ The auth UI is intentionally **minimal and airy** with a focus on clarity and us
 - **System-first**: Leverages platform default typography for accessibility
 - **Mobile-first**: Responsive design that works on all screen sizes
 
-This approach ensures auth flows are distraction-free, accessible, and fast-loading.
+This approach ensures the app is distraction-free, accessible, and fast-loading.
 
 ## Color System
 
@@ -714,9 +726,52 @@ Transitions:
   Default: 150ms ease-in-out
 ```
 
+---
+
+## Part 2: Landing Page Design System
+
+The landing/marketing pages use a **different design system** optimized for conversion and visual appeal.
+
+### Philosophy
+
+- **Modern SaaS aesthetic**: Soft gradients, rounded elements, engaging visuals
+- **Flexible color palette**: Neutral grays with accent colors allowed
+- **Marketing-focused**: Designed to convert visitors, not for daily app use
+
+### Color Palette (Landing Only)
+
+| Color | Usage | Tailwind |
+|-------|-------|----------|
+| Neutral-900 | Primary text | `text-neutral-900` |
+| Neutral-600 | Secondary text | `text-neutral-600` |
+| Neutral-200/300 | Borders | `border-neutral-200` |
+| White | Backgrounds | `bg-white` |
+| Accent colors | CTAs, highlights | As needed for marketing |
+
+### Allowed Elements (Landing Only)
+
+- `rounded-full` for buttons and pills
+- Gradient backgrounds and accents
+- Decorative elements (noise textures, glows)
+- Larger typography (up to 60px for heroes)
+- Shadow effects
+
+### Boundary Rules
+
+| Element | App (Auth + Dashboard) | Landing |
+|---------|------------------------|---------|
+| Buttons | `rounded-md`, black/white | `rounded-full`, flexible |
+| Borders | `border-black` | `border-neutral-*` |
+| Colors | Black, white, neutral-600 only | Full neutral palette + accents |
+| Typography max | 24px | 60px |
+| Decorations | None | Allowed |
+
+---
+
 ## Support
 
-For questions or issues regarding the auth UI design system, refer to:
-- Component implementations in `/home/natty/linkedin-automation/apps/web/components/`
-- Global styles in `/home/natty/linkedin-automation/apps/web/app/globals.css`
+For questions or issues regarding the design system, refer to:
+- App components: `apps/web/components/auth/`, `apps/web/components/dashboard/`
+- Landing components: `apps/web/components/landing/`
+- Global styles: `apps/web/app/globals.css`
 - Tailwind configuration for spacing and sizing scale

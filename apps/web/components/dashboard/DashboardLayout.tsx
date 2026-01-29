@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import { SidebarProvider, useSidebarState } from './sidebar-provider';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 
@@ -8,19 +9,30 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-export function DashboardLayout({ children }: DashboardLayoutProps) {
-  return (
-    <div className="min-h-screen bg-neutral-50">
-      {/* Sidebar */}
-      <Sidebar />
+function DashboardContent({ children }: DashboardLayoutProps) {
+  const { isCollapsed } = useSidebarState();
 
-      {/* Main content area */}
-      <div className="ml-[260px] min-h-screen flex flex-col">
+  return (
+    <div className="min-h-screen bg-white">
+      <Sidebar />
+      <div
+        className={`min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
+          isCollapsed ? 'ml-[80px]' : 'ml-[260px]'
+        }`}
+      >
         <TopBar />
         <main className="flex-1 p-6">
           {children}
         </main>
       </div>
     </div>
+  );
+}
+
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  return (
+    <SidebarProvider>
+      <DashboardContent>{children}</DashboardContent>
+    </SidebarProvider>
   );
 }

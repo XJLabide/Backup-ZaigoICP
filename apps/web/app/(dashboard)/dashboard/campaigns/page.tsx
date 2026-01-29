@@ -28,7 +28,7 @@ export default async function CampaignsPage() {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-gray-600">
+            <p className="text-neutral-600">
               Manage your outreach campaigns and message templates
             </p>
           </div>
@@ -42,7 +42,7 @@ export default async function CampaignsPage() {
             <CardContent className="flex flex-col items-center justify-center py-12">
               <div className="text-6xl mb-4">📧</div>
               <h3 className="text-lg font-semibold mb-2">No campaigns yet</h3>
-              <p className="text-gray-600 text-center max-w-md mb-4">
+              <p className="text-neutral-600 text-center max-w-md mb-4">
                 Create your first campaign to start sending personalized
                 connection requests to your leads.
               </p>

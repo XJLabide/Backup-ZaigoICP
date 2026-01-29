@@ -177,7 +177,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
           <TableRow>
             <TableHead className="w-[300px]">
               <button
-                className="flex items-center hover:text-gray-900"
+                className="flex items-center hover:text-black"
                 onClick={() => handleSort('fullName')}
               >
                 Lead
@@ -186,7 +186,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-gray-900"
+                className="flex items-center hover:text-black"
                 onClick={() => handleSort('company')}
               >
                 Company
@@ -195,7 +195,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-gray-900"
+                className="flex items-center hover:text-black"
                 onClick={() => handleSort('status')}
               >
                 Status
@@ -204,7 +204,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-gray-900"
+                className="flex items-center hover:text-black"
                 onClick={() => handleSort('viewedAt')}
               >
                 Viewed At
@@ -213,7 +213,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-gray-900"
+                className="flex items-center hover:text-black"
                 onClick={() => handleSort('createdAt')}
               >
                 Added
@@ -239,7 +239,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
                   <div>
                     <div className="font-medium">{lead.fullName}</div>
                     {lead.headline && (
-                      <div className="text-sm text-gray-500 line-clamp-1">
+                      <div className="text-sm text-neutral-600 line-clamp-1">
                         {lead.headline}
                       </div>
                     )}
@@ -247,7 +247,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
                 </Link>
               </TableCell>
               <TableCell>
-                <span className="text-gray-700">{lead.company || '-'}</span>
+                <span className="text-black">{lead.company || '-'}</span>
               </TableCell>
               <TableCell>
                 <span
@@ -256,10 +256,10 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
                   {lead.status}
                 </span>
               </TableCell>
-              <TableCell className="text-gray-600">
+              <TableCell className="text-neutral-600">
                 {formatDate(lead.viewedAt)}
               </TableCell>
-              <TableCell className="text-gray-600">
+              <TableCell className="text-neutral-600">
                 {formatDate(lead.createdAt)}
               </TableCell>
             </TableRow>

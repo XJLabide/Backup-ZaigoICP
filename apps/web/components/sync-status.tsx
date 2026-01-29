@@ -68,7 +68,7 @@ export function SyncStatus({ lastSyncAt }: SyncStatusProps) {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-neutral-600">
         {lastSyncAt ? (
           <>Last synced {formatRelativeTime(new Date(lastSyncAt))}</>
         ) : (

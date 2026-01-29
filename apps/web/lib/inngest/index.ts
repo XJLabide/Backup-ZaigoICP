@@ -35,6 +35,8 @@ export type {
   MessageGeneratedEvent,
   SyncProfileViewersEvent,
   ActionApprovedEvent,
+  ActionSentEvent,
+  InvitationAcceptedEvent,
 } from "./client";
 
 // Inngest functions
@@ -45,3 +47,5 @@ export {
   manualSyncProfileViewers,
   type UserSyncResult,
 } from "./functions/sync-profile-viewers";
+export { executeActionFunction } from "./functions/execute-action";
+export { updateCampaignStatsFunction } from "./functions/update-campaign-stats";

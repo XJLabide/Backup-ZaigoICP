@@ -66,6 +66,40 @@ export interface ActionApprovedEvent {
 }
 
 /**
+ * Event payload when an action has been sent successfully
+ */
+export interface ActionSentEvent {
+  data: {
+    /** The ID of the action that was sent */
+    actionId: string;
+    /** The ID of the lead associated with this action */
+    leadId: string;
+    /** The ID of the campaign associated with this action */
+    campaignId: string;
+    /** The ID of the user who owns this action */
+    userId: string;
+    /** The Unipile request ID for tracking */
+    unipileRequestId: string;
+  };
+}
+
+/**
+ * Event payload when a LinkedIn invitation has been accepted
+ */
+export interface InvitationAcceptedEvent {
+  data: {
+    /** The ID of the action associated with this invitation */
+    actionId: string;
+    /** The ID of the lead who accepted */
+    leadId: string;
+    /** The ID of the campaign associated with this action */
+    campaignId: string;
+    /** The ID of the user who owns this action */
+    userId: string;
+  };
+}
+
+/**
  * All event types for the application
  */
 export type Events = {
@@ -73,6 +107,8 @@ export type Events = {
   "message/generated": MessageGeneratedEvent;
   "sync/profile-viewers.trigger": SyncProfileViewersEvent;
   "action/approved": ActionApprovedEvent;
+  "action/sent": ActionSentEvent;
+  "invitation/accepted": InvitationAcceptedEvent;
 };
 
 /**

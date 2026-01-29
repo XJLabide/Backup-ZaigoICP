@@ -7,6 +7,7 @@ import {
   Users,
   Megaphone,
   MessageSquare,
+  History,
   Settings,
   Sparkles,
   PanelLeftClose,
@@ -19,6 +20,7 @@ const navItems = [
   { icon: Users, label: 'Leads', href: '/dashboard/leads' },
   { icon: Megaphone, label: 'Campaigns', href: '/dashboard/campaigns' },
   { icon: MessageSquare, label: 'Messages', href: '/dashboard/messages' },
+  { icon: History, label: 'History', href: '/dashboard/history' },
 ];
 
 export function Sidebar() {

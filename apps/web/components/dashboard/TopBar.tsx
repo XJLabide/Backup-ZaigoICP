@@ -22,8 +22,8 @@ export function TopBar() {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-neutral-200">
-      <div className="flex items-center justify-end px-6 py-3">
+    <header className="sticky top-0 z-30 bg-white border-b border-neutral-200 h-13">
+      <div className="flex items-center justify-end h-full px-6">
         {/* Actions */}
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors cursor-pointer">

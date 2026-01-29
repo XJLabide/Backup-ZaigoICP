@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-import { Header } from '@/components/header';
-import { Card, CardContent } from '@/components/ui/card';
-import { SettingsForm } from '@/components/settings-form';
+import { db, users } from '@/lib/db';
+import { eq } from 'drizzle-orm';
+import { SettingsClient } from './settings-client';
 
 export default async function SettingsPage() {
   const { userId } = await auth();
@@ -12,22 +12,29 @@ export default async function SettingsPage() {
     redirect('/sign-in');
   }
 
-  return (
-    <div>
-      <Header title="Settings" />
-      <div className="p-6">
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Manage your account preferences and default settings
-          </p>
-        </div>
+  // Query user data from database
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+  });
 
-        <Card className="max-w-2xl">
-          <CardContent className="pt-6">
-            <SettingsForm />
-          </CardContent>
-        </Card>
+  // Determine connection status and settings
+  const isLinkedInConnected = !!user?.unipileAccountId;
+  const calendarLink = user?.calendarLink || null;
+  const dailyLimit = user?.dailyLimit || 25;
+
+  return (
+    <div className="p-6 space-y-6">
+      {/* Page Title */}
+      <div>
+        <h1 className="text-3xl font-bold text-black">Settings</h1>
+        <p className="text-neutral-600 mt-1">Manage your account preferences and default settings</p>
       </div>
+
+      <SettingsClient
+        isLinkedInConnected={isLinkedInConnected}
+        calendarLink={calendarLink}
+        dailyLimit={dailyLimit}
+      />
     </div>
   );
 }

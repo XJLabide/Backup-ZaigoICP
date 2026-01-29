@@ -17,7 +17,6 @@ import { eq, and, lt, or, desc, SQL, sql, ilike } from 'drizzle-orm';
 import { StatCard } from '@/components/dashboard/stat-card';
 import { Users, Search } from 'lucide-react';
 
-import { Header } from '@/components/header';
 import { Card, CardContent } from '@/components/ui/card';
 import { LeadsTable } from '@/components/leads-table';
 import { SyncStatus } from '@/components/sync-status';
@@ -238,57 +237,53 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const newCount = leadsToDisplay.filter((l) => l.status === 'new').length;
 
   return (
-    <div>
-      <Header title="Leads" />
-      <div className="p-6">
-        {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+    <div className="p-6 space-y-6">
+      {/* Page Title */}
+      <div>
+        <h1 className="text-3xl font-bold text-black">Leads</h1>
+        <p className="text-neutral-600 mt-1">Manage your LinkedIn leads from profile viewers</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <StatCard title="Total Leads" value={counts.total} subtitle="" />
           <StatCard title="New" value={counts.new} subtitle="" />
           <StatCard title="Qualified" value={counts.qualified} subtitle="" />
           <StatCard title="Connected" value={counts.connected} subtitle="" />
         </div>
 
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <p className="text-neutral-600">
-              Manage your LinkedIn leads from profile viewers
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            <LeadsFilters
-              currentStatus={statusFilter}
-              currentSource={sourceFilter}
-              currentSearch={searchQuery}
-            />
-            <SyncStatus lastSyncAt={lastSyncAt} />
-          </div>
-        </div>
-
-        {leadsToDisplay.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              {statusFilter || sourceFilter ? (
-                <Search className="h-16 w-16 text-neutral-400 mb-4" />
-              ) : (
-                <Users className="h-16 w-16 text-neutral-400 mb-4" />
-              )}
-              <h3 className="text-lg font-semibold mb-2">
-                {statusFilter || sourceFilter
-                  ? 'No leads match your filters'
-                  : 'No leads yet'}
-              </h3>
-              <p className="text-neutral-600 text-center max-w-md">
-                {statusFilter || sourceFilter
-                  ? 'Try adjusting your filters or sync new profile viewers.'
-                  : 'Leads will appear here when you sync your LinkedIn profile viewers. Click "Sync Now" to get started.'}
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <LeadsTable leads={leadsToDisplay} nextCursor={nextCursor} />
-        )}
+      <div className="flex items-center justify-end gap-4">
+        <LeadsFilters
+          currentStatus={statusFilter}
+          currentSource={sourceFilter}
+          currentSearch={searchQuery}
+        />
+        <SyncStatus lastSyncAt={lastSyncAt} />
       </div>
+
+      {leadsToDisplay.length === 0 ? (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            {statusFilter || sourceFilter ? (
+              <Search className="h-16 w-16 text-neutral-400 mb-4" />
+            ) : (
+              <Users className="h-16 w-16 text-neutral-400 mb-4" />
+            )}
+            <h3 className="text-lg font-semibold mb-2">
+              {statusFilter || sourceFilter
+                ? 'No leads match your filters'
+                : 'No leads yet'}
+            </h3>
+            <p className="text-neutral-600 text-center max-w-md">
+              {statusFilter || sourceFilter
+                ? 'Try adjusting your filters or sync new profile viewers.'
+                : 'Leads will appear here when you sync your LinkedIn profile viewers. Click "Sync Now" to get started.'}
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        <LeadsTable leads={leadsToDisplay} nextCursor={nextCursor} />
+      )}
     </div>
   );
 }

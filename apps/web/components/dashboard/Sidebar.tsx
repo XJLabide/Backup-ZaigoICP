@@ -39,7 +39,7 @@ export function Sidebar() {
       }`}
     >
       {/* Brand + Collapse Toggle */}
-      <div className={`flex items-center justify-between px-6 py-5 border-b border-neutral-200 ${isCollapsed ? 'justify-center px-3' : ''}`}>
+      <div className={`flex items-center justify-between h-13 px-6 border-b border-neutral-200 ${isCollapsed ? 'justify-center px-3' : ''}`}>
         <div className={`flex items-center gap-2 ${isCollapsed ? 'justify-center' : ''}`}>
           <Sparkles className="w-5 h-5 text-black shrink-0" />
           {!isCollapsed && <span className="text-lg font-semibold text-black">Flowline</span>}

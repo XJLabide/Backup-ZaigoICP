@@ -41,7 +41,7 @@ export default async function DashboardPage() {
   const isLinkedInConnected = !!user?.unipileAccountId;
 
   return (
-    <div className="space-y-8">
+    <div className="p-6 space-y-8">
       {/* Welcome Header */}
       <div>
         <h1 className="text-3xl font-bold text-black">Welcome back!</h1>

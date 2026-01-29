@@ -18,6 +18,13 @@ const updateUserPreferencesSchema = z
       .max(50, 'Daily limit cannot exceed 50')
       .optional(),
     timezone: z.string().min(1, 'Timezone is required').optional(),
+    notificationsNewLeads: z.boolean().optional(),
+    notificationsReplies: z.boolean().optional(),
+    notificationsDailyDigest: z.boolean().optional(),
+    workingHoursStart: z.string().regex(/^(?:[01]\d|2[0-3]):00$/).optional(),
+    workingHoursEnd: z.string().regex(/^(?:[01]\d|2[0-3]):00$/).optional(),
+    displayName: z.string().max(100).nullable().optional(),
+    companyName: z.string().max(100).nullable().optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: 'At least one field must be provided for update',
@@ -130,6 +137,16 @@ export async function PATCH(request: Request) {
         },
         { status: 400 }
       );
+    }
+
+    // Normalize displayName and companyName: coerce empty strings to null
+    if ('displayName' in body) {
+      const value = (parsed.data.displayName as string | null)?.trim();
+      parsed.data.displayName = value || null;
+    }
+    if ('companyName' in body) {
+      const value = (parsed.data.companyName as string | null)?.trim();
+      parsed.data.companyName = value || null;
     }
 
     // Find and update user

@@ -59,6 +59,19 @@ export const users = pgTable('users', {
   dailyLimit: integer('daily_limit').default(25),
   timezone: text('timezone').default('America/Los_Angeles'),
 
+  // Notification preferences (notNull + default avoids tri-state null/true/false)
+  notificationsNewLeads: boolean('notifications_new_leads').notNull().default(true),
+  notificationsReplies: boolean('notifications_replies').notNull().default(true),
+  notificationsDailyDigest: boolean('notifications_daily_digest').notNull().default(true),
+
+  // Working hours (notNull + default for cleaner types)
+  workingHoursStart: text('working_hours_start').notNull().default('09:00'),
+  workingHoursEnd: text('working_hours_end').notNull().default('17:00'),
+
+  // Profile info for outreach messages (nullable - user may not set)
+  displayName: text('display_name'),
+  companyName: text('company_name'),
+
   // Connection health tracking
   lastSyncAt: timestamp('last_sync_at'),
   lastSyncError: text('last_sync_error'),

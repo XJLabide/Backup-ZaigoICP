@@ -34,6 +34,14 @@ export default async function SettingsPage() {
         isLinkedInConnected={isLinkedInConnected}
         calendarLink={calendarLink}
         dailyLimit={dailyLimit}
+        timezone={user?.timezone ?? 'America/Los_Angeles'}
+        notificationsNewLeads={user?.notificationsNewLeads ?? true}
+        notificationsReplies={user?.notificationsReplies ?? true}
+        notificationsDailyDigest={user?.notificationsDailyDigest ?? true}
+        workingHoursStart={user?.workingHoursStart ?? '09:00'}
+        workingHoursEnd={user?.workingHoursEnd ?? '17:00'}
+        displayName={user?.displayName ?? null}
+        companyName={user?.companyName ?? null}
       />
     </div>
   );

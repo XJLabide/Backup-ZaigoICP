@@ -1,9 +1,25 @@
-import { SignIn } from '@clerk/nextjs';
+import { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { AuthShell } from "@/components/auth/AuthShell";
+import { AuthForm } from "@/components/auth/AuthForm";
 
-export default function SignInPage() {
+export const metadata: Metadata = {
+  title: "Sign In | LinkReach",
+  description: "Sign in to your LinkReach account",
+};
+
+export default async function SignInPage() {
+  const { userId } = await auth();
+
+  // Redirect to dashboard if already signed in
+  if (userId) {
+    redirect("/dashboard");
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SignIn afterSignInUrl="/dashboard" />
-    </div>
+    <AuthShell>
+      <AuthForm variant="sign-in" />
+    </AuthShell>
   );
 }

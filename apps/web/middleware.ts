@@ -4,6 +4,7 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/sso-callback(.*)', // OAuth callback for Google, etc.
   '/api/health',
   '/api/webhooks/(.*)', // Unipile webhooks (signature-verified)
 ]);

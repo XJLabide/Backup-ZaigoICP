@@ -11,9 +11,24 @@ import { Separator } from "@/components/ui/separator"
 interface AuthFormProps {
   variant: "sign-in" | "sign-up"
   onSubmit?: (email: string, password?: string) => void | Promise<void>
+  redirectUrl?: string
 }
 
-export function AuthForm({ variant, onSubmit }: AuthFormProps) {
+function isValidRedirectUrl(url: string): boolean {
+  // Only allow relative paths starting with /
+  if (url.startsWith('/') && !url.startsWith('//')) {
+    return true;
+  }
+  // Or same-origin URLs
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.origin === window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
+export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: AuthFormProps) {
   const { signIn, isLoaded: isSignInLoaded } = useSignIn()
   const { signUp, isLoaded: isSignUpLoaded } = useSignUp()
 
@@ -32,12 +47,13 @@ export function AuthForm({ variant, onSubmit }: AuthFormProps) {
     setError(null)
 
     try {
+      const safeRedirectUrl = isValidRedirectUrl(redirectUrl) ? redirectUrl : "/dashboard";
       // For OAuth, we always use signIn - Clerk will handle sign-up automatically if needed
       if (signIn) {
         await signIn.authenticateWithRedirect({
           strategy,
           redirectUrl: "/sso-callback",
-          redirectUrlComplete: "/dashboard",
+          redirectUrlComplete: safeRedirectUrl,
         })
       }
     } catch (err: unknown) {
@@ -60,7 +76,7 @@ export function AuthForm({ variant, onSubmit }: AuthFormProps) {
       }
       setIsLoading(false)
     }
-  }, [isLoaded, signIn])
+  }, [isLoaded, signIn, redirectUrl])
 
   const handleFormSubmit = React.useCallback(
     async (e: React.FormEvent) => {
@@ -71,6 +87,8 @@ export function AuthForm({ variant, onSubmit }: AuthFormProps) {
       setError(null)
 
       try {
+        const safeRedirectUrl = isValidRedirectUrl(redirectUrl) ? redirectUrl : "/dashboard";
+
         if (onSubmit) {
           await onSubmit(email, isSignIn ? password : undefined)
         } else if (isSignIn && signIn) {
@@ -81,7 +99,7 @@ export function AuthForm({ variant, onSubmit }: AuthFormProps) {
           })
 
           if (result.status === "complete") {
-            window.location.href = "/dashboard"
+            window.location.href = safeRedirectUrl
           }
         } else if (signUp) {
           // Sign up with email - starts email verification
@@ -109,7 +127,7 @@ export function AuthForm({ variant, onSubmit }: AuthFormProps) {
         setIsLoading(false)
       }
     },
-    [email, password, isSignIn, isLoaded, onSubmit, signIn, signUp]
+    [email, password, isSignIn, isLoaded, onSubmit, signIn, signUp, redirectUrl]
   )
 
   return (

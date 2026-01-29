@@ -9,17 +9,23 @@ export const metadata: Metadata = {
   description: "Create your LinkReach account",
 };
 
-export default async function SignUpPage() {
-  const { userId } = await auth();
+interface SignUpPageProps {
+  searchParams: Promise<{ redirect_url?: string }>;
+}
 
-  // Redirect to dashboard if already signed in
+export default async function SignUpPage({ searchParams }: SignUpPageProps) {
+  const { userId } = await auth();
+  const params = await searchParams;
+  const redirectUrl = params.redirect_url || "/dashboard";
+
+  // Redirect to the intended destination if already signed in
   if (userId) {
-    redirect("/dashboard");
+    redirect(redirectUrl);
   }
 
   return (
     <AuthShell>
-      <AuthForm variant="sign-up" />
+      <AuthForm variant="sign-up" redirectUrl={redirectUrl} />
     </AuthShell>
   );
 }

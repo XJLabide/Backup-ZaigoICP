@@ -3,44 +3,29 @@
 > next build
 
    ▲ Next.js 15.5.10
+   - Environments: .env
 
    Creating an optimized production build ...
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (187kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ✓ Compiled successfully in 9.3s
-   Linting and checking validity of types ...
+Failed to compile.
 
- ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
-   Collecting page data ...
-   Generating static pages (0/12) ...
-   Generating static pages (3/12) 
-   Generating static pages (6/12) 
-   Generating static pages (9/12) 
- ✓ Generating static pages (12/12)
-   Finalizing page optimization ...
-   Collecting build traces ...
+./components/ui/slider.tsx
+Module not found: Can't resolve '@radix-ui/react-slider'
 
-Route (app)                                 Size  First Load JS
-┌ ƒ /                                      143 B         102 kB
-├ ○ /_not-found                            992 B         103 kB
-├ ƒ /api/auth/unipile/connect              143 B         102 kB
-├ ƒ /api/health                            143 B         102 kB
-├ ƒ /api/me                                143 B         102 kB
-├ ƒ /api/user/status                       143 B         102 kB
-├ ƒ /api/webhooks/unipile                  143 B         102 kB
-├ ○ /dashboard                             143 B         102 kB
-├ ƒ /onboarding                           2.4 kB         105 kB
-├ ƒ /onboarding/error                    2.08 kB         104 kB
-├ ƒ /onboarding/success                  2.67 kB         105 kB
-├ ƒ /sign-in/[[...sign-in]]              1.93 kB         138 kB
-└ ƒ /sign-up/[[...sign-up]]              1.93 kB         138 kB
-+ First Load JS shared by all             102 kB
-  ├ chunks/323-8ca30ba276a04e91.js         46 kB
-  ├ chunks/51a2404d-dd33fe9089582bd3.js  54.2 kB
-  └ other shared chunks (total)          2.06 kB
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./components/settings/rate-limiting-card.tsx
+./app/(dashboard)/dashboard/settings/settings-client.tsx
+
+./components/ui/switch.tsx
+Module not found: Can't resolve '@radix-ui/react-switch'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./components/settings/notification-preferences-card.tsx
+./app/(dashboard)/dashboard/settings/settings-client.tsx
 
 
-ƒ Middleware                               83 kB
-
-○  (Static)   prerendered as static content
-ƒ  (Dynamic)  server-rendered on demand
-
+> Build failed because of webpack errors
+ ELIFECYCLE  Command failed with exit code 1.

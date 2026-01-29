@@ -5,26 +5,446 @@
 
 [1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/home/natty/linkedin-automation/apps/web[39m
 
- [32m✓[39m __tests__/lib/unipile/webhook-verify.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 23[2mms[22m[39m
- [32m✓[39m __tests__/lib/unipile/auth.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
- [32m✓[39m __tests__/lib/unipile/client.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/client.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+[90mstderr[2m | __tests__/api/campaigns/route.test.ts[2m > [22m[2mPOST /api/campaigns[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database insert errors
+[22m[39mError creating campaign: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/route.test.ts:461:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/campaigns/route.test.ts[2m > [22m[2mPOST /api/campaigns[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
+[22m[39mError creating campaign: String error
+
+[90mstderr[2m | __tests__/api/campaigns/route.test.ts[2m > [22m[2mGET /api/campaigns[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database query errors
+[22m[39mError listing campaigns: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/route.test.ts:726:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+ [32m✓[39m __tests__/api/campaigns/route.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m __tests__/lib/inngest/functions/execute-action.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 269[2mms[22m[39m
+ [32m✓[39m __tests__/lib/inngest/functions/generate-message.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 376[2mms[22m[39m
+       [33m[2m✓[22m[39m exports generateMessageFunction [33m 353[2mms[22m[39m
+[90mstderr[2m | __tests__/components/onboarding/client.test.tsx[2m > [22m[2mOnboardingClient[2m > [22m[2mConnect flow[2m > [22m[2mshows error state when API returns error
+[22m[39mAuth link generation failed: Rate limit exceeded
+
+[90mstderr[2m | __tests__/components/onboarding/success-client.test.tsx[2m > [22m[2mSuccessClient[2m > [22m[2mSession expiry handling[2m > [22m[2mhandles 401 response gracefully
+[22m[39mSession expired during polling
+
+ [32m✓[39m __tests__/components/linkedin-connection-status.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[32m 266[2mms[22m[39m
+ [32m✓[39m __tests__/components/onboarding/success-client.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 296[2mms[22m[39m
+ [32m✓[39m __tests__/components/onboarding/client.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 354[2mms[22m[39m
+[90mstderr[2m | __tests__/components/sync-status.test.tsx[2m > [22m[2mSyncStatus[2m > [22m[2mSync Action[2m > [22m[2mshows loading state during sync
+[22m[39mAn update to SyncStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [32m✓[39m __tests__/components/sync-status.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 375[2mms[22m[39m
+[90mstderr[2m | __tests__/api/actions/[id]/reject/route.test.ts[2m > [22m[2mPOST /api/actions/[id]/reject[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database update errors
+[22m[39mError rejecting action: Error: Database connection failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/actions/[id]/reject/route.test.ts:554:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/actions/[id]/reject/route.test.ts[2m > [22m[2mPOST /api/actions/[id]/reject[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database select errors
+[22m[39mError rejecting action: Error: Select failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/actions/[id]/reject/route.test.ts:573:44
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+ [32m✓[39m __tests__/api/actions/[id]/reject/route.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 116[2mms[22m[39m
+ [32m✓[39m __tests__/components/leads-table.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 793[2mms[22m[39m
+[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mGET /api/me[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors
+[22m[39mError syncing user: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/me/route.test.ts:318:84
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mGET /api/me[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
+[22m[39mError syncing user: String error
+
+[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mPATCH /api/me[2m > [22m[2mDatabase operations[2m > [22m[2mreturns 500 for database errors
+[22m[39mError updating user preferences: TypeError: __vite_ssr_import_3__.db.update(...).set is not a function
+    at Module.PATCH [90m(/home/natty/linkedin-automation/apps/web/[39mapp/api/me/route.ts:155:8[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/me/route.test.ts:696:24
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+
+ [32m✓[39m __tests__/api/me/route.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 173[2mms[22m[39m
+ [32m✓[39m __tests__/components/leads-filters.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 785[2mms[22m[39m
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2mfetches profile viewers and creates new leads
+[22m[39m[sync-profile-viewers] Fetched 2 profile viewers for user user-1
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2mskips existing leads via onConflictDoNothing
+[22m[39m[sync-profile-viewers] Fetched 2 profile viewers for user user-1
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2mhandles mixed new and existing leads
+[22m[39m[sync-profile-viewers] Fetched 2 profile viewers for user user-1
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2mupdates user lastSyncAt on successful sync
+[22m[39m[sync-profile-viewers] Fetched 2 profile viewers for user user-1
+
+[90mstderr[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2msets lastSyncError when fetch fails
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2msets lastSyncError when upsert errors occur
+[22m[39m[sync-profile-viewers] Fetched 2 profile viewers for user user-1
+
+[22m[39m[sync-profile-viewers] Error syncing for user user-1: API rate limit exceeded
+
+[90mstderr[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2msets lastSyncError when upsert errors occur
+[22m[39m[sync-profile-viewers] Error upserting lead for viewer linkedin-viewer-2: Database connection lost
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2mcontinues processing viewers after individual upsert failure
+[90mstderr[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mmanualSyncProfileViewers[2m > [22m[2mcontinues processing viewers after individual upsert failure
+[22m[39m[sync-profile-viewers] Fetched 3 profile viewers for user user-1
+
+[22m[39m[sync-profile-viewers] Error upserting lead for viewer linkedin-viewer-2: Constraint violation
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2matomic deduplication[2m > [22m[2muses onConflictDoNothing with correct target columns
+[22m[39m[sync-profile-viewers] Fetched 1 profile viewers for user user-1
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2matomic deduplication[2m > [22m[2mcorrectly reports new lead when returning has id
+[22m[39m[sync-profile-viewers] Fetched 1 profile viewers for user user-1
+
+[90mstderr[2m | __tests__/api/campaigns/[id]/route.test.ts[2m > [22m[2mPATCH /api/campaigns/[id][2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database select errors
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for invalid signature
+[22m[39m{"event":"webhook_signature_invalid","error":"Invalid signature","timestamp":"2026-01-29T18:29:17.141Z"}
+[22m[39mError updating campaign: Error: Connection refused
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2matomic deduplication[2m > [22m[2mcorrectly reports skipped lead when returning is empty (conflict)
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/[id]/route.test.ts:589:28
+[22m[39m[sync-profile-viewers] Fetched 1 profile viewers for user user-1
+
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mlead data mapping[2m > [22m[2minserts lead with correct field values
+[22m[39m[sync-profile-viewers] Fetched 1 profile viewers for user user-1
+
+[90mstderr[2m | __tests__/api/campaigns/[id]/route.test.ts[2m > [22m[2mPATCH /api/campaigns/[id][2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database update errors
+[22m[39mError updating campaign: Error: Update failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/[id]/route.test.ts:605:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstdout[2m | __tests__/lib/inngest/functions/sync-profile-viewers.test.ts[2m > [22m[2mlib/inngest/functions/sync-profile-viewers[2m > [22m[2mlead data mapping[2m > [22m[2mhandles null optional fields correctly
+[22m[39m[sync-profile-viewers] Fetched 1 profile viewers for user user-1
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for missing signature
+[22m[39m{"event":"webhook_signature_invalid","error":"Missing signature","timestamp":"2026-01-29T18:29:17.149Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.156Z"}
+
+ [32m✓[39m __tests__/lib/inngest/functions/sync-profile-viewers.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 1793[2mms[22m[39m
+       [33m[2m✓[22m[39m exports syncProfileViewersFunction [33m 311[2mms[22m[39m
+       [33m[2m✓[22m[39m exports UserSyncResult type via index [33m 1434[2mms[22m[39m
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
+[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.157Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
+[22m[39m{"event":"webhook_received","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-29T18:29:17.162Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
+[22m[39m{"event":"webhook_processed","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-29T18:29:17.162Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
+[22m[39m{"event":"webhook_received","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-29T18:29:17.164Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
+[22m[39m{"event":"webhook_processed","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-29T18:29:17.164Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.166Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.166Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.168Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
+[22m[39m{"event":"webhook_duplicate","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","wasProcessed":true,"timestamp":"2026-01-29T18:29:17.168Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.170Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
+[22m[39m{"event":"webhook_in_progress","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.170Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles invalid JSON gracefully
+[22m[39m{"event":"webhook_parse_error","eventId":"mock-hash-abc123","timestamp":"2026-01-29T18:29:17.171Z"}
+
+[90mstderr[2m | __tests__/api/campaigns/[id]/route.test.ts[2m > [22m[2mDELETE /api/campaigns/[id][2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database select errors
+[22m[39mError deleting campaign: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/[id]/route.test.ts:723:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/campaigns/[id]/route.test.ts[2m > [22m[2mDELETE /api/campaigns/[id][2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database delete errors
+[22m[39mError deleting campaign: Error: Delete failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/[id]/route.test.ts:739:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/leads/[id]/assign/route.test.ts[2m > [22m[2mPATCH /api/leads/[id]/assign[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database query errors
+[22m[39mError assigning lead to campaign: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/leads/[id]/assign/route.test.ts:479:44
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles non-object payload gracefully
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"string","timestamp":"2026-01-29T18:29:17.173Z"}
+
+ [32m✓[39m __tests__/api/leads/[id]/assign/route.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 79[2mms[22m[39m
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles null payload gracefully
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"null","timestamp":"2026-01-29T18:29:17.176Z"}
+
+ [32m✓[39m __tests__/api/campaigns/[id]/route.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles array payload gracefully
+[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"array","timestamp":"2026-01-29T18:29:17.179Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.182Z"}
+
+[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
+[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"Database connection failed","retriable":true,"timestamp":"2026-01-29T18:29:17.183Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.186Z"}
+
+[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
+[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"User not found: user_123","retriable":false,"timestamp":"2026-01-29T18:29:17.186Z"}
+
+[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
+[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-29T18:29:17.188Z"}
+
+[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
+[22m[39m{"event":"webhook_db_error","eventType":"account.connected","eventId":"mock-hash-abc123","error":"Connection refused","timestamp":"2026-01-29T18:29:17.188Z"}
+
+ [32m✓[39m __tests__/api/webhooks/unipile.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+[90mstderr[2m | __tests__/api/leads/route.test.ts[2m > [22m[2mGET /api/leads[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database query errors
+[22m[39mError listing leads: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/leads/route.test.ts:650:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/leads/route.test.ts[2m > [22m[2mGET /api/leads[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
+[22m[39mError listing leads: String error
+
+ [32m✓[39m __tests__/api/leads/route.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 110[2mms[22m[39m
+[90mstderr[2m | __tests__/api/campaigns/[id]/assign/route.test.ts[2m > [22m[2mPOST /api/campaigns/[id]/assign[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database query errors
+[22m[39mError bulk assigning leads to campaign: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/[id]/assign/route.test.ts:579:44
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/campaigns/[id]/assign/route.test.ts[2m > [22m[2mPOST /api/campaigns/[id]/assign[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database update errors
+[22m[39mError bulk assigning leads to campaign: Error: Update failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/campaigns/[id]/assign/route.test.ts:610:44
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+ [32m✓[39m __tests__/api/campaigns/[id]/assign/route.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 124[2mms[22m[39m
+[90mstderr[2m | __tests__/api/stats/route.test.ts[2m > [22m[2mGET /api/stats[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 0s when database query fails
+[22m[39mError fetching stats for user: TypeError: __vite_ssr_import_0__.db.select(...).from(...).where(...).limit is not a function
+    at getStatsForUser [90m(/home/natty/linkedin-automation/apps/web/[39mlib/db/queries/stats.ts:36:8[90m)[39m
+    at Module.GET [90m(/home/natty/linkedin-automation/apps/web/[39mapp/api/stats/route.ts:35:25[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/stats/route.test.ts:382:24
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+
+ [32m✓[39m __tests__/api/stats/route.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 128[2mms[22m[39m
+[90mstderr[2m | __tests__/lib/agents/quality-scorer.test.ts[2m > [22m[2mlib/agents/quality-scorer[2m > [22m[2mscoreMessage[2m > [22m[2medge cases[2m > [22m[2mhandles LLM failure gracefully with default score
+[22m[39mLLM scoring failed, using default: Error: API rate limit
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/lib/agents/quality-scorer.test.ts:300:44
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+ [32m✓[39m __tests__/lib/agents/quality-scorer.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 55[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/webhook-verify.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 97[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/invitations.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+[90mstderr[2m | __tests__/api/actions/[id]/approve/route.test.ts[2m > [22m[2mPOST /api/actions/[id]/approve[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database update errors
+[22m[39mError approving action: Error: Database connection failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/actions/[id]/approve/route.test.ts:430:28
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/actions/[id]/approve/route.test.ts[2m > [22m[2mPOST /api/actions/[id]/approve[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database select errors
+[22m[39mError approving action: Error: Select failed
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/actions/[id]/approve/route.test.ts:449:44
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/actions/[id]/approve/route.test.ts[2m > [22m[2mPOST /api/actions/[id]/approve[2m > [22m[2mInngest event errors[2m > [22m[2mreturns 503 and reverts action if Inngest send fails
+[22m[39mInngest send failed, reverting action status: Error: Inngest unavailable
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/actions/[id]/approve/route.test.ts:494:42
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/sync/profile-viewers/route.test.ts[2m > [22m[2mPOST /api/sync/profile-viewers[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database query errors
+[22m[39mError triggering profile viewers sync: Error: Connection refused
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/sync/profile-viewers/route.test.ts:332:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+[90mstderr[2m | __tests__/api/sync/profile-viewers/route.test.ts[2m > [22m[2mPOST /api/sync/profile-viewers[2m > [22m[2mInngest errors[2m > [22m[2mreturns 500 when Inngest send fails
+[22m[39mError triggering profile viewers sync: Error: Inngest unavailable
+    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/sync/profile-viewers/route.test.ts:349:42
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
+    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+
+ [32m✓[39m __tests__/api/actions/[id]/approve/route.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m __tests__/api/sync/profile-viewers/route.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32m✓[39m __tests__/lib/agents/message-generator.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 20[2mms[22m[39m
 [90mstderr[2m | __tests__/api/user/status.test.ts[2m > [22m[2mGET /api/user/status[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors
-[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T23:21:09.962Z","error":"Connection refused"}
+[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-29T18:29:18.489Z","error":"Connection refused"}
 
 [90mstderr[2m | __tests__/api/user/status.test.ts[2m > [22m[2mGET /api/user/status[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
-[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-27T23:21:09.964Z","error":"String error"}
+[22m[39m{"event":"user_status_fetch_error","userId":"user_123","timestamp":"2026-01-29T18:29:18.491Z","error":"String error"}
 
-[90mstdout[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns URL for authenticated user
-[22m[39m{"event":"auth_link_generated","userId":"user_123","timestamp":"2026-01-27T23:21:09.935Z","expiresOn":"2026-01-27T23:51:09.934Z"}
-
- [32m✓[39m __tests__/api/user/status.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 67[2mms[22m[39m
-[90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns 500 when Unipile fails
-[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T23:21:09.969Z","error":"Unipile API connection failed"}
-
-[90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mhandles non-Error exceptions from Unipile
-[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-27T23:21:09.970Z","error":"String error"}
-
- [32m✓[39m __tests__/api/auth/unipile/connect.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m __tests__/api/user/status.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/profile-viewers.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/auth.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 9[2mms[22m[39m
 [90mstderr[2m | __tests__/api/health/route.test.ts[2m > [22m[2mGET /api/health[2m > [22m[2mDatabase failures[2m > [22m[2mreturns error status when database fails
 [22m[39mHealth check failed: Error: Connection refused
     at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/health/route.test.ts:68:40
@@ -34,8 +454,8 @@
     at new Promise (<anonymous>)
     at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
     at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
-    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
-    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
     at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
 
 [90mstderr[2m | __tests__/api/health/route.test.ts[2m > [22m[2mGET /api/health[2m > [22m[2mDatabase failures[2m > [22m[2mhandles non-Error exceptions
@@ -50,114 +470,26 @@
     at new Promise (<anonymous>)
     at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
     at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
-    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
-    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_happy-dom@20.4.0_jiti@2.6.1_jsdom@_7gqowtvonam4dnw3gp2bkfmxvi/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
     at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
 
- [32m✓[39m __tests__/api/health/route.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 18[2mms[22m[39m
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for invalid signature
-[22m[39m{"event":"webhook_signature_invalid","error":"Invalid signature","timestamp":"2026-01-27T23:21:09.991Z"}
+ [32m✓[39m __tests__/api/health/route.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m __tests__/lib/unipile/webhook-handlers.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns URL for authenticated user
+[22m[39m{"event":"auth_link_generated","userId":"user_123","timestamp":"2026-01-29T18:29:18.697Z","expiresOn":"2026-01-29T18:59:18.696Z"}
 
-[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mGET /api/me[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors
-[22m[39mError syncing user: Error: Connection refused
-    at [90m/home/natty/linkedin-automation/apps/web/[39m__tests__/api/me/route.test.ts:318:54
-    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:145:11
-    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:915:26
-    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1243:20
-    at new Promise (<anonymous>)
-    at runWithTimeout (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1209:10)
-    at file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:37
-    at Traces.$ (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/traces.CCmnQaNT.js:142:27)
-    at trace (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/vitest@4.0.18_@opentelemetry+api@1.9.0_@types+node@22.19.7_jiti@2.6.1_jsdom@27.4.0_lightningcss@1.30.2_yaml@2.8.2/node_modules/[4mvitest[24m/dist/chunks/test.B8ej_ZHS.js:239:21)
-    at runTest (file:///home/natty/linkedin-automation/node_modules/[4m.pnpm[24m/@vitest+runner@4.0.18/node_modules/[4m@vitest/runner[24m/dist/index.js:1653:12)
+[90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mreturns 500 when Unipile fails
+[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-29T18:29:18.701Z","error":"Unipile API connection failed"}
 
-[90mstderr[2m | __tests__/api/me/route.test.ts[2m > [22m[2mGET /api/me[2m > [22m[2mDatabase errors[2m > [22m[2mhandles non-Error database exceptions
-[22m[39mError syncing user: String error
+[90mstderr[2m | __tests__/api/auth/unipile/connect.test.ts[2m > [22m[2mPOST /api/auth/unipile/connect[2m > [22m[2mhandles non-Error exceptions from Unipile
+[22m[39m{"event":"auth_link_generation_failed","userId":"user_123","timestamp":"2026-01-29T18:29:18.702Z","error":"String error"}
 
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mSignature verification[2m > [22m[2mreturns 401 for missing signature
-[22m[39m{"event":"webhook_signature_invalid","error":"Missing signature","timestamp":"2026-01-27T23:21:09.999Z"}
+ [32m✓[39m __tests__/api/auth/unipile/connect.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m __tests__/lib/inngest/functions/update-campaign-stats.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 9[2mms[22m[39m
 
- [32m✓[39m __tests__/api/me/route.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 32[2mms[22m[39m
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.001Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.connected event[2m > [22m[2mhandles account.connected event successfully
-[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.001Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
-[22m[39m{"event":"webhook_received","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T23:21:10.004Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2maccount.disconnected event[2m > [22m[2mhandles account.disconnected event successfully
-[22m[39m{"event":"webhook_processed","eventType":"account.disconnected","eventId":"mock-hash-abc123","accountId":"acc_123","timestamp":"2026-01-27T23:21:10.006Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
-[22m[39m{"event":"webhook_received","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T23:21:10.009Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mUnknown event types[2m > [22m[2mignores unknown event types with 200
-[22m[39m{"event":"webhook_processed","eventType":"some.unknown.event","eventId":"mock-hash-abc123","timestamp":"2026-01-27T23:21:10.010Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.013Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_processed","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.014Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.016Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mduplicate webhook is idempotent - returns 200 without re-processing
-[22m[39m{"event":"webhook_duplicate","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","wasProcessed":true,"timestamp":"2026-01-27T23:21:10.016Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.019Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mIdempotency[2m > [22m[2mreturns 500 when event is in-progress by another worker
-[22m[39m{"event":"webhook_in_progress","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.019Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles invalid JSON gracefully
-[22m[39m{"event":"webhook_parse_error","eventId":"mock-hash-abc123","timestamp":"2026-01-27T23:21:10.021Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles non-object payload gracefully
-[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"string","timestamp":"2026-01-27T23:21:10.024Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles null payload gracefully
-[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"null","timestamp":"2026-01-27T23:21:10.027Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mInvalid payloads[2m > [22m[2mhandles array payload gracefully
-[22m[39m{"event":"webhook_invalid_payload_type","eventId":"mock-hash-abc123","payloadType":"array","timestamp":"2026-01-27T23:21:10.030Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.031Z"}
-
-[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 500 for retriable handler errors
-[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"Database connection failed","retriable":true,"timestamp":"2026-01-27T23:21:10.031Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.033Z"}
-
-[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mHandler errors[2m > [22m[2mreturns 200 for non-retriable errors (user not found)
-[22m[39m{"event":"webhook_handler_error","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","error":"User not found: user_123","retriable":false,"timestamp":"2026-01-27T23:21:10.033Z"}
-
-[90mstdout[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
-[22m[39m{"event":"webhook_received","eventType":"account.connected","eventId":"mock-hash-abc123","accountId":"acc_123","userId":"user_123","timestamp":"2026-01-27T23:21:10.034Z"}
-
-[90mstderr[2m | __tests__/api/webhooks/unipile.test.ts[2m > [22m[2mPOST /api/webhooks/unipile[2m > [22m[2mDatabase errors[2m > [22m[2mreturns 500 for database errors on insert
-[22m[39m{"event":"webhook_db_error","eventType":"account.connected","eventId":"mock-hash-abc123","error":"Connection refused","timestamp":"2026-01-27T23:21:10.034Z"}
-
- [32m✓[39m __tests__/api/webhooks/unipile.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 76[2mms[22m[39m
- [32m✓[39m __tests__/lib/unipile/webhook-handlers.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 12[2mms[22m[39m
-[90mstderr[2m | __tests__/components/onboarding/client.test.tsx[2m > [22m[2mOnboardingClient[2m > [22m[2mConnect flow[2m > [22m[2mshows error state when API returns error
-[22m[39mAuth link generation failed: Rate limit exceeded
-
-[90mstderr[2m | __tests__/components/onboarding/success-client.test.tsx[2m > [22m[2mSuccessClient[2m > [22m[2mSession expiry handling[2m > [22m[2mhandles 401 response gracefully
-[22m[39mSession expired during polling
-
- [32m✓[39m __tests__/components/linkedin-connection-status.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 338[2mms[22m[39m
- [32m✓[39m __tests__/components/onboarding/success-client.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 363[2mms[22m[39m
- [32m✓[39m __tests__/components/onboarding/client.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 396[2mms[22m[39m
-
-[2m Test Files [22m [1m[32m12 passed[39m[22m[90m (12)[39m
-[2m      Tests [22m [1m[32m110 passed[39m[22m[90m (110)[39m
-[2m   Start at [22m 07:21:09
-[2m   Duration [22m 1.61s[2m (transform 1.71s, setup 1.66s, import 2.34s, tests 1.44s, environment 2.22s)[22m
+[2m Test Files [22m [1m[32m32 passed[39m[22m[90m (32)[39m
+[2m      Tests [22m [1m[32m489 passed[39m[22m[90m (489)[39m
+[2m   Start at [22m 02:29:14
+[2m   Duration [22m 4.49s[2m (transform 4.28s, setup 3.66s, import 8.73s, tests 6.78s, environment 17.85s)[22m
 

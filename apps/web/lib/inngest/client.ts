@@ -84,6 +84,22 @@ export interface ActionSentEvent {
 }
 
 /**
+ * Event payload when a LinkedIn invitation has been accepted
+ */
+export interface InvitationAcceptedEvent {
+  data: {
+    /** The ID of the action associated with this invitation */
+    actionId: string;
+    /** The ID of the lead who accepted */
+    leadId: string;
+    /** The ID of the campaign associated with this action */
+    campaignId: string;
+    /** The ID of the user who owns this action */
+    userId: string;
+  };
+}
+
+/**
  * All event types for the application
  */
 export type Events = {
@@ -92,6 +108,7 @@ export type Events = {
   "sync/profile-viewers.trigger": SyncProfileViewersEvent;
   "action/approved": ActionApprovedEvent;
   "action/sent": ActionSentEvent;
+  "invitation/accepted": InvitationAcceptedEvent;
 };
 
 /**

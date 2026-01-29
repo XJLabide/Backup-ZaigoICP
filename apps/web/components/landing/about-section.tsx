@@ -50,7 +50,7 @@ export function AboutSection() {
 
               {/* Timeline Items */}
               <div className="space-y-8">
-                {values.map((value, index) => (
+                {values.map((value, _index) => (
                   <div key={value.title} className="relative flex gap-6">
                     {/* Timeline Dot */}
                     <div className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-white border-2 border-neutral-200 flex items-center justify-center shadow-sm">

@@ -1,9 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+// Type for the handler function
+type HandlerFn = (ctx: { event: { name: string; data: Record<string, unknown> }; step: { run: (name: string, fn: () => Promise<unknown>) => Promise<unknown> } }) => Promise<{ success: boolean; campaignId: string; field: string }>;
+
 // Mock dependencies
 vi.mock('@/lib/inngest/client', () => ({
   inngest: {
-    createFunction(config: unknown, triggers: unknown, handler: Function) {
+    createFunction(config: unknown, triggers: unknown, handler: HandlerFn) {
       return { config, triggers, handler };
     },
   },
@@ -63,7 +66,7 @@ describe('update-campaign-stats', () => {
     // Reset db.update to return our mocks
     vi.mocked(dbModule.update).mockReturnValue({
       set: mockSet,
-    } as any);
+    } as ReturnType<typeof db.update>);
 
     mockEq = vi.mocked(eq);
     mockSql = vi.mocked(sql);
@@ -93,7 +96,7 @@ describe('update-campaign-stats', () => {
 
   describe('action/sent event handling', () => {
     it('increments totalSent field', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'action/sent',
         data: {
@@ -111,7 +114,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('uses COALESCE for NULL safety on totalSent', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'action/sent',
         data: { campaignId: 'campaign-1' },
@@ -132,7 +135,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('updates updatedAt timestamp on action/sent', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'action/sent',
         data: { campaignId: 'campaign-1' },
@@ -150,7 +153,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('filters by campaignId on action/sent', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'action/sent',
         data: { campaignId: 'campaign-123' },
@@ -163,7 +166,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('returns success with correct field for action/sent', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'action/sent',
         data: { campaignId: 'campaign-1' },
@@ -181,7 +184,7 @@ describe('update-campaign-stats', () => {
 
   describe('invitation/accepted event handling', () => {
     it('increments totalAccepted field', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'invitation/accepted',
         data: {
@@ -199,7 +202,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('uses COALESCE for NULL safety on totalAccepted', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'invitation/accepted',
         data: { campaignId: 'campaign-2' },
@@ -220,7 +223,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('updates updatedAt timestamp on invitation/accepted', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'invitation/accepted',
         data: { campaignId: 'campaign-2' },
@@ -238,7 +241,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('filters by campaignId on invitation/accepted', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'invitation/accepted',
         data: { campaignId: 'campaign-456' },
@@ -251,7 +254,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('returns success with correct field for invitation/accepted', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'invitation/accepted',
         data: { campaignId: 'campaign-2' },
@@ -269,7 +272,7 @@ describe('update-campaign-stats', () => {
 
   describe('field determination logic', () => {
     it('correctly maps action/sent to totalSent', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'action/sent',
         data: { campaignId: 'campaign-1' },
@@ -281,7 +284,7 @@ describe('update-campaign-stats', () => {
     });
 
     it('correctly maps invitation/accepted to totalAccepted', async () => {
-      const { handler } = updateCampaignStatsFunction as { handler: Function };
+      const { handler } = updateCampaignStatsFunction as { handler: HandlerFn };
       const mockEvent = {
         name: 'invitation/accepted',
         data: { campaignId: 'campaign-1' },

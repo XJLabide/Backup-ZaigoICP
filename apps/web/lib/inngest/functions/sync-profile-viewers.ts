@@ -8,10 +8,7 @@
 import { inngest } from "../client";
 import { db, users, leads } from "@/lib/db";
 import { eq, isNotNull } from "drizzle-orm";
-import {
-  getProfileViewers,
-  type ProfileViewer,
-} from "@/lib/unipile/profile-viewers";
+import { getProfileViewers } from "@/lib/unipile/profile-viewers";
 
 /**
  * Result of syncing profile viewers for a single user.

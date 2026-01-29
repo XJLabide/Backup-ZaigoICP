@@ -232,10 +232,6 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     }
   }
 
-  // Count totals for display
-  const totalCount = leadsToDisplay.length;
-  const newCount = leadsToDisplay.filter((l) => l.status === 'new').length;
-
   return (
     <div className="p-6 space-y-6">
       {/* Page Title */}

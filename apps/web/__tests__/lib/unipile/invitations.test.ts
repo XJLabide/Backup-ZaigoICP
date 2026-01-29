@@ -33,7 +33,6 @@ import { getUnipileClient } from '@/lib/unipile/client';
 import {
   sendConnectionRequest,
   type SendInvitationParams,
-  type SendInvitationResult,
 } from '@/lib/unipile/invitations';
 
 describe('lib/unipile/invitations', () => {
@@ -429,7 +428,7 @@ describe('lib/unipile/invitations', () => {
           linkedInId: 'john-doe-456',
         };
 
-        const result = await sendConnectionRequest(params);
+        await sendConnectionRequest(params);
 
         // Spaces should be truthy but this is edge case behavior
         // The actual API would reject it, but our validation passes it

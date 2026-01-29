@@ -125,15 +125,6 @@ const mockUser = {
   updatedAt: new Date(),
 };
 
-const mockEvent = {
-  data: {
-    actionId: 'action-1',
-    userId: 'user-1',
-    leadId: 'lead-1',
-    campaignId: 'campaign-1',
-  },
-};
-
 /**
  * Mock step implementation for testing
  */
@@ -366,8 +357,7 @@ describe('lib/inngest/functions/execute-action', () => {
 
       // Act
       await step.run('check-daily-limit', async () => {
-        const [result] = await mockLimit();
-        const sentToday = result?.count ?? 0;
+        await mockLimit();
         const dailyLimit = userNullLimit.dailyLimit ?? 25;
 
         // Verify default limit is used
@@ -429,7 +419,7 @@ describe('lib/inngest/functions/execute-action', () => {
         'wait-rate-gap',
         expect.any(Number)
       );
-      const sleepDuration = (step.sleep as any).mock.calls[0][1];
+      const sleepDuration = (step.sleep as ReturnType<typeof vi.fn>).mock.calls[0][1] as number;
       expect(sleepDuration).toBeGreaterThan(0);
       expect(sleepDuration).toBeLessThanOrEqual(5 * 60 * 1000);
     });

@@ -9,7 +9,6 @@
 
 import 'server-only';
 import { getUnipileClient } from './client';
-import { UnipileApiError } from './profile-viewers';
 
 /**
  * Parameters for sending a LinkedIn connection invitation.

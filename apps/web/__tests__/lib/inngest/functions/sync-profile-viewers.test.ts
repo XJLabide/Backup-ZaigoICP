@@ -141,7 +141,10 @@ describe("lib/inngest/functions/sync-profile-viewers", () => {
 
     it("exports UserSyncResult type via index", async () => {
       // Type export verification - if this compiles, the type is exported
-      const { manualSyncProfileViewers } = await import("@/lib/inngest");
+      // Import directly from the function file to avoid loading all inngest functions
+      const { manualSyncProfileViewers } = await import(
+        "@/lib/inngest/functions/sync-profile-viewers"
+      );
       expect(manualSyncProfileViewers).toBeDefined();
     });
   });

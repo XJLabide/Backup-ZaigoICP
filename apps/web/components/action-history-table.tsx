@@ -26,7 +26,6 @@ export interface ActionHistoryItem {
   status: 'pending' | 'approved' | 'rejected' | 'sent' | 'failed';
   message: string | null;
   sentAt: Date | null;
-  failedReason: string | null;
   lead: { id: string; fullName: string; company: string | null };
   campaign: { id: string; name: string };
 }

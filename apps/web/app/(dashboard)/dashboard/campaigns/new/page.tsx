@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CampaignForm } from '@/components/campaign-form';

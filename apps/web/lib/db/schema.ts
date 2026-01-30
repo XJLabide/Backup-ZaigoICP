@@ -82,6 +82,9 @@ export const users = pgTable('users', {
     keywords: string[];
   }>(),
 
+  // Onboarding
+  hasCompletedOnboarding: boolean('has_completed_onboarding').notNull().default(false),
+
   // Connection health tracking
   lastSyncAt: timestamp('last_sync_at'),
   lastSyncError: text('last_sync_error'),

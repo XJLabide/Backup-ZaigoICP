@@ -33,6 +33,7 @@ const updateUserPreferencesSchema = z
     notificationsNewLeads: z.boolean().optional(),
     notificationsReplies: z.boolean().optional(),
     notificationsDailyDigest: z.boolean().optional(),
+    hasCompletedOnboarding: z.boolean().optional(),
     workingHoursStart: z.string().regex(/^(?:[01]\d|2[0-3]):00$/).optional(),
     workingHoursEnd: z.string().regex(/^(?:[01]\d|2[0-3]):00$/).optional(),
     displayName: z.string().max(100).nullable().optional(),

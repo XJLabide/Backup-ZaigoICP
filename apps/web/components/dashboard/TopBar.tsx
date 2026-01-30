@@ -13,9 +13,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { useOnboarding } from '@/components/onboarding/onboarding-provider';
 
 export function TopBar() {
   const { signOut } = useClerk();
+  const { startTour } = useOnboarding();
 
   const handleLogout = () => {
     signOut({ redirectUrl: '/sign-in' });
@@ -26,7 +28,7 @@ export function TopBar() {
       <div className="flex items-center justify-end h-full px-6">
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-white/20 rounded-md hover:bg-white/10 hover:border-[#d4a84b] transition-colors cursor-pointer">
+          <button onClick={startTour} className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-white/20 rounded-md hover:bg-white/10 hover:border-[#d4a84b] transition-colors cursor-pointer">
             Help
           </button>
           <AlertDialog>

@@ -17,12 +17,12 @@ import {
 import { useSidebarState } from './sidebar-provider';
 
 const navItems = [
-  { icon: Home, label: 'Dashboard', href: '/dashboard' },
-  { icon: Users, label: 'Prospects', href: '/dashboard/leads' },
-  { icon: Megaphone, label: 'Campaigns', href: '/dashboard/campaigns' },
-  { icon: Target, label: 'ICP', href: '/dashboard/icp' },
-  { icon: MessageSquare, label: 'Messages', href: '/dashboard/messages' },
-  { icon: History, label: 'History', href: '/dashboard/history' },
+  { icon: Home, label: 'Dashboard', href: '/dashboard', tour: 'dashboard' },
+  { icon: Users, label: 'Prospects', href: '/dashboard/leads', tour: 'prospects' },
+  { icon: Megaphone, label: 'Campaigns', href: '/dashboard/campaigns', tour: 'campaigns' },
+  { icon: Target, label: 'ICP', href: '/dashboard/icp', tour: 'icp' },
+  { icon: MessageSquare, label: 'Messages', href: '/dashboard/messages', tour: 'messages' },
+  { icon: History, label: 'History', href: '/dashboard/history', tour: 'history' },
 ];
 
 export function Sidebar() {
@@ -82,6 +82,7 @@ export function Sidebar() {
             <Link
               key={item.label}
               href={item.href}
+              data-tour={item.tour}
               title={isCollapsed ? item.label : undefined}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                 isCollapsed ? 'justify-center' : ''
@@ -102,6 +103,7 @@ export function Sidebar() {
       <div className="p-3 border-t border-white/10">
         <Link
           href="/dashboard/settings"
+          data-tour="settings"
           title={isCollapsed ? 'Settings' : undefined}
           className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
             isCollapsed ? 'justify-center' : ''

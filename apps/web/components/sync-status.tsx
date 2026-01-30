@@ -7,14 +7,16 @@
  * Uses the POST /api/sync/profile-viewers endpoint to trigger sync.
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface SyncStatusProps {
   lastSyncAt: Date | null;
 }
+
+type SyncState = 'idle' | 'syncing' | 'success' | 'error';
 
 /**
  * Format a date as a relative time string (e.g., "5 minutes ago")
@@ -40,12 +42,23 @@ function formatRelativeTime(date: Date): string {
 
 export function SyncStatus({ lastSyncAt }: SyncStatusProps) {
   const router = useRouter();
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [syncState, setSyncState] = useState<SyncState>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Auto-clear success/error message after 5 seconds
+  useEffect(() => {
+    if (syncState === 'success' || syncState === 'error') {
+      const timer = setTimeout(() => {
+        setSyncState('idle');
+        setErrorMessage(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [syncState]);
 
   async function handleSync() {
-    setIsSyncing(true);
-    setError(null);
+    setSyncState('syncing');
+    setErrorMessage(null);
 
     try {
       const response = await fetch('/api/sync/profile-viewers', {
@@ -54,17 +67,21 @@ export function SyncStatus({ lastSyncAt }: SyncStatusProps) {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to trigger sync');
+        throw new Error(data.error || data.message || 'Failed to trigger sync');
       }
 
-      // Refresh the page to show updated data
-      router.refresh();
+      // Success - sync triggered
+      setSyncState('success');
+
+      // Refresh the page after a short delay to show updated data
+      setTimeout(() => router.refresh(), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to sync');
-    } finally {
-      setIsSyncing(false);
+      setSyncState('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Failed to sync');
     }
   }
+
+  const isSyncing = syncState === 'syncing';
 
   return (
     <div className="flex items-center gap-3">
@@ -84,7 +101,22 @@ export function SyncStatus({ lastSyncAt }: SyncStatusProps) {
         <RefreshCw className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
         {isSyncing ? 'Syncing...' : 'Sync Now'}
       </Button>
-      {error && <span className="text-sm text-red-500">{error}</span>}
+
+      {/* Success feedback */}
+      {syncState === 'success' && (
+        <span className="flex items-center gap-1 text-sm text-green-600">
+          <CheckCircle2 className="h-4 w-4" />
+          Sync triggered successfully
+        </span>
+      )}
+
+      {/* Error feedback */}
+      {syncState === 'error' && (
+        <span className="flex items-center gap-1 text-sm text-red-500">
+          <AlertCircle className="h-4 w-4" />
+          {errorMessage || 'Failed to trigger sync'}
+        </span>
+      )}
     </div>
   );
 }

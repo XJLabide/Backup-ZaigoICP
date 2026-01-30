@@ -159,12 +159,50 @@ export async function handleAccountDisconnected(
 export async function dispatchWebhookEvent(
   payload: WebhookPayload
 ): Promise<HandlerResult> {
-  switch (payload.event) {
-    case 'account.connected':
-      return handleAccountConnected(payload as AccountConnectedPayload);
-    case 'account.disconnected':
-      return handleAccountDisconnected(payload as AccountDisconnectedPayload);
-    default:
+  // Log full payload for debugging
+  console.log(
+    JSON.stringify({
+      event: 'webhook_dispatch_debug',
+      fullPayload: payload,
+      timestamp: new Date().toISOString(),
+    })
+  );
+
+  // Handle various Unipile event type formats
+  const eventType = payload.event?.toLowerCase?.() || '';
+
+  if (eventType === 'account.connected' || eventType === 'account_created' || eventType.includes('creation_success') || eventType.includes('account_creation')) {
+    return handleAccountConnected(payload as AccountConnectedPayload);
+  }
+
+  if (eventType === 'account.disconnected' || eventType.includes('deletion') || eventType.includes('disconnected')) {
+    return handleAccountDisconnected(payload as AccountDisconnectedPayload);
+  }
+
+  // Check if this is a notify_url callback (different format)
+  if ('account_id' in payload && 'name' in payload && !payload.event) {
+    console.log(
+      JSON.stringify({
+        event: 'webhook_notify_callback_detected',
+        timestamp: new Date().toISOString(),
+      })
+    );
+    return handleAccountConnected({
+      event: 'account.connected',
+      account_id: payload.account_id as string,
+      name: payload.name as string,
+    });
+  }
+
+  // Unknown event type - log full payload
+  console.log(
+    JSON.stringify({
+      event: 'webhook_unknown_event_type',
+      eventType: payload.event,
+      fullPayload: payload,
+      timestamp: new Date().toISOString(),
+    })
+  );
       // Unknown events are acknowledged (no error, no processing)
       // This prevents Unipile from retrying indefinitely
       console.log(

@@ -374,7 +374,7 @@ export function SuccessClient({ accountId }: SuccessClientProps) {
             </svg>
           </div>
 
-          <h1 style={titleStyles}>Successfully Connected!</h1>
+          <h1 style={titleStyles}>You're live. Outreach is running in the background.</h1>
           <p style={descriptionStyles}>
             Your LinkedIn account is now connected. You can start using all the features.
             {countdown > 0 && ` Redirecting in ${countdown} second${countdown !== 1 ? 's' : ''}...`}

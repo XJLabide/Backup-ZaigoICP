@@ -73,14 +73,14 @@ interface LeadDetailProps {
  */
 function getLeadStatusColor(status: string): string {
   const colors: Record<string, string> = {
-    new: 'bg-blue-100 text-blue-800',
-    qualified: 'bg-green-100 text-green-800',
-    messaged: 'bg-purple-100 text-purple-800',
-    connected: 'bg-emerald-100 text-emerald-800',
-    replied: 'bg-yellow-100 text-yellow-800',
-    skipped: 'bg-gray-100 text-gray-800',
+    new: 'bg-blue-500/20 text-blue-400',
+    qualified: 'bg-green-500/20 text-green-400',
+    messaged: 'bg-purple-500/20 text-purple-400',
+    connected: 'bg-emerald-500/20 text-emerald-400',
+    replied: 'bg-yellow-500/20 text-yellow-400',
+    skipped: 'bg-gray-500/20 text-gray-400',
   };
-  return colors[status] || 'bg-gray-100 text-gray-800';
+  return colors[status] || 'bg-gray-500/20 text-gray-400';
 }
 
 /**
@@ -88,13 +88,13 @@ function getLeadStatusColor(status: string): string {
  */
 function getActionStatusColor(status: string): string {
   const colors: Record<string, string> = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    approved: 'bg-blue-100 text-blue-800',
-    rejected: 'bg-red-100 text-red-800',
-    sent: 'bg-green-100 text-green-800',
-    failed: 'bg-red-100 text-red-800',
+    pending: 'bg-yellow-500/20 text-yellow-400',
+    approved: 'bg-blue-500/20 text-blue-400',
+    rejected: 'bg-red-500/20 text-red-400',
+    sent: 'bg-green-500/20 text-green-400',
+    failed: 'bg-red-500/20 text-red-400',
   };
-  return colors[status] || 'bg-gray-100 text-gray-800';
+  return colors[status] || 'bg-gray-500/20 text-gray-400';
 }
 
 /**
@@ -183,9 +183,9 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-xl">{lead.fullName}</CardTitle>
+                <CardTitle className="text-xl text-white">{lead.fullName}</CardTitle>
                 {lead.headline && (
-                  <p className="text-gray-600 mt-1">{lead.headline}</p>
+                  <p className="text-gray-400 mt-1">{lead.headline}</p>
                 )}
               </div>
             </div>
@@ -219,7 +219,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {/* Company */}
             {lead.company && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-400">
                 <Briefcase className="h-4 w-4" />
                 <span>{lead.company}</span>
               </div>
@@ -227,7 +227,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
 
             {/* Location */}
             {lead.location && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-400">
                 <MapPin className="h-4 w-4" />
                 <span>{lead.location}</span>
               </div>
@@ -235,7 +235,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
 
             {/* Mutual Connections */}
             {lead.mutualConnections !== null && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-400">
                 <Users className="h-4 w-4" />
                 <span>{lead.mutualConnections} mutual connections</span>
               </div>
@@ -243,7 +243,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
 
             {/* Viewed At */}
             {lead.viewedAt && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-400">
                 <Calendar className="h-4 w-4" />
                 <span>Viewed {formatDate(lead.viewedAt)}</span>
               </div>
@@ -252,9 +252,9 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
 
           {/* About Section */}
           {lead.about && (
-            <div className="mt-6 pt-4 border-t">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">About</h4>
-              <p className="text-gray-600 text-sm whitespace-pre-wrap">
+            <div className="mt-6 pt-4 border-t border-white/10">
+              <h4 className="text-sm font-medium text-white mb-2">About</h4>
+              <p className="text-gray-400 text-sm whitespace-pre-wrap">
                 {lead.about}
               </p>
             </div>
@@ -262,18 +262,18 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
 
           {/* Recent Post */}
           {lead.recentPost && (
-            <div className="mt-4 pt-4 border-t">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">
+            <div className="mt-4 pt-4 border-t border-white/10">
+              <h4 className="text-sm font-medium text-white mb-2">
                 Recent Post
               </h4>
-              <p className="text-gray-600 text-sm whitespace-pre-wrap">
+              <p className="text-gray-400 text-sm whitespace-pre-wrap">
                 {lead.recentPost}
               </p>
             </div>
           )}
 
           {/* LinkedIn Info (for reference) */}
-          <div className="mt-4 pt-4 border-t text-xs text-gray-400 space-y-1">
+          <div className="mt-4 pt-4 border-t border-white/10 text-xs text-gray-500 space-y-1">
             <p>LinkedIn ID: {lead.linkedInId}</p>
             <p>
               Profile URL:{' '}
@@ -282,7 +282,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
                   href={safeProfileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className="text-[#d4a84b] hover:underline"
                 >
                   {lead.profileUrl}
                 </a>
@@ -303,10 +303,10 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
           {campaign ? (
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-medium">{campaign.name}</div>
-                <div className="text-sm text-gray-500">
+                <div className="font-medium text-white">{campaign.name}</div>
+                <div className="text-sm">
                   {campaign.isActive ? (
-                    <span className="text-green-600">Active</span>
+                    <span className="text-green-400">Active</span>
                   ) : (
                     <span className="text-gray-400">Paused</span>
                   )}
@@ -319,8 +319,8 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
               </Button>
             </div>
           ) : (
-            <div className="text-gray-500">
-              <p>This lead is not assigned to any campaign.</p>
+            <div className="text-gray-400">
+              <p>This prospect is not assigned to any campaign.</p>
               <Button variant="outline" size="sm" className="mt-3" asChild>
                 <Link href="/dashboard/campaigns">
                   Assign to Campaign
@@ -338,11 +338,11 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
         </CardHeader>
         <CardContent>
           {actions.length === 0 ? (
-            <p className="text-gray-500">
-              No actions have been taken for this lead yet.
+            <p className="text-gray-400">
+              No actions have been taken for this prospect yet.
             </p>
           ) : (
-            <div className="rounded-md border">
+            <div className="rounded-md border border-white/10">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -378,22 +378,22 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
                           <span
                             className={`text-sm font-medium ${
                               action.qualityScore >= 80
-                                ? 'text-green-600'
+                                ? 'text-green-400'
                                 : action.qualityScore >= 60
-                                  ? 'text-yellow-600'
-                                  : 'text-red-600'
+                                  ? 'text-yellow-400'
+                                  : 'text-red-400'
                             }`}
                           >
                             {action.qualityScore}
                           </span>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-gray-500">-</span>
                         )}
                       </TableCell>
-                      <TableCell className="text-gray-600 text-sm">
+                      <TableCell className="text-gray-400 text-sm">
                         {formatDateTime(action.createdAt)}
                       </TableCell>
-                      <TableCell className="text-gray-600 text-sm">
+                      <TableCell className="text-gray-400 text-sm">
                         {formatDateTime(action.sentAt)}
                       </TableCell>
                     </TableRow>
@@ -410,11 +410,11 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <span className="text-green-600">Connected</span>
+              <span className="text-green-400">Connected</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               Connection accepted on {formatDateTime(lead.connectionAcceptedAt)}
             </p>
           </CardContent>
@@ -422,7 +422,7 @@ export function LeadDetail({ lead, campaign, actions }: LeadDetailProps) {
       )}
 
       {/* Timestamps */}
-      <div className="text-sm text-gray-500 space-y-1">
+      <div className="text-sm text-gray-400 space-y-1">
         <p>Created: {formatDateTime(lead.createdAt)}</p>
         <p>Last updated: {formatDateTime(lead.updatedAt)}</p>
         {lead.enrichedAt && <p>Enriched: {formatDateTime(lead.enrichedAt)}</p>}

@@ -8,10 +8,14 @@ interface AuthShellProps {
 
 export function AuthShell({ children }: AuthShellProps) {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-[#1a1d29] flex flex-col">
       {/* Brand - top left */}
       <header className="absolute top-8 left-8">
-        <span className="text-xl font-semibold text-black">LinkReach</span>
+        <img
+          src="https://associateownersgroup.com/wp-content/uploads/Logo-Horizontal.svg"
+          alt="AOG Outreach"
+          className="h-8 w-auto"
+        />
       </header>
 
       {/* Centered content */}
@@ -23,13 +27,13 @@ export function AuthShell({ children }: AuthShellProps) {
 
       {/* Legal footer */}
       <footer className="py-8 px-4 text-center">
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-gray-400">
           By continuing, you agree to our{" "}
-          <a href="/terms" className="text-black underline hover:no-underline">
+          <a href="/terms" className="text-[#d4a84b] underline hover:no-underline">
             Terms of Use
           </a>{" "}
           and{" "}
-          <a href="/privacy" className="text-black underline hover:no-underline">
+          <a href="/privacy" className="text-[#d4a84b] underline hover:no-underline">
             Privacy Policy
           </a>
           .

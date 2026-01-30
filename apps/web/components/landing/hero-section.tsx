@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
@@ -16,10 +16,10 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: [20, -5, 0] }}
             transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }}
-            className="text-3xl md:text-5xl lg:text-6xl font-bold text-neutral-800 max-w-4xl leading-tight"
+            className="text-3xl md:text-5xl lg:text-6xl font-bold text-white max-w-4xl leading-tight"
           >
-            Outreach on{" "}
-            <Highlight className="text-neutral-900">
+            Grow Your Book on{" "}
+            <Highlight className="text-white">
               Autopilot
             </Highlight>
           </motion.h1>
@@ -29,10 +29,9 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-lg text-neutral-600 max-w-xl"
+            className="mt-6 text-lg text-[#9ca3af] max-w-xl"
           >
-            AI-powered LinkedIn automation that sends personalized messages,
-            follows up intelligently, and grows your network while you sleep.
+            AI-powered LinkedIn outreach that finds business owners, executives, and high-net-worth prospects in your area—then sends personalized messages and follows up automatically. You focus on closing.
           </motion.p>
 
           {/* CTAs */}
@@ -45,10 +44,10 @@ export function HeroSection() {
             <Button
               asChild
               size="lg"
-              className="h-12 px-6 bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-full"
+              className="h-12 px-6 bg-[#d4a84b] hover:bg-[#e5b95c] text-[#1a1d29] font-semibold rounded-full shadow-[0_0_20px_rgba(212,168,75,0.3)]"
             >
               <Link href="/sign-up">
-                Get Started
+                Start Growing
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -57,11 +56,11 @@ export function HeroSection() {
               asChild
               variant="outline"
               size="lg"
-              className="h-12 px-6 border-neutral-300 text-neutral-700 hover:bg-neutral-100 font-medium rounded-full"
+              className="h-12 px-6 border-white/20 text-white hover:bg-white/10 hover:border-[#d4a84b] font-medium rounded-full"
             >
-              <Link href="#demo">
-                <Play className="mr-2 h-4 w-4" />
-                Watch Demo
+              <Link href="#features">
+                <Eye className="mr-2 h-4 w-4" />
+                See How It Works
               </Link>
             </Button>
           </motion.div>

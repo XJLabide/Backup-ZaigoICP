@@ -10,7 +10,7 @@ const poppins = Poppins({ weight: ['400', '500', '600', '700'], subsets: ['latin
 const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' });
 
 export const metadata: Metadata = {
-  title: 'LinkedIn Automation',
+  title: 'AOG Outreach',
   description: 'Warm outbound LinkedIn automation',
 };
 
@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${roboto.variable} ${openSans.variable} ${poppins.variable} ${montserrat.variable}`}>
-      <body className={inter.className}>
+    <html lang="en" className={`${inter.variable} ${roboto.variable} ${openSans.variable} ${poppins.variable} ${montserrat.variable}`} style={{ backgroundColor: '#1a1d29' }}>
+      <body className={`${inter.className} bg-[#1a1d29] text-white`} style={{ backgroundColor: '#1a1d29', color: '#ffffff' }}>
         <Providers>{children}</Providers>
       </body>
     </html>

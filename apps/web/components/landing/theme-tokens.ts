@@ -21,26 +21,28 @@ export const tokens = {
   },
 } as const;
 
-// CSS custom properties for colors (used in globals.css)
+// CSS custom properties for AOG brand colors (used in globals.css)
 export const landingColors = {
   bg: {
-    primary: '#0a0a0f',
-    secondary: '#111116',
-    card: '#16161d',
-    cardHover: '#1c1c24',
+    primary: '#1a1d29',
+    secondary: '#242836',
+    card: '#242836',
+    cardHover: '#2d3242',
   },
   text: {
-    primary: '#fafafa',
-    secondary: '#a1a1aa',
-    muted: '#71717a',
+    primary: '#ffffff',
+    secondary: '#9ca3af',
+    muted: '#6b7280',
   },
   accent: {
-    primary: '#6366f1',
-    secondary: '#8b5cf6',
-    glow: 'rgba(99, 102, 241, 0.15)',
+    primary: '#d4a84b', // gold
+    secondary: '#e5b95c', // lighter gold
+    teal: '#0ea5e9',
+    glow: 'rgba(212, 168, 75, 0.15)',
   },
   border: {
-    default: 'rgba(255,255,255,0.08)',
+    default: 'rgba(255,255,255,0.1)',
     hover: 'rgba(255,255,255,0.15)',
   },
+  success: '#22c55e',
 } as const;

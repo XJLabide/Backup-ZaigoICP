@@ -6,10 +6,10 @@ interface StatCardProps {
 
 export function StatCard({ title, value, subtitle }: StatCardProps) {
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
-      <p className="text-sm font-medium text-neutral-600">{title}</p>
-      <p className="text-3xl font-bold text-black mt-2">{value}</p>
-      <p className="text-xs text-neutral-500 mt-1">{subtitle}</p>
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
+      <p className="text-sm font-medium text-[#9ca3af]">{title}</p>
+      <p className="text-3xl font-bold text-white mt-2">{value}</p>
+      <p className="text-xs text-[#6b7280] mt-1">{subtitle}</p>
     </div>
   );
 }

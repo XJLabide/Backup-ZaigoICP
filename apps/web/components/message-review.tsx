@@ -159,12 +159,12 @@ export function MessageReview({ action, lead, campaign }: MessageReviewProps) {
                 className="w-10 h-10 rounded-full object-cover"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm font-medium">
+              <div className="w-10 h-10 rounded-full bg-[#d4a84b] flex items-center justify-center text-[#1a1d29] text-sm font-medium">
                 {lead.firstName?.[0] || lead.fullName[0]}
               </div>
             )}
             <div>
-              <div className="font-medium">{lead.fullName}</div>
+              <div className="font-medium text-white">{lead.fullName}</div>
               {lead.headline && (
                 <div className="text-sm text-gray-500 line-clamp-1">{lead.headline}</div>
               )}
@@ -179,7 +179,7 @@ export function MessageReview({ action, lead, campaign }: MessageReviewProps) {
             {action.qualityScore !== null && (
               <QualityScoreBadge score={action.qualityScore} showLabel />
             )}
-            <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">
+            <span className="text-xs text-gray-300 bg-white/10 px-2 py-1 rounded">
               {campaign.name}
             </span>
           </div>
@@ -189,9 +189,9 @@ export function MessageReview({ action, lead, campaign }: MessageReviewProps) {
       <CardContent className="pt-0">
         {/* Quality issues */}
         {showIssues && (
-          <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-            <div className="text-sm font-medium text-yellow-800 mb-1">Quality Issues</div>
-            <ul className="text-sm text-yellow-700 list-disc list-inside space-y-0.5">
+          <div className="mb-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-md">
+            <div className="text-sm font-medium text-yellow-400 mb-1">Quality Issues</div>
+            <ul className="text-sm text-yellow-300 list-disc list-inside space-y-0.5">
               {action.qualityIssues!.map((issue, idx) => (
                 <li key={idx}>{issue}</li>
               ))}
@@ -205,7 +205,7 @@ export function MessageReview({ action, lead, campaign }: MessageReviewProps) {
             <textarea
               value={editedMessage}
               onChange={(e) => setEditedMessage(e.target.value)}
-              className="w-full min-h-[120px] p-3 border rounded-md text-sm resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full min-h-[120px] p-3 border border-white/20 bg-[#1a1d29] text-white rounded-md text-sm resize-y focus:outline-none focus:ring-2 focus:ring-[#d4a84b] focus:border-transparent"
               placeholder="Enter your message..."
               disabled={isLoading}
             />
@@ -229,14 +229,14 @@ export function MessageReview({ action, lead, campaign }: MessageReviewProps) {
             </div>
           </div>
         ) : (
-          <div className="p-3 bg-gray-50 rounded-md text-sm whitespace-pre-wrap">
+          <div className="p-3 bg-[#1a1d29] border border-white/10 rounded-md text-sm text-gray-200 whitespace-pre-wrap">
             {action.message}
           </div>
         )}
 
         {/* Error message */}
         {error && (
-          <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm text-red-700">
+          <div className="mt-2 p-2 bg-red-500/10 border border-red-500/30 rounded text-sm text-red-400">
             {error}
           </div>
         )}

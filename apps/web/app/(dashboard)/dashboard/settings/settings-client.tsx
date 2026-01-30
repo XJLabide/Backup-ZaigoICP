@@ -204,14 +204,14 @@ export function SettingsClient({
 
       {/* LinkedIn Connected Status (when connected) */}
       {isLinkedInConnected && (
-        <div className="bg-neutral-100 rounded-lg p-6">
+        <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full">
               <CheckCircle2 className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-black">LinkedIn Connected</h3>
-              <p className="text-sm text-neutral-600">Your account is linked and ready for outreach</p>
+              <h3 className="font-semibold text-white">LinkedIn Connected</h3>
+              <p className="text-sm text-gray-400">Your account is linked and ready for outreach</p>
             </div>
           </div>
         </div>

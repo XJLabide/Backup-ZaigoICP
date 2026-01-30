@@ -14,16 +14,16 @@ function CampaignItem({ campaign }: { campaign: Campaign }) {
   return (
     <Link
       href={`/dashboard/campaigns/${campaign.id}`}
-      className="block p-3 bg-white rounded-lg hover:bg-neutral-50 transition-colors"
+      className="block p-3 bg-[#1a1d29] border border-white/10 rounded-lg hover:border-[#d4a84b]/50 transition-colors"
     >
       <div className="flex items-center justify-between mb-1">
-        <span className="font-medium text-sm text-black">{campaign.name}</span>
-        <span className="bg-black text-white text-xs px-2 py-0.5 rounded">
+        <span className="font-medium text-sm text-white">{campaign.name}</span>
+        <span className="bg-[#d4a84b] text-[#1a1d29] text-xs px-2 py-0.5 rounded font-medium">
           Active
         </span>
       </div>
-      <p className="text-xs text-neutral-500">
-        {campaign.totalLeads ?? 0} leads · {campaign.totalSent ?? 0} sent ·{' '}
+      <p className="text-xs text-gray-400">
+        {campaign.totalLeads ?? 0} prospects · {campaign.totalSent ?? 0} sent ·{' '}
         {campaign.totalAccepted ?? 0} accepted
       </p>
     </Link>
@@ -38,13 +38,13 @@ export async function ActiveCampaignsOverview({
   const campaigns = await getActiveCampaigns(userId);
 
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
       {/* Header with View All link */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-black">Active Campaigns</h3>
+        <h3 className="text-lg font-semibold text-white">Active Campaigns</h3>
         <Link
           href="/dashboard/campaigns"
-          className="flex items-center gap-1 text-sm text-neutral-600 hover:text-black transition-colors"
+          className="flex items-center gap-1 text-sm text-gray-400 hover:text-[#d4a84b] transition-colors"
         >
           View All <ArrowRight className="w-4 h-4" />
         </Link>
@@ -52,11 +52,11 @@ export async function ActiveCampaignsOverview({
 
       {/* Campaigns list or empty state */}
       {campaigns.length === 0 ? (
-        <div className="text-center py-6 text-neutral-500">
+        <div className="text-center py-6 text-gray-400">
           <p>No active campaigns</p>
           <Link
             href="/dashboard/campaigns/new"
-            className="text-sm text-black hover:underline mt-2 inline-block"
+            className="text-sm text-[#d4a84b] hover:underline mt-2 inline-block"
           >
             Create your first campaign
           </Link>

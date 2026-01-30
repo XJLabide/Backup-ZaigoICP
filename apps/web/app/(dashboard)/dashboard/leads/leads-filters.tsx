@@ -76,7 +76,7 @@ export function LeadsFilters({
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
         <Input
           type="search"
-          placeholder="Search leads..."
+          placeholder="Search prospects..."
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           className="pl-9 w-[220px]"

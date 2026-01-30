@@ -134,14 +134,14 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
       {/* Page Title */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-black">Messages</h1>
-          <p className="text-neutral-600 mt-1">Review and approve AI-generated messages before sending</p>
+          <h1 className="text-3xl font-bold text-white">Messages</h1>
+          <p className="text-gray-400 mt-1">Review and approve AI-generated messages before sending</p>
           <div className="flex gap-4 mt-2 text-sm">
-            <span className="text-neutral-500">
-              <span className="font-medium text-neutral-900">{pendingCount}</span> pending
+            <span className="text-gray-400">
+              <span className="font-medium text-white">{pendingCount}</span> pending
             </span>
-            <span className="text-neutral-500">
-              <span className="font-medium text-neutral-900">{approvedCount}</span> approved
+            <span className="text-gray-400">
+              <span className="font-medium text-white">{approvedCount}</span> approved
             </span>
           </div>
         </div>
@@ -156,16 +156,16 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             {statusFilter === 'approved' ? (
-              <CheckCircle className="h-16 w-16 text-neutral-400 mb-4" />
+              <CheckCircle className="h-16 w-16 text-gray-500 mb-4" />
             ) : (
-              <Inbox className="h-16 w-16 text-neutral-400 mb-4" />
+              <Inbox className="h-16 w-16 text-gray-500 mb-4" />
             )}
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="text-lg font-semibold text-white mb-2">
               {statusFilter === 'approved'
                 ? 'No approved messages'
                 : 'No messages to review'}
             </h3>
-            <p className="text-neutral-600 text-center max-w-md">
+            <p className="text-gray-400 text-center max-w-md">
               {statusFilter === 'approved'
                 ? 'Messages will appear here after you approve them.'
                 : 'Messages will appear here when leads are assigned to campaigns with AI message generation.'}

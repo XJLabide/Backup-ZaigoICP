@@ -32,19 +32,19 @@ export function NotificationPreferencesCard({
   }
 
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
-      <h2 className="text-lg font-semibold text-black">Notification Preferences</h2>
-      <p className="text-sm text-neutral-600 mt-2 mb-4">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
+      <h2 className="text-lg font-semibold text-white">Notification Preferences</h2>
+      <p className="text-sm text-gray-400 mt-2 mb-4">
         Control which email notifications you receive
       </p>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <label htmlFor="new-leads" className="text-sm font-medium text-black">
-              New Leads
+            <label htmlFor="new-leads" className="text-sm font-medium text-white">
+              New Prospects
             </label>
-            <p className="text-xs text-neutral-600 mt-0.5">
+            <p className="text-xs text-gray-400 mt-0.5">
               Get notified when someone views your profile
             </p>
           </div>
@@ -57,10 +57,10 @@ export function NotificationPreferencesCard({
 
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <label htmlFor="replies" className="text-sm font-medium text-black">
+            <label htmlFor="replies" className="text-sm font-medium text-white">
               Replies
             </label>
-            <p className="text-xs text-neutral-600 mt-0.5">
+            <p className="text-xs text-gray-400 mt-0.5">
               Get notified when a connection replies
             </p>
           </div>
@@ -73,10 +73,10 @@ export function NotificationPreferencesCard({
 
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <label htmlFor="daily-digest" className="text-sm font-medium text-black">
+            <label htmlFor="daily-digest" className="text-sm font-medium text-white">
               Daily Digest
             </label>
-            <p className="text-xs text-neutral-600 mt-0.5">
+            <p className="text-xs text-gray-400 mt-0.5">
               Receive a daily summary of activity
             </p>
           </div>
@@ -91,7 +91,7 @@ export function NotificationPreferencesCard({
       <Button
         onClick={handleSave}
         disabled={isSaving}
-        className="w-full bg-black text-white rounded-lg mt-6 h-12 hover:bg-neutral-800"
+        className="w-full bg-[#d4a84b] text-[#1a1d29] rounded-lg mt-6 h-12 hover:bg-[#e5b95c] font-semibold"
       >
         {isSaving ? "Saving..." : "Save Preferences"}
       </Button>

@@ -155,18 +155,18 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               View the history of all your sent and failed connection requests
             </p>
             <div className="flex gap-4 mt-2 text-sm">
-              <span className="text-gray-500">
-                <span className="font-medium text-green-600">{sentCount}</span> sent
+              <span className="text-gray-400">
+                <span className="font-medium text-green-400">{sentCount}</span> sent
               </span>
-              <span className="text-gray-500">
-                <span className="font-medium text-red-600">{failedCount}</span> failed
+              <span className="text-gray-400">
+                <span className="font-medium text-red-400">{failedCount}</span> failed
               </span>
-              <span className="text-gray-500">
-                <span className="font-medium text-yellow-600">{pendingCount}</span> pending
+              <span className="text-gray-400">
+                <span className="font-medium text-yellow-400">{pendingCount}</span> pending
               </span>
             </div>
           </div>
@@ -181,18 +181,18 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               {statusFilter === 'failed' ? (
-                <AlertCircle className="h-16 w-16 text-neutral-400 mb-4" />
+                <AlertCircle className="h-16 w-16 text-gray-500 mb-4" />
               ) : (
-                <History className="h-16 w-16 text-neutral-400 mb-4" />
+                <History className="h-16 w-16 text-gray-500 mb-4" />
               )}
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="text-lg font-semibold text-white mb-2">
                 {statusFilter === 'failed'
                   ? 'No failed actions'
                   : statusFilter === 'sent'
                     ? 'No sent actions yet'
                     : 'No action history'}
               </h3>
-              <p className="text-gray-600 text-center max-w-md">
+              <p className="text-gray-400 text-center max-w-md">
                 {statusFilter === 'failed'
                   ? 'Great news! You have no failed connection requests.'
                   : statusFilter === 'sent'

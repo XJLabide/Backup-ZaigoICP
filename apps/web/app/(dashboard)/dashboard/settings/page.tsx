@@ -28,8 +28,8 @@ export default async function SettingsPage() {
     <div className="p-6 space-y-6">
       {/* Page Title */}
       <div>
-        <h1 className="text-3xl font-bold text-black">Settings</h1>
-        <p className="text-neutral-600 mt-1">Manage your account preferences and default settings</p>
+        <h1 className="text-3xl font-bold text-white">Settings</h1>
+        <p className="text-gray-400 mt-1">Manage your account preferences and default settings</p>
       </div>
 
       <SettingsClient

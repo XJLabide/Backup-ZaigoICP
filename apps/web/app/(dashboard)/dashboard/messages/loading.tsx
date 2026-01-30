@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function MessageCardSkeleton() {
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
       <div className="flex items-start gap-4">
         <Skeleton className="h-12 w-12 rounded-full shrink-0" />
         <div className="flex-1 min-w-0">
@@ -11,7 +11,7 @@ function MessageCardSkeleton() {
             <Skeleton className="h-6 w-20 rounded-full" />
           </div>
           <Skeleton className="h-4 w-48 mb-3" />
-          <div className="bg-neutral-50 rounded-lg p-4">
+          <div className="bg-[#1a1d29] border border-white/10 rounded-lg p-4">
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-3/4" />

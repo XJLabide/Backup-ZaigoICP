@@ -5,14 +5,14 @@ import { getRecentLeads, type RecentLead } from '@/lib/db/queries/dashboard';
 
 function getStatusBadgeColors(status: string) {
   const colors: Record<string, string> = {
-    new: 'bg-blue-100 text-blue-800',
-    qualified: 'bg-green-100 text-green-800',
-    messaged: 'bg-purple-100 text-purple-800',
-    connected: 'bg-emerald-100 text-emerald-800',
-    replied: 'bg-amber-100 text-amber-800',
-    skipped: 'bg-neutral-100 text-neutral-800',
+    new: 'bg-blue-500/20 text-blue-400',
+    qualified: 'bg-green-500/20 text-green-400',
+    messaged: 'bg-purple-500/20 text-purple-400',
+    connected: 'bg-emerald-500/20 text-emerald-400',
+    replied: 'bg-amber-500/20 text-amber-400',
+    skipped: 'bg-neutral-500/20 text-neutral-400',
   };
-  return colors[status] || 'bg-neutral-100 text-neutral-800';
+  return colors[status] || 'bg-neutral-500/20 text-neutral-400';
 }
 
 function getInitials(name: string | null) {
@@ -30,13 +30,13 @@ function LeadItem({ lead }: { lead: RecentLead }) {
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <Avatar className="h-8 w-8">
           <AvatarImage src={lead.profileImageUrl || undefined} alt={lead.fullName || ''} />
-          <AvatarFallback className="bg-black text-white text-xs">
+          <AvatarFallback className="bg-[#d4a84b] text-[#1a1d29] text-xs font-medium">
             {getInitials(lead.fullName)}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-sm text-black">{lead.fullName || 'Unknown'}</p>
-          <p className="text-xs text-neutral-500 truncate max-w-[180px]">
+          <p className="font-medium text-sm text-white">{lead.fullName || 'Unknown'}</p>
+          <p className="text-xs text-gray-400 truncate max-w-[180px]">
             {lead.headline || 'No headline'}
           </p>
         </div>
@@ -52,23 +52,23 @@ export async function RecentLeadsPreview({ userId }: { userId: string }) {
   const leads = await getRecentLeads(userId);
 
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-black">Recent Leads</h3>
+        <h3 className="text-lg font-semibold text-white">Recent Prospects</h3>
         <Link
           href="/dashboard/leads"
-          className="flex items-center gap-1 text-sm text-neutral-600 hover:text-black transition-colors"
+          className="flex items-center gap-1 text-sm text-gray-400 hover:text-[#d4a84b] transition-colors"
         >
           View All <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 
       {leads.length === 0 ? (
-        <div className="text-center py-6 text-neutral-500">
-          <p>No leads yet</p>
+        <div className="text-center py-6 text-gray-400">
+          <p>No prospects yet</p>
           <Link
             href="/dashboard/campaigns"
-            className="text-sm text-black hover:underline mt-2 inline-block"
+            className="text-sm text-[#d4a84b] hover:underline mt-2 inline-block"
           >
             Create a campaign to get started
           </Link>

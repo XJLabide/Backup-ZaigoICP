@@ -9,13 +9,13 @@ import {
 } from '@/components/landing';
 
 export const metadata: Metadata = {
-  title: 'Flowline - Ship faster with intelligent automation',
-  description: 'Automate your workflow, eliminate busywork, and focus on what matters. Purpose-built for teams who refuse to compromise.',
+  title: 'AOG Outreach - Grow Your Book on Autopilot',
+  description: 'AI-powered LinkedIn outreach that finds business owners, executives, and high-net-worth prospects—then sends personalized messages and follows up automatically. You focus on closing.',
 };
 
 export default function HomePage() {
   return (
-    <div className="landing-light min-h-screen bg-white text-neutral-900">
+    <div className="landing-dark min-h-screen bg-[#1a1d29] text-white">
       {/* Header with auth */}
       <LandingHeader />
 

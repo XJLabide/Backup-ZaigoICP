@@ -22,16 +22,16 @@ export function TopBar() {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-neutral-200 h-13">
+    <header className="sticky top-0 z-30 bg-[#242836] border-b border-white/10 h-13">
       <div className="flex items-center justify-end h-full px-6">
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors cursor-pointer">
+          <button className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-white/20 rounded-md hover:bg-white/10 hover:border-[#d4a84b] transition-colors cursor-pointer">
             Help
           </button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-black bg-white border border-neutral-300 rounded-md hover:bg-neutral-100 transition-colors cursor-pointer">
+              <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-transparent border border-white/20 rounded-md hover:bg-white/10 hover:border-[#d4a84b] transition-colors cursor-pointer">
                 <LogOut className="w-4 h-4" />
                 <span>Log out</span>
               </button>

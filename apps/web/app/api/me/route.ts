@@ -5,6 +5,18 @@ import { db, users } from '@/lib/db';
 import { eq } from 'drizzle-orm';
 
 /**
+ * Zod schema for ICP config structure
+ * Matches the database schema where all fields are required arrays
+ */
+const icpConfigSchema = z.object({
+  jobTitles: z.array(z.string()),
+  industries: z.array(z.string()),
+  companySizes: z.array(z.string()),
+  locations: z.array(z.string()),
+  keywords: z.array(z.string()),
+});
+
+/**
  * Zod schema for user preferences update (partial)
  * Excludes id which cannot be updated
  */
@@ -25,6 +37,7 @@ const updateUserPreferencesSchema = z
     workingHoursEnd: z.string().regex(/^(?:[01]\d|2[0-3]):00$/).optional(),
     displayName: z.string().max(100).nullable().optional(),
     companyName: z.string().max(100).nullable().optional(),
+    icpConfig: icpConfigSchema.optional().nullable(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: 'At least one field must be provided for update',
@@ -108,6 +121,12 @@ export async function GET() {
  * - calendarLink: URL string or null (optional)
  * - dailyLimit: number between 10-50 (optional)
  * - timezone: string (optional)
+ * - icpConfig: ICP configuration object (optional)
+ *   - jobTitles: string[] (optional)
+ *   - industries: string[] (optional)
+ *   - companySizes: string[] (optional)
+ *   - locations: string[] (optional)
+ *   - keywords: string[] (optional)
  *
  * Returns:
  * - user: Updated user object

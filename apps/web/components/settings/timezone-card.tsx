@@ -54,15 +54,15 @@ export function TimezoneCard({ defaultValue, onSave }: TimezoneCardProps) {
   };
 
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
-      <h3 className="font-semibold text-black mb-1">Timezone</h3>
-      <p className="text-sm text-neutral-600 mb-4">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
+      <h3 className="font-semibold text-white mb-1">Timezone</h3>
+      <p className="text-sm text-gray-400 mb-4">
         Set your local timezone for scheduling
       </p>
 
       <div className="space-y-4">
         <Select value={selectedTimezone} onValueChange={setSelectedTimezone}>
-          <SelectTrigger className="w-full bg-white">
+          <SelectTrigger className="w-full bg-[#1a1d29] border-white/20 text-white">
             <SelectValue placeholder="Select timezone" />
           </SelectTrigger>
           <SelectContent>
@@ -77,7 +77,7 @@ export function TimezoneCard({ defaultValue, onSave }: TimezoneCardProps) {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="w-full bg-black text-white px-4 py-2 rounded-lg font-medium hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#d4a84b] text-[#1a1d29] px-4 py-2 rounded-lg font-semibold hover:bg-[#e5b95c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSaving ? "Saving..." : "Save Timezone"}
         </button>

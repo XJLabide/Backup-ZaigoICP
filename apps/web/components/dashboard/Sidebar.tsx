@@ -6,6 +6,7 @@ import {
   Home,
   Users,
   Megaphone,
+  Target,
   MessageSquare,
   History,
   Settings,
@@ -17,8 +18,9 @@ import { useSidebarState } from './sidebar-provider';
 
 const navItems = [
   { icon: Home, label: 'Dashboard', href: '/dashboard' },
-  { icon: Users, label: 'Leads', href: '/dashboard/leads' },
+  { icon: Users, label: 'Prospects', href: '/dashboard/leads' },
   { icon: Megaphone, label: 'Campaigns', href: '/dashboard/campaigns' },
+  { icon: Target, label: 'ICP', href: '/dashboard/icp' },
   { icon: MessageSquare, label: 'Messages', href: '/dashboard/messages' },
   { icon: History, label: 'History', href: '/dashboard/history' },
 ];
@@ -36,20 +38,30 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-screen bg-white border-r border-neutral-200 flex flex-col z-40 transition-all duration-300 ease-in-out ${
+      className={`fixed left-0 top-0 h-screen bg-[#1a1d29] border-r border-white/10 flex flex-col z-40 transition-all duration-300 ease-in-out ${
         isCollapsed ? 'w-[80px]' : 'w-[260px]'
       }`}
     >
       {/* Brand + Collapse Toggle */}
-      <div className={`flex items-center justify-between h-13 px-6 border-b border-neutral-200 ${isCollapsed ? 'justify-center px-3' : ''}`}>
+      <div className={`flex items-center justify-between h-13 px-6 border-b border-white/10 ${isCollapsed ? 'justify-center px-3' : ''}`}>
         <div className={`flex items-center gap-2 ${isCollapsed ? 'justify-center' : ''}`}>
-          <Sparkles className="w-5 h-5 text-black shrink-0" />
-          {!isCollapsed && <span className="text-lg font-semibold text-black">Flowline</span>}
+          {isCollapsed ? (
+            <span className="text-lg font-bold text-[#d4a84b]">AOG</span>
+          ) : (
+            <>
+              <img
+                src="https://associateownersgroup.com/wp-content/uploads/Logo-Horizontal.svg"
+                alt="AOG"
+                className="h-7 w-auto"
+              />
+              <span className="text-lg font-semibold text-white">AOG Outreach</span>
+            </>
+          )}
         </div>
         {!isCollapsed && (
           <button
             onClick={toggleSidebar}
-            className="p-1.5 rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-black transition-colors"
+            className="p-1.5 rounded-md text-[#9ca3af] hover:bg-white/10 hover:text-white transition-colors"
             title="Collapse sidebar"
           >
             <PanelLeftClose className="w-4 h-4" />
@@ -58,7 +70,7 @@ export function Sidebar() {
         {isCollapsed && (
           <button
             onClick={toggleSidebar}
-            className="p-1.5 rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-black transition-colors"
+            className="p-1.5 rounded-md text-[#9ca3af] hover:bg-white/10 hover:text-white transition-colors"
             title="Expand sidebar"
           >
             <PanelLeft className="w-4 h-4" />
@@ -78,8 +90,8 @@ export function Sidebar() {
                 isCollapsed ? 'justify-center' : ''
               } ${
                 isActive(item.href)
-                  ? 'bg-neutral-100 text-black'
-                  : 'text-neutral-700 hover:bg-neutral-100 hover:text-black'
+                  ? 'bg-[#d4a84b] text-[#1a1d29]'
+                  : 'text-[#9ca3af] hover:bg-white/10 hover:text-white'
               }`}
             >
               <item.icon className="w-5 h-5 shrink-0" />
@@ -90,7 +102,7 @@ export function Sidebar() {
       </nav>
 
       {/* Settings */}
-      <div className="p-3 border-t border-neutral-200">
+      <div className="p-3 border-t border-white/10">
         <Link
           href="/dashboard/settings"
           title={isCollapsed ? 'Settings' : undefined}
@@ -98,8 +110,8 @@ export function Sidebar() {
             isCollapsed ? 'justify-center' : ''
           } ${
             pathname === '/dashboard/settings'
-              ? 'bg-neutral-100 text-black'
-              : 'text-neutral-700 hover:bg-neutral-100 hover:text-black'
+              ? 'bg-[#d4a84b] text-[#1a1d29]'
+              : 'text-[#9ca3af] hover:bg-white/10 hover:text-white'
           }`}
         >
           <Settings className="w-5 h-5 shrink-0" />

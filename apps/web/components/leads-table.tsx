@@ -61,14 +61,14 @@ function formatDate(date: Date | null): string {
  */
 function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
-    new: 'bg-blue-100 text-blue-800',
-    qualified: 'bg-green-100 text-green-800',
-    messaged: 'bg-purple-100 text-purple-800',
-    connected: 'bg-emerald-100 text-emerald-800',
-    replied: 'bg-yellow-100 text-yellow-800',
-    skipped: 'bg-gray-100 text-gray-800',
+    new: 'bg-blue-500/20 text-blue-400',
+    qualified: 'bg-green-500/20 text-green-400',
+    messaged: 'bg-purple-500/20 text-purple-400',
+    connected: 'bg-emerald-500/20 text-emerald-400',
+    replied: 'bg-yellow-500/20 text-yellow-400',
+    skipped: 'bg-gray-500/20 text-gray-400',
   };
-  return colors[status] || 'bg-gray-100 text-gray-800';
+  return colors[status] || 'bg-gray-500/20 text-gray-400';
 }
 
 /**
@@ -171,22 +171,22 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
   }
 
   return (
-    <div className="rounded-md border bg-white">
+    <div className="rounded-md border border-white/10 bg-[#242836]">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[300px]">
               <button
-                className="flex items-center hover:text-black"
+                className="flex items-center hover:text-white"
                 onClick={() => handleSort('fullName')}
               >
-                Lead
+                Prospect
                 {getSortIcon('fullName')}
               </button>
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-black"
+                className="flex items-center hover:text-white"
                 onClick={() => handleSort('company')}
               >
                 Company
@@ -195,7 +195,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-black"
+                className="flex items-center hover:text-white"
                 onClick={() => handleSort('status')}
               >
                 Status
@@ -204,7 +204,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-black"
+                className="flex items-center hover:text-white"
                 onClick={() => handleSort('viewedAt')}
               >
                 Viewed At
@@ -213,7 +213,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
             </TableHead>
             <TableHead>
               <button
-                className="flex items-center hover:text-black"
+                className="flex items-center hover:text-white"
                 onClick={() => handleSort('createdAt')}
               >
                 Added
@@ -239,7 +239,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
                   <div>
                     <div className="font-medium">{lead.fullName}</div>
                     {lead.headline && (
-                      <div className="text-sm text-neutral-600 line-clamp-1">
+                      <div className="text-sm text-gray-400 line-clamp-1">
                         {lead.headline}
                       </div>
                     )}
@@ -247,7 +247,7 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
                 </Link>
               </TableCell>
               <TableCell>
-                <span className="text-black">{lead.company || '-'}</span>
+                <span className="text-white">{lead.company || '-'}</span>
               </TableCell>
               <TableCell>
                 <span
@@ -256,10 +256,10 @@ export function LeadsTable({ leads, nextCursor }: LeadsTableProps) {
                   {lead.status}
                 </span>
               </TableCell>
-              <TableCell className="text-neutral-600">
+              <TableCell className="text-gray-400">
                 {formatDate(lead.viewedAt)}
               </TableCell>
-              <TableCell className="text-neutral-600">
+              <TableCell className="text-gray-400">
                 {formatDate(lead.createdAt)}
               </TableCell>
             </TableRow>

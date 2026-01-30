@@ -31,15 +31,15 @@ export function ProfileInfoCard({
   };
 
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
-      <h2 className="font-semibold text-black mb-1">Profile Info</h2>
-      <p className="text-sm text-neutral-600 mb-4">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
+      <h2 className="font-semibold text-white mb-1">Profile Info</h2>
+      <p className="text-sm text-gray-400 mb-4">
         This information is used in your outreach messages
       </p>
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="display-name" className="block text-sm font-medium text-black">
+          <label htmlFor="display-name" className="block text-sm font-medium text-white">
             Display Name
           </label>
           <Input
@@ -53,7 +53,7 @@ export function ProfileInfoCard({
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="company-name" className="block text-sm font-medium text-black">
+          <label htmlFor="company-name" className="block text-sm font-medium text-white">
             Company Name
           </label>
           <Input
@@ -66,14 +66,14 @@ export function ProfileInfoCard({
           />
         </div>
 
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-gray-500">
           These will be used when personalizing connection requests
         </p>
 
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="w-full bg-black text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#d4a84b] text-[#1a1d29] rounded-md px-4 py-2 text-sm font-semibold hover:bg-[#e5b95c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSaving ? "Saving..." : "Save Profile"}
         </button>

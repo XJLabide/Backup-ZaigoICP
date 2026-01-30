@@ -40,13 +40,13 @@ interface ActionHistoryTableProps {
  */
 function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    approved: 'bg-blue-100 text-blue-800',
-    rejected: 'bg-gray-100 text-gray-800',
-    sent: 'bg-green-100 text-green-800',
-    failed: 'bg-red-100 text-red-800',
+    pending: 'bg-yellow-500/20 text-yellow-400',
+    approved: 'bg-blue-500/20 text-blue-400',
+    rejected: 'bg-gray-500/20 text-gray-400',
+    sent: 'bg-green-500/20 text-green-400',
+    failed: 'bg-red-500/20 text-red-400',
   };
-  return colors[status] || 'bg-gray-100 text-gray-800';
+  return colors[status] || 'bg-gray-500/20 text-gray-400';
 }
 
 /**
@@ -117,7 +117,7 @@ export function ActionHistoryTable({ actions, nextCursor }: ActionHistoryTablePr
   }
 
   return (
-    <div className="rounded-md border bg-white">
+    <div className="rounded-md border border-white/10 bg-[#242836]">
       <Table>
         <TableHeader>
           <TableRow>
@@ -137,19 +137,19 @@ export function ActionHistoryTable({ actions, nextCursor }: ActionHistoryTablePr
                   href={`/dashboard/leads/${action.lead.id}`}
                   className="hover:underline"
                 >
-                  <div className="font-medium">{action.lead.fullName}</div>
+                  <div className="font-medium text-white">{action.lead.fullName}</div>
                   {action.lead.company && (
-                    <div className="text-sm text-neutral-600">
+                    <div className="text-sm text-gray-400">
                       {action.lead.company}
                     </div>
                   )}
                 </Link>
               </TableCell>
               <TableCell>
-                <span className="text-black">{action.campaign.name}</span>
+                <span className="text-white">{action.campaign.name}</span>
               </TableCell>
               <TableCell>
-                <span className="text-sm text-neutral-600">
+                <span className="text-sm text-gray-400">
                   {truncateMessage(action.message)}
                 </span>
               </TableCell>
@@ -160,7 +160,7 @@ export function ActionHistoryTable({ actions, nextCursor }: ActionHistoryTablePr
                   {action.status}
                 </span>
               </TableCell>
-              <TableCell className="text-neutral-600">
+              <TableCell className="text-gray-400">
                 {formatDate(action.sentAt)}
               </TableCell>
               <TableCell>
@@ -189,7 +189,7 @@ export function ActionHistoryTable({ actions, nextCursor }: ActionHistoryTablePr
 
       {/* Load More Button */}
       {nextCursor && (
-        <div className="flex justify-center border-t p-4">
+        <div className="flex justify-center border-t border-white/10 p-4">
           <Button
             variant="outline"
             onClick={handleLoadMore}

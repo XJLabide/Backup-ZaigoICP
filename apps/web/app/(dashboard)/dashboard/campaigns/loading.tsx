@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function CampaignCardSkeleton() {
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
       <div className="flex items-center justify-between mb-2">
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-6 w-16 rounded-md" />

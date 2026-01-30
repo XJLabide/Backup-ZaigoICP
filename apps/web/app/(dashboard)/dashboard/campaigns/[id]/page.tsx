@@ -79,8 +79,8 @@ export default async function CampaignDetailPage({
                 <span
                   className={`text-sm px-2 py-1 rounded-full ${
                     campaign.isActive
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-600'
+                      ? 'bg-green-500/20 text-green-400'
+                      : 'bg-gray-500/20 text-gray-400'
                   }`}
                 >
                   {campaign.isActive ? 'Active' : 'Paused'}
@@ -89,41 +89,41 @@ export default async function CampaignDetailPage({
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <div className="text-sm text-gray-500">Name</div>
-                <div className="font-medium">{campaign.name}</div>
+                <div className="text-sm text-gray-400">Name</div>
+                <div className="font-medium text-white">{campaign.name}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Message Tone</div>
-                <div className="font-medium">
+                <div className="text-sm text-gray-400">Message Tone</div>
+                <div className="font-medium text-white">
                   {toneLabels[campaign.tone] || campaign.tone}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-500">Call to Action</div>
-                <div className="font-medium">
+                <div className="text-sm text-gray-400">Call to Action</div>
+                <div className="font-medium text-white">
                   {ctaLabels[campaign.cta] || campaign.cta}
                 </div>
               </div>
               {campaign.calendarLink && (
                 <div>
-                  <div className="text-sm text-gray-500">Calendar Link</div>
+                  <div className="text-sm text-gray-400">Calendar Link</div>
                   <a
                     href={campaign.calendarLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-[#d4a84b] hover:underline font-medium"
                   >
                     {campaign.calendarLink}
                   </a>
                 </div>
               )}
               <div>
-                <div className="text-sm text-gray-500">Auto-approve</div>
+                <div className="text-sm text-gray-400">Auto-approve</div>
                 <div className="font-medium">
                   {campaign.autoApprove ? (
-                    <span className="text-blue-600">Enabled</span>
+                    <span className="text-[#d4a84b]">Enabled</span>
                   ) : (
-                    <span className="text-gray-600">Disabled</span>
+                    <span className="text-gray-400">Disabled</span>
                   )}
                 </div>
               </div>
@@ -137,42 +137,42 @@ export default async function CampaignDetailPage({
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-6">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-3xl font-bold">
+                <div className="text-center p-4 bg-[#1a1d29] border border-white/10 rounded-lg">
+                  <div className="text-3xl font-bold text-white">
                     {campaign.totalLeads ?? 0}
                   </div>
-                  <div className="text-sm text-gray-500">Total Leads</div>
+                  <div className="text-sm text-gray-400">Total Prospects</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-3xl font-bold">
+                <div className="text-center p-4 bg-[#1a1d29] border border-white/10 rounded-lg">
+                  <div className="text-3xl font-bold text-white">
                     {campaign.totalSent ?? 0}
                   </div>
-                  <div className="text-sm text-gray-500">Messages Sent</div>
+                  <div className="text-sm text-gray-400">Messages Sent</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-3xl font-bold">
+                <div className="text-center p-4 bg-[#1a1d29] border border-white/10 rounded-lg">
+                  <div className="text-3xl font-bold text-white">
                     {campaign.totalAccepted ?? 0}
                   </div>
-                  <div className="text-sm text-gray-500">Accepted</div>
+                  <div className="text-sm text-gray-400">Accepted</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-3xl font-bold">
+                <div className="text-center p-4 bg-[#1a1d29] border border-white/10 rounded-lg">
+                  <div className="text-3xl font-bold text-white">
                     {campaign.totalReplied ?? 0}
                   </div>
-                  <div className="text-sm text-gray-500">Replied</div>
+                  <div className="text-sm text-gray-400">Replied</div>
                 </div>
               </div>
 
               {/* Conversion rates */}
               {(campaign.totalSent ?? 0) > 0 && (
-                <div className="mt-6 pt-4 border-t">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                <div className="mt-6 pt-4 border-t border-white/10">
+                  <h4 className="text-sm font-medium text-white mb-3">
                     Conversion Rates
                   </h4>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Acceptance Rate</span>
-                      <span className="font-medium">
+                      <span className="text-gray-400">Acceptance Rate</span>
+                      <span className="font-medium text-white">
                         {(
                           ((campaign.totalAccepted ?? 0) /
                             (campaign.totalSent ?? 1)) *
@@ -182,8 +182,8 @@ export default async function CampaignDetailPage({
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Reply Rate</span>
-                      <span className="font-medium">
+                      <span className="text-gray-400">Reply Rate</span>
+                      <span className="font-medium text-white">
                         {(
                           ((campaign.totalReplied ?? 0) /
                             (campaign.totalSent ?? 1)) *
@@ -212,25 +212,25 @@ export default async function CampaignDetailPage({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               {(campaign.totalLeads ?? 0) > 0 ? (
                 <>
                   This campaign has{' '}
-                  <span className="font-semibold">
-                    {campaign.totalLeads} leads
+                  <span className="font-semibold text-white">
+                    {campaign.totalLeads} prospects
                   </span>{' '}
                   assigned.
                 </>
               ) : (
                 <>
-                  No leads assigned yet. Go to the{' '}
+                  No prospects assigned yet. Go to the{' '}
                   <Link
                     href="/dashboard/leads"
-                    className="text-blue-600 hover:underline"
+                    className="text-[#d4a84b] hover:underline"
                   >
-                    Leads page
+                    Prospects page
                   </Link>{' '}
-                  to assign leads to this campaign.
+                  to assign prospects to this campaign.
                 </>
               )}
             </p>
@@ -238,7 +238,7 @@ export default async function CampaignDetailPage({
         </Card>
 
         {/* Timestamps */}
-        <div className="mt-6 text-sm text-gray-500">
+        <div className="mt-6 text-sm text-gray-400">
           <p>
             Created: {campaign.createdAt.toLocaleDateString()} at{' '}
             {campaign.createdAt.toLocaleTimeString()}

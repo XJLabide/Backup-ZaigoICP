@@ -13,6 +13,7 @@ import {
   pgEnum,
   uniqueIndex,
   index,
+  json,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -71,6 +72,15 @@ export const users = pgTable('users', {
   // Profile info for outreach messages (nullable - user may not set)
   displayName: text('display_name'),
   companyName: text('company_name'),
+
+  // ICP Configuration
+  icpConfig: json('icp_config').$type<{
+    jobTitles: string[];
+    industries: string[];
+    companySizes: string[];
+    locations: string[];
+    keywords: string[];
+  }>(),
 
   // Connection health tracking
   lastSyncAt: timestamp('last_sync_at'),

@@ -21,10 +21,10 @@ export default function SSOCallbackPage() {
   }, [isLoaded, isSignedIn, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-[#1a1d29]">
       <div className="text-center space-y-4">
-        <div className="animate-spin h-8 w-8 border-4 border-black border-t-transparent rounded-full mx-auto" />
-        <p className="text-neutral-600">Completing sign in...</p>
+        <div className="animate-spin h-8 w-8 border-4 border-[#d4a84b] border-t-transparent rounded-full mx-auto" />
+        <p className="text-gray-400">Completing sign in...</p>
       </div>
       <AuthenticateWithRedirectCallback
         signInForceRedirectUrl="/dashboard"

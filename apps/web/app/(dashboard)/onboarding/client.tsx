@@ -222,6 +222,7 @@ export function OnboardingClient({
         <p style={descriptionStyles}>
           To get started, connect your LinkedIn account. This allows us to
           access your profile viewers and send connection requests on your behalf.
+          Don't worry—we'll walk you through everything. No tech skills needed.
         </p>
 
         <div style={statusContainerStyles}>

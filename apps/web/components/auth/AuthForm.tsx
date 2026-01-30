@@ -134,19 +134,19 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
     <div className="w-full max-w-md mx-auto space-y-8">
       {/* Header */}
       <div className="space-y-3 text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-black">
-          {isSignIn ? "Welcome back" : "Welcome to LinkReach"}
+        <h1 className="text-4xl font-bold tracking-tight text-white">
+          {isSignIn ? "Welcome back" : "Welcome to AOG Outreach"}
         </h1>
-        <p className="text-base text-neutral-600">
+        <p className="text-base text-gray-400">
           {isSignIn
-            ? "Sign in to continue managing your LinkedIn outreach"
-            : "Create your account and start automating LinkedIn outreach"}
+            ? "Sign in to continue growing your book"
+            : "Create your account and start growing your book on autopilot"}
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+        <div className="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-md">
           {error}
         </div>
       )}
@@ -156,7 +156,7 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
         type="button"
         onClick={() => handleOAuthSignIn("oauth_google")}
         disabled={isLoading || !isLoaded}
-        className="bg-white text-black border-black border hover:bg-neutral-50 w-full h-11 font-medium"
+        className="bg-white text-black border-white/20 border hover:bg-gray-100 w-full h-11 font-medium"
       >
         <svg
           className="mr-2 h-5 w-5"
@@ -185,9 +185,9 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
 
       {/* Divider */}
       <div className="relative flex items-center py-2">
-        <Separator className="flex-1 bg-neutral-900" />
-        <span className="px-4 text-sm text-neutral-500 font-medium">or</span>
-        <Separator className="flex-1 bg-neutral-900" />
+        <Separator className="flex-1 bg-white/20" />
+        <span className="px-4 text-sm text-gray-400 font-medium">or</span>
+        <Separator className="flex-1 bg-white/20" />
       </div>
 
       {/* Email/Password Form */}
@@ -196,7 +196,7 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
         <div className="space-y-2">
           <Label
             htmlFor="email"
-            className="text-sm font-semibold text-black"
+            className="text-sm font-semibold text-white"
           >
             Email
           </Label>
@@ -208,7 +208,7 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
             onChange={(e) => setEmail(e.target.value)}
             required
             disabled={isLoading}
-            className="border-black focus-visible:ring-black focus-visible:ring-2 h-11 bg-white"
+            className="h-11"
             aria-describedby={email ? undefined : "email-description"}
           />
         </div>
@@ -218,7 +218,7 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
           <div className="space-y-2">
             <Label
               htmlFor="password"
-              className="text-sm font-semibold text-black"
+              className="text-sm font-semibold text-white"
             >
               Password
             </Label>
@@ -230,7 +230,7 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoading}
-              className="border-black focus-visible:ring-black focus-visible:ring-2 h-11 bg-white"
+              className="h-11"
               aria-describedby={password ? undefined : "password-description"}
             />
           </div>
@@ -243,7 +243,7 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
         <Button
           type="submit"
           disabled={isLoading}
-          className="bg-black text-white border-black hover:bg-neutral-800 w-full h-11 font-semibold"
+          className="bg-[#d4a84b] text-[#1a1d29] border-[#d4a84b] hover:bg-[#e5b95c] w-full h-11 font-semibold"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
@@ -279,11 +279,11 @@ export function AuthForm({ variant, onSubmit, redirectUrl = "/dashboard" }: Auth
 
       {/* Footer Link */}
       <div className="text-center">
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-gray-400">
           {isSignIn ? "Don't have an account? " : "Already have an account? "}
           <Link
             href={isSignIn ? "/sign-up" : "/sign-in"}
-            className="font-semibold text-black underline underline-offset-4 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded"
+            className="font-semibold text-[#d4a84b] underline underline-offset-4 hover:text-[#e5b95c] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d4a84b] focus-visible:ring-offset-2 rounded"
           >
             {isSignIn ? "Sign up" : "Sign in"}
           </Link>

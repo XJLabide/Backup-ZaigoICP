@@ -39,27 +39,27 @@ export function DisconnectLinkedInCard({
   };
 
   return (
-    <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-      <h3 className="font-semibold text-red-600 mb-2">Danger Zone</h3>
-      <p className="text-sm text-neutral-600 mb-4">
-        Disconnect your LinkedIn account from Warm
+    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-6">
+      <h3 className="font-semibold text-red-400 mb-2">Danger Zone</h3>
+      <p className="text-sm text-gray-400 mb-4">
+        Disconnect your LinkedIn account from AOG Outreach
       </p>
 
-      <div className="bg-white rounded p-3 mb-4 space-y-2">
-        <p className="text-sm text-neutral-700">
+      <div className="bg-[#1a1d29] border border-white/10 rounded p-3 mb-4 space-y-2">
+        <p className="text-sm text-gray-300">
           • This will stop all future automated outreach
         </p>
-        <p className="text-sm text-neutral-700">
+        <p className="text-sm text-gray-300">
           • Your LinkedIn credentials remain safe with Unipile
         </p>
-        <p className="text-sm text-neutral-700">• You can reconnect anytime</p>
+        <p className="text-sm text-gray-300">• You can reconnect anytime</p>
       </div>
 
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger asChild>
           <Button
             variant="outline"
-            className="border-red-300 text-red-600 hover:bg-red-100 hover:text-red-600"
+            className="border-red-500/50 text-red-400 hover:bg-red-500/20 hover:text-red-400"
             disabled={!isConnected || isLoading}
           >
             {isLoading ? 'Disconnecting...' : 'Disconnect LinkedIn'}

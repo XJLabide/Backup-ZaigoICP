@@ -26,16 +26,16 @@ export function RateLimitingCard({
   }
 
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
-      <h2 className="text-lg font-semibold text-black">Rate Limiting</h2>
-      <p className="text-sm text-neutral-600 mt-2">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
+      <h2 className="text-lg font-semibold text-white">Rate Limiting</h2>
+      <p className="text-sm text-gray-400 mt-2">
         Control how many connection requests we send daily to protect your account.
       </p>
 
       <div className="mt-6">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-black">Daily Limit</span>
-          <span className="text-sm font-semibold text-black">
+          <span className="text-sm font-medium text-white">Daily Limit</span>
+          <span className="text-sm font-semibold text-white">
             {limit} connections/day
           </span>
         </div>
@@ -49,7 +49,7 @@ export function RateLimitingCard({
           className="w-full"
         />
 
-        <p className="text-xs text-neutral-500 mt-2">
+        <p className="text-xs text-gray-500 mt-2">
           LinkedIn allows ~100 per week. We keep it conservative for account safety.
         </p>
       </div>
@@ -57,7 +57,7 @@ export function RateLimitingCard({
       <Button
         onClick={handleSave}
         disabled={isLoading}
-        className="w-full bg-black text-white rounded-lg mt-4 h-12 hover:bg-neutral-800"
+        className="w-full bg-[#d4a84b] text-[#1a1d29] rounded-lg mt-4 h-12 hover:bg-[#e5b95c] font-semibold"
       >
         {isLoading ? "Saving..." : "Save Limit"}
       </Button>

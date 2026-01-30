@@ -29,8 +29,8 @@ export default async function CampaignsPage() {
       {/* Page Title */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-black">Campaigns</h1>
-          <p className="text-neutral-600 mt-1">Manage your outreach campaigns and message templates</p>
+          <h1 className="text-3xl font-bold text-white">Campaigns</h1>
+          <p className="text-gray-400 mt-1">Manage your outreach campaigns and message templates</p>
         </div>
         <Link href="/dashboard/campaigns/new">
           <Button>New Campaign</Button>
@@ -40,11 +40,10 @@ export default async function CampaignsPage() {
       {userCampaigns.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <Mail className="h-16 w-16 text-neutral-400 mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No campaigns yet</h3>
-            <p className="text-neutral-600 text-center max-w-md mb-4">
-              Create your first campaign to start sending personalized
-              connection requests to your leads.
+            <Mail className="h-16 w-16 text-gray-500 mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">No campaigns yet</h3>
+            <p className="text-gray-400 text-center max-w-md mb-4">
+              No campaigns running yet. Let's get you in front of more prospects.
             </p>
             <Link href="/dashboard/campaigns/new">
               <Button>Create Your First Campaign</Button>

@@ -149,7 +149,7 @@ export function CampaignForm({
           </SelectContent>
         </Select>
         <p className="text-xs text-gray-500">
-          The action you want leads to take
+          The action you want prospects to take
         </p>
       </div>
 

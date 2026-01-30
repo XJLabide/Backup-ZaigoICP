@@ -3,7 +3,7 @@ import { StatsCardSkeleton } from '@/components/stats-card-skeleton';
 
 function WidgetSkeleton() {
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
       <Skeleton className="h-6 w-32 mb-4" />
       <div className="space-y-3">
         <Skeleton className="h-12 w-full" />
@@ -16,7 +16,7 @@ function WidgetSkeleton() {
 
 function QuickActionSkeleton() {
   return (
-    <div className="bg-neutral-100 rounded-lg p-6">
+    <div className="bg-[#242836] border border-white/10 rounded-lg p-6">
       <div className="flex items-center gap-4">
         <Skeleton className="h-10 w-10 rounded-full" />
         <div className="flex-1">

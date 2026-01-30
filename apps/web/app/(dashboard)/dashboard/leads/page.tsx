@@ -238,13 +238,13 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     <div className="p-6 space-y-6">
       {/* Page Title */}
       <div>
-        <h1 className="text-3xl font-bold text-black">Leads</h1>
-        <p className="text-neutral-600 mt-1">Manage your LinkedIn leads from profile viewers</p>
+        <h1 className="text-3xl font-bold text-white">Prospects</h1>
+        <p className="text-gray-400 mt-1">Manage your LinkedIn prospects from profile viewers</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard title="Total Leads" value={counts.total} subtitle="" />
+          <StatCard title="Total Prospects" value={counts.total} subtitle="" />
           <StatCard title="New" value={counts.new} subtitle="" />
           <StatCard title="Qualified" value={counts.qualified} subtitle="" />
           <StatCard title="Connected" value={counts.connected} subtitle="" />
@@ -263,19 +263,19 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             {statusFilter || sourceFilter ? (
-              <Search className="h-16 w-16 text-neutral-400 mb-4" />
+              <Search className="h-16 w-16 text-gray-500 mb-4" />
             ) : (
-              <Users className="h-16 w-16 text-neutral-400 mb-4" />
+              <Users className="h-16 w-16 text-gray-500 mb-4" />
             )}
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="text-lg font-semibold text-white mb-2">
               {statusFilter || sourceFilter
-                ? 'No leads match your filters'
-                : 'No leads yet'}
+                ? 'No prospects match your filters'
+                : 'No prospects yet'}
             </h3>
-            <p className="text-neutral-600 text-center max-w-md">
+            <p className="text-gray-400 text-center max-w-md">
               {statusFilter || sourceFilter
                 ? 'Try adjusting your filters or sync new profile viewers.'
-                : 'Leads will appear here when you sync your LinkedIn profile viewers. Click "Sync Now" to get started.'}
+                : 'Connect LinkedIn to start finding qualified contacts.'}
             </p>
           </CardContent>
         </Card>

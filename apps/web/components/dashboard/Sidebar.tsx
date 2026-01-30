@@ -48,14 +48,11 @@ export function Sidebar() {
           {isCollapsed ? (
             <span className="text-lg font-bold text-[#d4a84b]">AOG</span>
           ) : (
-            <>
-              <img
-                src="https://associateownersgroup.com/wp-content/uploads/Logo-Horizontal.svg"
-                alt="AOG"
-                className="h-7 w-auto"
-              />
-              <span className="text-lg font-semibold text-white">AOG Outreach</span>
-            </>
+            <img
+              src="https://associateownersgroup.com/wp-content/uploads/Logo-Horizontal.svg"
+              alt="AOG Outreach"
+              className="h-8 w-auto"
+            />
           )}
         </div>
         {!isCollapsed && (

@@ -23,6 +23,15 @@ const updateCampaignSchema = z
     tone: z.enum(['professional', 'friendly', 'direct']).optional(),
     cta: z.enum(['book_call', 'reply', 'visit_site']).optional(),
     calendarLink: z.string().url('Invalid calendar link URL').optional().nullable(),
+    productCategory: z.string().max(100).optional().nullable(),
+    valueProposition: z.string().max(1000).optional().nullable(),
+    talkingPoints: z.string().max(1000).optional().nullable(),
+    personalizationOptions: z.object({
+      referenceCompany: z.boolean(),
+      mentionMutuals: z.boolean(),
+      industrySpecific: z.boolean(),
+      keepBrief: z.boolean(),
+    }).optional().nullable(),
     qualificationRules: z
       .string()
       .optional()

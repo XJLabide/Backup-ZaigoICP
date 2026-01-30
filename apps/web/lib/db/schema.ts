@@ -110,6 +110,17 @@ export const campaigns = pgTable('campaigns', {
   cta: ctaEnum('cta').notNull().default('reply'),
   calendarLink: text('calendar_link'),
 
+  // Message context for AI generation
+  productCategory: text('product_category'),
+  valueProposition: text('value_proposition'),
+  talkingPoints: text('talking_points'),
+  personalizationOptions: json('personalization_options').$type<{
+    referenceCompany: boolean;
+    mentionMutuals: boolean;
+    industrySpecific: boolean;
+    keepBrief: boolean;
+  }>(),
+
   // Qualification rules (JSON as text)
   qualificationRules: text('qualification_rules'),
 

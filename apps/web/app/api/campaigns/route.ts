@@ -109,6 +109,15 @@ const createCampaignSchema = z.object({
   tone: z.enum(['professional', 'friendly', 'direct']).optional(),
   cta: z.enum(['book_call', 'reply', 'visit_site']).optional(),
   calendarLink: z.string().url('Invalid calendar link URL').optional().nullable(),
+  productCategory: z.string().max(100).optional().nullable(),
+  valueProposition: z.string().max(1000).optional().nullable(),
+  talkingPoints: z.string().max(1000).optional().nullable(),
+  personalizationOptions: z.object({
+    referenceCompany: z.boolean(),
+    mentionMutuals: z.boolean(),
+    industrySpecific: z.boolean(),
+    keepBrief: z.boolean(),
+  }).optional().nullable(),
   qualificationRules: z
     .string()
     .optional()
@@ -150,7 +159,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { name, tone, cta, calendarLink, qualificationRules, autoApprove } =
+    const { name, tone, cta, calendarLink, productCategory, valueProposition, talkingPoints, personalizationOptions, qualificationRules, autoApprove } =
       parsed.data;
 
     const [campaign] = await db
@@ -161,6 +170,10 @@ export async function POST(request: Request) {
         tone: tone ?? 'professional',
         cta: cta ?? 'reply',
         calendarLink: calendarLink ?? null,
+        productCategory: productCategory ?? null,
+        valueProposition: valueProposition ?? null,
+        talkingPoints: talkingPoints ?? null,
+        personalizationOptions: personalizationOptions ?? null,
         qualificationRules: qualificationRules ?? null,
         autoApprove: autoApprove ?? false,
       })

@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   '/sso-callback(.*)', // OAuth callback for Google, etc.
   '/api/health',
   '/api/webhooks/(.*)', // Unipile webhooks (signature-verified)
+  '/api/inngest(.*)', // Inngest webhook endpoint (signing-key verified)
 ]);
 
 export default clerkMiddleware(async (auth, request) => {

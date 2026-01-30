@@ -37,17 +37,18 @@ export interface WebhookVerifyResult {
  * ```
  */
 export function verifyWebhookSignature(signature: string | null): WebhookVerifyResult {
-  // Check if signature header is present
-  if (signature === null || signature === undefined) {
-    return { valid: false, error: 'Missing signature' };
-  }
-
   // Get the expected secret from environment
   const secret = process.env.UNIPILE_WEBHOOK_SECRET;
+
+  // If no secret configured, skip signature verification entirely
+  // This is acceptable when Unipile doesn't provide webhook secrets
   if (!secret) {
-    // Server misconfiguration - return invalid without per-request logging
-    // to avoid log spam on public webhook endpoints
-    return { valid: false, error: 'Invalid signature' };
+    return { valid: true };
+  }
+
+  // Check if signature header is present (only if secret is configured)
+  if (signature === null || signature === undefined) {
+    return { valid: false, error: 'Missing signature' };
   }
 
   // Convert to buffers for timing-safe comparison

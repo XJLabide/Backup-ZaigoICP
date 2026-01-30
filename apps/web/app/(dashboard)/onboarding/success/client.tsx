@@ -136,18 +136,55 @@ type PageState = 'polling' | 'connected' | 'timeout';
 // Component
 // =============================================================================
 
-export function SuccessClient() {
+interface SuccessClientProps {
+  accountId: string | null;
+}
+
+export function SuccessClient({ accountId }: SuccessClientProps) {
   const [pageState, setPageState] = useState<PageState>('polling');
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ state: 'connecting' });
   const [countdown, setCountdown] = useState<number>(2);
+  const [isSyncing, setIsSyncing] = useState(false);
   const pollCountRef = useRef(0);
   const startTimeRef = useRef<number | null>(null);
   const isActiveRef = useRef(true);
+  const hasTriedManualSync = useRef(false);
 
   // Initialize startTime on mount to avoid impure render
   useEffect(() => {
     startTimeRef.current = Date.now();
   }, []);
+
+  /**
+   * Manually syncs the connection using the account ID from URL.
+   * Used as fallback when webhook doesn't fire.
+   */
+  const manualSync = useCallback(async (): Promise<boolean> => {
+    if (!accountId || hasTriedManualSync.current) {
+      return false;
+    }
+
+    hasTriedManualSync.current = true;
+    setIsSyncing(true);
+
+    try {
+      const response = await fetch('/api/user/sync-connection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accountId }),
+      });
+
+      if (response.ok) {
+        return true;
+      }
+    } catch (error) {
+      console.error('Manual sync error:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+
+    return false;
+  }, [accountId]);
 
   /**
    * Polls the user status API to check if the webhook has been processed.
@@ -211,6 +248,18 @@ export function SuccessClient() {
 
       const elapsed = Date.now() - startTimeRef.current;
 
+      // After 10 seconds of polling, try manual sync if we have accountId
+      if (elapsed >= 10000 && accountId && !hasTriedManualSync.current) {
+        const syncResult = await manualSync();
+        if (syncResult) {
+          // Manual sync succeeded, check status again
+          const statusResult = await checkStatus();
+          if (statusResult === 'connected') {
+            return;
+          }
+        }
+      }
+
       // Check for timeout
       if (elapsed >= TIMEOUT_MS) {
         if (isActiveRef.current) {
@@ -244,7 +293,7 @@ export function SuccessClient() {
       isActiveRef.current = false;
       clearTimeout(timeoutId);
     };
-  }, [checkStatus]);
+  }, [checkStatus, manualSync, accountId]);
 
   /**
    * Auto-redirect effect when connection is confirmed.

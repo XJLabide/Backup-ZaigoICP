@@ -110,7 +110,35 @@ export class UnipileApiError extends Error {
 }
 
 /**
+ * Raw profile viewer card from LinkedIn's Voyager API (wvmpCards endpoint).
+ */
+interface RawProfileViewerCard {
+  insightCard?: {
+    insight?: {
+      profileViewer?: {
+        actorUrn?: string;
+        publicIdentifier?: string;
+        firstName?: string;
+        lastName?: string;
+        headline?: string;
+        profilePicture?: string;
+      };
+    };
+    createdAt?: number;
+  };
+}
+
+/**
+ * Extracts LinkedIn ID from a URN string.
+ * Example: "urn:li:fs_miniProfile:abc123" -> "abc123"
+ */
+function extractLinkedInId(urn: string): string {
+  return urn.split(':').pop() || '';
+}
+
+/**
  * Normalizes a Unipile profile viewer to our internal ProfileViewer type.
+ * @deprecated Use the raw LinkedIn response parsing instead
  */
 function normalizeProfileViewer(viewer: UnipileProfileViewer): ProfileViewer {
   // Build profile URL from provider_id if not provided
@@ -175,20 +203,46 @@ export async function getProfileViewers(
   }
 
   try {
-    // Use the SDK's request sender for endpoints not in the typed SDK
-    // Path: /api/v1/linkedin/profile_viewers
-    const response = await client.request.send<ProfileViewersResponse>({
-      method: 'GET',
-      path: ['linkedin', 'profile_viewers'],
-      parameters,
+    // Use the "Magic Route" (raw data endpoint) to access LinkedIn's internal API
+    // This endpoint is not exposed in the typed SDK
+    // See: docs/unipile-integration.md for details
+    const response = await client.request.send<{ data?: { elements?: RawProfileViewerCard[] } }>({
+      method: 'POST',
+      path: ['linkedin'],
+      parameters: { account_id: accountId },
+      body: {
+        method: 'GET',
+        request_url: 'https://www.linkedin.com/voyager/api/identity/wvmpCards',
+        encoding: false,
+      },
     });
 
-    // Normalize the response
-    const viewers = (response.items || []).map(normalizeProfileViewer);
+    // Parse the raw LinkedIn response into our format
+    const viewers: ProfileViewer[] = [];
+
+    for (const card of response.data?.elements || []) {
+      if (card.insightCard?.insight?.profileViewer) {
+        const viewer = card.insightCard.insight.profileViewer;
+        viewers.push({
+          linkedInId: extractLinkedInId(viewer.actorUrn || ''),
+          profileUrl: viewer.publicIdentifier
+            ? `https://www.linkedin.com/in/${viewer.publicIdentifier}`
+            : '',
+          fullName: [viewer.firstName, viewer.lastName].filter(Boolean).join(' ') || 'Unknown',
+          firstName: viewer.firstName || null,
+          lastName: viewer.lastName || null,
+          headline: viewer.headline || null,
+          company: null, // Not available in this endpoint
+          location: null, // Not available in this endpoint
+          profileImageUrl: viewer.profilePicture || null,
+          viewedAt: card.insightCard.createdAt ? new Date(card.insightCard.createdAt) : null,
+        });
+      }
+    }
 
     return {
       viewers,
-      nextCursor: response.cursor || null,
+      nextCursor: null, // Pagination not supported in raw endpoint
     };
   } catch (error: unknown) {
     // Handle Unipile SDK errors

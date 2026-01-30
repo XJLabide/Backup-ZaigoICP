@@ -139,6 +139,7 @@ type PageState = 'polling' | 'connected' | 'timeout';
 export function SuccessClient() {
   const [pageState, setPageState] = useState<PageState>('polling');
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ state: 'connecting' });
+  const [countdown, setCountdown] = useState<number>(2);
   const pollCountRef = useRef(0);
   const startTimeRef = useRef<number | null>(null);
   const isActiveRef = useRef(true);
@@ -245,6 +246,27 @@ export function SuccessClient() {
     };
   }, [checkStatus]);
 
+  /**
+   * Auto-redirect effect when connection is confirmed.
+   * Redirects to dashboard after 2 seconds with countdown.
+   */
+  useEffect(() => {
+    if (pageState !== 'connected') return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          window.location.href = '/dashboard';
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [pageState]);
+
   // Timeout state
   if (pageState === 'timeout') {
     return (
@@ -310,6 +332,7 @@ export function SuccessClient() {
           <h1 style={titleStyles}>Successfully Connected!</h1>
           <p style={descriptionStyles}>
             Your LinkedIn account is now connected. You can start using all the features.
+            {countdown > 0 && ` Redirecting in ${countdown} second${countdown !== 1 ? 's' : ''}...`}
           </p>
 
           <div style={statusContainerStyles}>

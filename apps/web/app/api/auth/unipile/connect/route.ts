@@ -8,8 +8,9 @@
  * for webhook correlation.
  */
 
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { generateAuthLink } from '@/lib/unipile/auth';
+import { db, users } from '@/lib/db';
 
 /**
  * Generates a Unipile hosted auth link for the authenticated user.
@@ -26,6 +27,34 @@ export async function POST() {
   }
 
   try {
+    // Ensure user exists in database before generating auth link
+    const clerkUser = await currentUser();
+    if (!clerkUser) {
+      return Response.json({ error: 'User not found in Clerk' }, { status: 404 });
+    }
+
+    const email = clerkUser.emailAddresses[0]?.emailAddress ?? '';
+    const name = clerkUser.firstName
+      ? `${clerkUser.firstName} ${clerkUser.lastName ?? ''}`.trim()
+      : null;
+
+    // Upsert user record atomically
+    await db
+      .insert(users)
+      .values({
+        id: userId,
+        email,
+        name,
+      })
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          email,
+          name,
+          updatedAt: new Date(),
+        },
+      });
+
     const result = await generateAuthLink(userId);
 
     // Structured log for observability

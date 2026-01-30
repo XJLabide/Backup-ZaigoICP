@@ -40,12 +40,10 @@ export async function POST(request: Request) {
       .returning({ id: users.id });
 
     if (result.length === 0) {
-      // User doesn't exist - create them
-      await db.insert(users).values({
-        id: userId,
-        unipileAccountId: accountId,
-        linkedInConnectedAt: new Date(),
-      });
+      // User record doesn't exist - this shouldn't happen
+      // User should be created during Clerk sign-up
+      console.error('Sync connection: User not found', { userId });
+      return Response.json({ error: 'User not found' }, { status: 404 });
     }
 
     return Response.json({ success: true });

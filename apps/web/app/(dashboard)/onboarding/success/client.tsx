@@ -144,7 +144,6 @@ export function SuccessClient({ accountId }: SuccessClientProps) {
   const [pageState, setPageState] = useState<PageState>('polling');
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({ state: 'connecting' });
   const [countdown, setCountdown] = useState<number>(2);
-  const [isSyncing, setIsSyncing] = useState(false);
   const pollCountRef = useRef(0);
   const startTimeRef = useRef<number | null>(null);
   const isActiveRef = useRef(true);
@@ -165,7 +164,6 @@ export function SuccessClient({ accountId }: SuccessClientProps) {
     }
 
     hasTriedManualSync.current = true;
-    setIsSyncing(true);
 
     try {
       const response = await fetch('/api/user/sync-connection', {
@@ -179,8 +177,6 @@ export function SuccessClient({ accountId }: SuccessClientProps) {
       }
     } catch (error) {
       console.error('Manual sync error:', error);
-    } finally {
-      setIsSyncing(false);
     }
 
     return false;

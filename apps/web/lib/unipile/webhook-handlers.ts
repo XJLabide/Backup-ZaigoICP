@@ -194,7 +194,8 @@ export async function dispatchWebhookEvent(
     });
   }
 
-  // Unknown event type - log full payload
+  // Unknown event type - log and acknowledge
+  // This prevents Unipile from retrying indefinitely
   console.log(
     JSON.stringify({
       event: 'webhook_unknown_event_type',
@@ -203,15 +204,5 @@ export async function dispatchWebhookEvent(
       timestamp: new Date().toISOString(),
     })
   );
-      // Unknown events are acknowledged (no error, no processing)
-      // This prevents Unipile from retrying indefinitely
-      console.log(
-        JSON.stringify({
-          event: 'webhook_unknown_event_type',
-          eventType: payload.event,
-          timestamp: new Date().toISOString(),
-        })
-      );
-      return { success: true };
-  }
+  return { success: true };
 }
